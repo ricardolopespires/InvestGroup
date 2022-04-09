@@ -1,0 +1,89 @@
+{% extends 'manager/investing/base.html' %}
+{% load static %}
+
+{% block title %} InvestGroup Dashboard | Sua plataforma de investimento com Big Data, Inteligência Artificial
+Dashboard  {% endblock %}
+
+
+{% block dashboard %}
+
+ 
+<div class="app-content content">
+    <div class="content-wrapper">  
+      <div class="content-header row">
+        <div class="col-xl-12 col-md-12">
+          <div class="card">
+            <div class="card-content">
+              <div class="card-body cleartfix">
+                <div class="media align-items-stretch">
+                  <div class="align-self-center">
+                    <i class="la la-industry warning font-large-2 mr-2"></i>
+                  </div>
+                  <div class="media-body">
+                    <h4>Search</h4>
+                    <span>Pesquisa sobre informações sobre as empresas.</span>
+                  </div>
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>   
+      <div class="content-body">   
+        <!-- // Icon section with gradient bg color section end -->
+        <!-- stats with subtitle section start -->
+        <br><br>
+        <section id="stats-subtitle">            
+          <div class="row">
+              {% if search %}
+              {% for pesquisa in search %}             
+              <a href="{% url 'ações:details'  pesquisa.Papel %}">
+                <div class="col-xl-9 col-md-9 col-sm-12">
+                  <div class="card crypto-card-3 pull-up">
+                    <div class="card-content">
+                      <div class="card-body pb-0">
+                        <div class="row">
+                          <div class="col-2">
+                            <img src="https://upload.wikimedia.org/wikipedia/pt/d/d7/B3_logo.png" width="90px">
+                          </div>
+                          <div style="left: 50px;" class="col-5 pl-2">
+                            <h4>{{ pesquisa.Papel}}</h4>
+                            <h6 class="text-muted">{{ pesquisa.Empresa}}</h6>
+                          </div>
+                          <div class="col-5 text-right">
+                            <h4>R${{ pesquisa.Cotacao }}</h4>                            
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12"><div style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;" class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                          <canvas id="btc-chartjs" class="height-75 chartjs-render-monitor" style="display: block; width: 322px; height: 75px;" width="322" height="75"></canvas>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>            
+            {% endfor %}
+            {% else %}
+            <div class="col-xl-12">
+                <h1 class="mt-5">
+                    Não tem Nenhuma pesquisa realizada ainda?
+                </h1>
+            </div>
+            {% endif %}       
+          </div>
+        </section>
+      
+        <!-- // line chart section end -->
+      </div>
+    </div>
+</div>     
+
+
+
+
+
+
+{% endblock %}

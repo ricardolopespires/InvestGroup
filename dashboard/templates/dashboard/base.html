@@ -1,0 +1,529 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title>InvestGroup | sua plataforma de investimento financeiro com analise de inteligência artificial</title>
+  <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+  <!-- CSS Libraries -->
+  <link rel="stylesheet" href="{% static 'node_modules/jqvmap/dist/jqvmap.min.css'%}">
+  <link rel="stylesheet" href="{% static 'node_modules/summernote/dist/summernote-bs4.css'%}">
+  <link rel="stylesheet" href="{% static 'node_modules/owl.carousel/dist/assets/owl.carousel.min.css'%}">
+  <link rel="stylesheet" href="{% static 'node_modules/owl.carousel/dist/assets/owl.theme.default.min.css'%}">
+  <link href="{% static 'assets/plugins/nprogress/nprogress.css" rel="stylesheet' %}" />
+  
+<link href='https://fonts.googleapis.com/css?family=Playfair+Display+SC:700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+<script src="https://kit.fontawesome.com/55bcbae4d6.js" crossorigin="anonymous"></script>
+
+
+
+
+  <!-- Template CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/settings.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/components.css' %}">
+    <link id="sleek-css" rel="stylesheet" href="{% static 'assets/css/sleek.css' %}" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.6/css/line.css">
+    <script src="https://kit.fontawesome.com/55bcbae4d6.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+.nav-item
+{
+  list-style: none;
+}
+
+.time
+{
+  font-family: 'Orbitron', sans-serif;
+  font-size: 28px;
+  color: #000;
+}
+
+</style>
+  <div id="app">
+    <div class="main-wrapper">
+      <div class="navbar-bg"></div>
+      <nav class="navbar navbar-expand-lg main-navbar">
+        <form class="form-inline mr-auto">
+          <ul class="navbar-nav mr-3">
+            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+            <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
+          </ul>
+          <div class="search-element">
+            <li class="nav-item">
+              <a class="nav-link time" id="timer" href="#">00 : 00:00</a>
+            </li>
+          </div>
+        </form>
+        <ul class="navbar-nav navbar-right">
+          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep"><i class="far fa-envelope"></i></a>
+            <div class="dropdown-menu dropdown-list dropdown-menu-right">
+              <div class="dropdown-header">Messages
+                <div class="float-right">
+                  <a href="#">Mark All As Read</a>
+                </div>
+              </div>
+              <div class="dropdown-list-content dropdown-list-message">
+                <a href="#" class="dropdown-item dropdown-item-unread">
+                  <div class="dropdown-item-avatar">
+                    <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle">
+                    <div class="is-online"></div>
+                  </div>
+                  <div class="dropdown-item-desc">
+                    <b>Kusnaedi</b>
+                    <p>Hello, Bro!</p>
+                    <div class="time">10 Hours Ago</div>
+                  </div>
+                </a>
+                <a href="#" class="dropdown-item dropdown-item-unread">
+                  <div class="dropdown-item-avatar">
+                    <img alt="image" src="../assets/img/avatar/avatar-2.png" class="rounded-circle">
+                  </div>
+                  <div class="dropdown-item-desc">
+                    <b>Dedik Sugiharto</b>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+                    <div class="time">12 Hours Ago</div>
+                  </div>
+                </a>
+                <a href="#" class="dropdown-item dropdown-item-unread">
+                  <div class="dropdown-item-avatar">
+                    <img alt="image" src="../assets/img/avatar/avatar-3.png" class="rounded-circle">
+                    <div class="is-online"></div>
+                  </div>
+                  <div class="dropdown-item-desc">
+                    <b>Agung Ardiansyah</b>
+                    <p>Sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <div class="time">12 Hours Ago</div>
+                  </div>
+                </a>
+                <a href="#" class="dropdown-item">
+                  <div class="dropdown-item-avatar">
+                    <img alt="image" src="../assets/img/avatar/avatar-4.png" class="rounded-circle">
+                  </div>
+                  <div class="dropdown-item-desc">
+                    <b>Ardian Rahardiansyah</b>
+                    <p>Duis aute irure dolor in reprehenderit in voluptate velit ess</p>
+                    <div class="time">16 Hours Ago</div>
+                  </div>
+                </a>
+                <a href="#" class="dropdown-item">
+                  <div class="dropdown-item-avatar">
+                    <img alt="image" src="../assets/img/avatar/avatar-5.png" class="rounded-circle">
+                  </div>
+                  <div class="dropdown-item-desc">
+                    <b>Alfa Zulkarnain</b>
+                    <p>Exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
+                    <div class="time">Yesterday</div>
+                  </div>
+                </a>
+              </div>
+              <div class="dropdown-footer text-center">
+                <a href="#">View All <i class="fas fa-chevron-right"></i></a>
+              </div>
+            </div>
+          </li>
+          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
+            <div class="dropdown-menu dropdown-list dropdown-menu-right">
+              <div class="dropdown-header">Notifications
+                <div class="float-right">
+                  <a href="#">Mark All As Read</a>
+                </div>
+              </div>
+              <div class="dropdown-list-content dropdown-list-icons">
+                <a href="#" class="dropdown-item dropdown-item-unread">
+                  <div class="dropdown-item-icon bg-primary text-white">
+                    <i class="fas fa-code"></i>
+                  </div>
+                  <div class="dropdown-item-desc">
+                    Template update is available now!
+                    <div class="time text-primary">2 Min Ago</div>
+                  </div>
+                </a>
+                <a href="#" class="dropdown-item">
+                  <div class="dropdown-item-icon bg-info text-white">
+                    <i class="far fa-user"></i>
+                  </div>
+                  <div class="dropdown-item-desc">
+                    <b>You</b> and <b>Dedik Sugiharto</b> are now friends
+                    <div class="time">10 Hours Ago</div>
+                  </div>
+                </a>
+                <a href="#" class="dropdown-item">
+                  <div class="dropdown-item-icon bg-success text-white">
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <div class="dropdown-item-desc">
+                    <b>Kusnaedi</b> has moved task <b>Fix bug header</b> to <b>Done</b>
+                    <div class="time">12 Hours Ago</div>
+                  </div>
+                </a>
+                <a href="#" class="dropdown-item">
+                  <div class="dropdown-item-icon bg-danger text-white">
+                    <i class="fas fa-exclamation-triangle"></i>
+                  </div>
+                  <div class="dropdown-item-desc">
+                    Low disk space. Let's clean it!
+                    <div class="time">17 Hours Ago</div>
+                  </div>
+                </a>
+                <a href="#" class="dropdown-item">
+                  <div class="dropdown-item-icon bg-info text-white">
+                    <i class="fas fa-bell"></i>
+                  </div>
+                  <div class="dropdown-item-desc">
+                    Welcome to Stisla template!
+                    <div class="time">Yesterday</div>
+                  </div>
+                </a>
+              </div>
+              <div class="dropdown-footer text-center">
+                <a href="#">View All <i class="fas fa-chevron-right"></i></a>
+              </div>
+            </div>
+          </li>
+          <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+             {% if user.is_authenticated %}
+            {% if user.img  %}
+              <img alt="image" src="{{ user.img.url }}" class="online rounded-circle mr-1">
+            {% else %}
+              <img alt="image " src="{% static 'assets/img/avatar/avatar-5.png' %}" class="off rounded-circle mr-1">
+            {% endif %}
+            {% endif %}
+            {% if user.is_authenticated %}
+            <div class="d-sm-none d-lg-inline-block">{{ user |title}}</div></a>
+            {% else %}
+            <div class="d-sm-none d-lg-inline-block"> Desconetado</div></a>
+            {% endif %}
+            <div class="dropdown-menu dropdown-menu-right">
+              <div class="dropdown-title"> Conectou: <span >{{ user.last_login |date:"f" }}</span> Min</div>
+              <a href="{% url 'profile' request.user.id %}" class="dropdown-item has-icon">
+                <i class="far fa-user"></i> {{ user |title}}</a>
+              <a href="features-activities.html" class="dropdown-item has-icon">
+              {% if user.is_authenticated %}
+                <i style = "color:#00ff00" class="fas fa-bolt"></i> Ativo                              
+              <a href="{% url 'management:settings' %}" class="dropdown-item has-icon">
+                <i class="fas fa-cog"></i> Settings
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item has-icon text-danger">
+                <i class="fas fa-sign-out-alt"></i> Logout
+              </a>
+              {% else %}              
+              <a href="features-profile.html" class="dropdown-item has-icon">
+                <i class="far fa-user"></i> Profile
+              </a>
+              <a href="features-activities.html" class="dropdown-item has-icon">
+                <i class="fas fa-bolt"></i> Desativado
+              </a>
+              <a href="" class="dropdown-item has-icon">
+                <i class="fas fa-cog"></i> Settings
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item has-icon text-danger">
+                <i class="fas fa-sign-out-alt"></i> Logout
+              </a>
+              {% endif %}           
+            </div>
+          </li>
+        </ul>
+      </nav>
+      <div class="main-sidebar">
+        <aside id="sidebar-wrapper">
+          <div class="sidebar-brand">
+            <a href="index.html"><img width="199" src="{% static 'images/logo.png' %}"></a>
+          </div>
+          <div class="sidebar-brand sidebar-brand-sm">
+            <a href="index.html"><img width="19" src="{% static 'images/favicon.png' %}"></a>
+          </div>
+          <ul class="sidebar-menu">
+              <li class="menu-header">Dashboard</li>
+              <li class="nav-item dropdown active">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-landmark"></i><span>Mercados</span></a>
+                <ul class="dropdown-menu">
+                  <li><a class="nav-link" href="{% url 'dashboard:manager' %}">Painel Principal</a></li>
+                  <li><a class="nav-link" href="{% url 'financeiro:manager' %}"> Ações</a></li>
+                  <li class="active"><a class="nav-link" href="{% url 'crypto:manager' %}">Cryptocurrency</a></li>
+                </ul>
+              </li>
+              <li class="menu-header">Investimento</li>              
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link has-dropdown"><i class="fab fa-bitcoin"></i> <span>Crypto Ativos</span></a>
+                <ul class="dropdown-menu">
+                  <li><a class="nav-link" href="{% url 'crypto:tendencias' %}">Tendências</a></li>
+                  <li><a class="nav-link" href="{% url 'crypto:investimento' %}">Meus investimentos</a></li>
+                  <li><a class="nav-link" href="{% url 'crypto:fundamentalista' %}">Analise Fundamentalista</a></li> 
+                  <li><a class="nav-link" href="{% url 'crypto:tecnica' %}">Analise Têcnica</a></li> 
+                  <li><a class="nav-link" href="{% url 'crypto:trading_manual' %}">Trading Manual</a></li>
+                  <li><a class="nav-link" href="{% url 'crypto:trading_automatico' %}">Trading Automático</a></li> 
+                  <li><a class="nav-link" href="{% url 'crypto:history' %}">Dados historicos</a></li>  
+                </ul>
+              </li>
+               <li class="nav-item dropdown">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-chart-line"></i> <span>Mercado de capitais</span></a>
+                <ul class="dropdown-menu">
+                 <li><a class="nav-link" href="#">Meus investimentos</a></li>
+                  <li><a class="nav-link" href="layout-transparent.html">Analise do mercado</a></li> 
+                </ul>
+              </li>
+              <li class="menu-header">Finanças</li>
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-th-large"></i> <span>Pessoais</span></a>
+                <ul class="dropdown-menu">
+                  <li><a class="nav-link" href="components-article.html">Article</a></li>
+                  <li><a class="nav-link beep beep-sidebar" href="components-avatar.html">Avatar</a></li>
+                  <li><a class="nav-link" href="components-chat-box.html">Chat Box</a></li>
+                  <li><a class="nav-link beep beep-sidebar" href="components-empty-state.html">Empty State</a></li>
+                  <li><a class="nav-link" href="components-gallery.html">Gallery</a></li>
+                  <li><a class="nav-link beep beep-sidebar" href="components-hero.html">Hero</a></li>
+                  <li><a class="nav-link" href="components-multiple-upload.html">Multiple Upload</a></li>
+                  <li><a class="nav-link beep beep-sidebar" href="components-pricing.html">Pricing</a></li>
+                  <li><a class="nav-link" href="components-statistic.html">Statistic</a></li>
+                  <li><a class="nav-link" href="components-tab.html">Tab</a></li>
+                  <li><a class="nav-link" href="components-table.html">Table</a></li>
+                  <li><a class="nav-link" href="components-user.html">User</a></li>
+                  <li><a class="nav-link beep beep-sidebar" href="components-wizard.html">Wizard</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>Comportamentais</span></a>
+                <ul class="dropdown-menu">
+                  <li><a class="nav-link" href="forms-advanced-form.html">Advanced Form</a></li>
+                  <li><a class="nav-link" href="forms-editor.html">Editor</a></li>
+                  <li><a class="nav-link" href="forms-validation.html">Validation</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-map-marker-alt"></i> <span>Experimentais</span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="gmaps-advanced-route.html">Advanced Route</a></li>
+                  <li><a href="gmaps-draggable-marker.html">Draggable Marker</a></li>
+                  <li><a href="gmaps-geocoding.html">Geocoding</a></li>
+                  <li><a href="gmaps-geolocation.html">Geolocation</a></li>
+                  <li><a href="gmaps-marker.html">Marker</a></li>
+                  <li><a href="gmaps-multiple-marker.html">Multiple Marker</a></li>
+                  <li><a href="gmaps-route.html">Route</a></li>
+                  <li><a href="gmaps-simple.html">Simple</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-plug"></i> <span>Públicas</span></a>
+                <ul class="dropdown-menu">
+                  <li><a class="nav-link" href="modules-calendar.html">Calendar</a></li>
+                  <li><a class="nav-link" href="modules-chartjs.html">ChartJS</a></li>
+                  <li><a class="nav-link" href="modules-datatables.html">DataTables</a></li>
+                  <li><a class="nav-link" href="modules-flag.html">Flag</a></li>
+                  <li><a class="nav-link" href="modules-font-awesome.html">Font Awesome</a></li>
+                  <li><a class="nav-link" href="modules-ion-icons.html">Ion Icons</a></li>
+                  <li><a class="nav-link" href="modules-owl-carousel.html">Owl Carousel</a></li>
+                  <li><a class="nav-link" href="modules-sparkline.html">Sparkline</a></li>
+                  <li><a class="nav-link" href="modules-sweet-alert.html">Sweet Alert</a></li>
+                  <li><a class="nav-link" href="modules-toastr.html">Toastr</a></li>
+                  <li><a class="nav-link" href="modules-vector-map.html">Vector Map</a></li>
+                  <li><a class="nav-link" href="modules-weather-icon.html">Weather Icon</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-plug"></i> <span>corporativas</span></a>
+                <ul class="dropdown-menu">
+                  <li><a class="nav-link" href="modules-calendar.html">Calendar</a></li>
+                  <li><a class="nav-link" href="modules-chartjs.html">ChartJS</a></li>
+                  <li><a class="nav-link" href="modules-datatables.html">DataTables</a></li>
+                  <li><a class="nav-link" href="modules-flag.html">Flag</a></li>
+                  <li><a class="nav-link" href="modules-font-awesome.html">Font Awesome</a></li>
+                  <li><a class="nav-link" href="modules-ion-icons.html">Ion Icons</a></li>
+                  <li><a class="nav-link" href="modules-owl-carousel.html">Owl Carousel</a></li>
+                  <li><a class="nav-link" href="modules-sparkline.html">Sparkline</a></li>
+                  <li><a class="nav-link" href="modules-sweet-alert.html">Sweet Alert</a></li>
+                  <li><a class="nav-link" href="modules-toastr.html">Toastr</a></li>
+                  <li><a class="nav-link" href="modules-vector-map.html">Vector Map</a></li>
+                  <li><a class="nav-link" href="modules-weather-icon.html">Weather Icon</a></li>
+                </ul>
+              </li>             
+            </ul>
+
+            <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
+              <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
+                <i class="fas fa-rocket"></i> Documentation
+              </a>
+            </div>
+        </aside>
+      </div>
+      
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          {% if messages %}
+          <div style="top: -17px; position:absolute; z-index: 999; left: -40px; width: 1110px;" class="container">
+            <div class="row">
+              <div class="col-sm-12 col-sm-offset-3">      
+                  <div class="card-body">
+                    {% for message in messages %} 
+                    {% if message.tags == 'error' %}    
+                     <div style="height: 110px!important;" class="section-header border-error" id="messages">
+                      <h1 style="margin-top: -28px;" class="position-absolute ml-2 mb-4 text-danger">Ops.....</h1>
+                      <br>
+                      <p class="mt-4 ml-2">{{ message }}.</p>
+                      <div class="section-header-breadcrumb">       
+                        <i style="font-size: 70px; " class="fas fa-window-close text-danger"></i>
+                      </div>
+                    </div>          
+                    {% elif message.tags == 'success' %}
+                    <div style="height: 110px!important;" class="section-header border-success" id="messages">
+                      <h1 style="margin-top: -28px;" class="position-absolute ml-2 mb-4 success">Parabéns.....</h1>
+                      <br>
+                      <p class="mt-4 ml-2">{{ message }}.</p>
+                      <div class="section-header-breadcrumb">       
+                        <i style="font-size: 70px; " class="fas fa-check-square success"></i>
+                      </div>
+                    </div>                
+                    {% elif message.tags == 'info' %}                 
+                    <div style="height: 110px!important;" class="section-header border-info" id="messages">
+                      <h1 style="margin-top: -28px;" class="position-absolute ml-2 mb-4 info">Informativo.....</h1>
+                      <br>
+                      <br>
+                      <p class="mt-4 ml-2">{{ message }}.</p>
+                      <div class="section-header-breadcrumb">       
+                        <i style="font-size: 70px; " class="fas fa-info-circle info"></i>
+                      </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}    
+                  </div>      
+                </div>
+              </div>
+          </div>
+          {% endif %}  
+      {% block dashboard %}
+
+      {% endblock %}
+      <footer class="main-footer">
+        <div class="footer-left">
+          Copyright &copy; 2018 <div class="bullet"></div> Design By <a href="https://nauval.in/">Muhamad Nauval Azhar</a>
+        </div>
+        <div class="footer-right">
+          2.3.0
+        </div>
+      </footer>
+    </div>
+  </div>
+
+<!-- General JS Scripts -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/Charts.js/2.8.0/Chart.min.css"></script>
+
+
+
+<script src="{% static 'assets/js/stisla.js' %}"></script>
+<script src="{% static 'assets/js/circle-progress.min.js' %}"></script>
+
+<!-- JS Libraies -->
+<script src="{% static 'node_modules/jquery-sparkline/jquery.sparkline.min.js' %}"></script> 
+<script src="{% static 'node_modules/owl.carousel/dist/owl.carousel.min.js' %}"></script>
+<script src="{% static 'node_modules/charts/dist/Chart.min.js' %}"></script>
+
+<script src="{% static 'node_modules/summernote/dist/summernote-bs4.js' %}"></script>
+<script src="{% static 'node_modules/chocolat/dist/js/jquery.chocolat.min.js' %}"></script>
+<script src="{% static 'plugins/nprogress/nprogress.js' %}"></script>
+<script src="{% static 'assets/plugins/circle-progress/circle-progress.js' %}"></script>  
+<script src="{% static 'node_modules/jqvmap/dist/jquery.vmap.min.js' %}"></script>
+<script src="{% static 'node_modules/jqvmap/dist/maps/jquery.vmap.world.js' %}"></script>
+<script src="{% static 'node_modules/jqvmap/dist/maps/jquery.vmap.indonesia.js' %}"></script>
+
+
+
+
+
+
+<!-- Template JS File -->
+<script src="{% static 'assets/js/scripts.js' %}"></script>
+<script src="{% static 'assets/js/script-dashboard.js' %}"></script>
+<script src="{% static 'assets/js/custom.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script><!-- jQuery -->
+
+<!-- Page Specific JS File -->
+<script src="{% static 'js/circliful.js' %}"></script>
+
+<script src="{% static 'assets/plugins/data-tables/jquery.datatables.min.js' %}"></script>
+<script src="{% static 'assets/plugins/data-tables/datatables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'assets/plugins/data-tables/datatables.responsive.min.js' %}"></script>
+<script src="{% static 'node_modules/charts/dist/Chart.min.js' %}"></script>
+
+
+<!-- Page Specific JS File -->
+<script src="{% static 'assets/js/page/index-0.js' %}"></script>
+<script src="{% static 'assets/js/page/index.js' %}"></script>
+<script src="{% static 'assets/js/page/components-statistic.js' %}"></script>
+<script src="{% static 'js/circle-progress.min.js' %}"></script>
+
+
+   
+  <!-- Additional Plugins and JavaScript -->
+  <script src="{% static 'js/navigation.js' %}" defer></script><!-- Header Navigation JS Plugin -->
+  <script src="{% static 'js/jquery.flexslider-min.js' %}" defer></script><!-- FlexSlider JS Plugin -->
+  <script src="{% static 'js/jquery-asRange.min.js' %}" defer></script><!-- Range Slider JS Plugin -->
+  <script src="{% static 'js/circle-progress.min.js' %}" defer></script><!-- Circle Progress JS Plugin -->
+  <script src="{% static 'js/afterglow.min.js' %}" defer></script><!-- Video Player JS Plugin -->
+  <script src="{% static 'js/script.js' %}" defer></script><!-- Custom Document Ready JS -->
+  <script src="{% static 'js/script-dashboard.js' %}" defer></script><!-- Custom Document Ready for Dashboard Only JS -->
+  
+  {% block chart %}
+
+  {% endblock %}
+
+
+<script type="text/javascript">
+
+  var  hours, min, sec;
+
+  var  clock = function(){
+
+    var date = new Date();
+
+    hours   = date.getHours().toString().length < 2 ? "0" + date.getHours() : date.getHours();
+    min   = date.getMinutes().toString().length < 2 ? "0" + date.getMinutes() : date.getMinutes();
+    sec   = date.getSeconds().toString().length < 2 ? "0" + date.getSeconds() : date.getSeconds();
+
+
+    var time = hours + " : " + min + " : " + sec;
+    
+    console.log(time);
+
+    document.getElementById('timer').innerHTML = time;
+  }
+
+  setInterval(function(){
+
+    clock();
+  }, 1000)
+  clock();
+</script>
+
+  <script> 
+
+    setTimeout(function () {
+      document.getElementById("messages").style.display = "none";
+    }, 4000);
+    function hide(){
+    document.getElementById("messages").style.display = "none";
+    }
+  </script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,699 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+
+
+
+
+
+{% block dashboard %}
+<!-- Main Content -->
+
+<link href='https://fonts.googleapis.com/css?family=Playfair+Display+SC:700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+
+<style type="text/css">
+
+body {
+  font-family: "Helvetica Neue",Helvetica,Tahoma,sans-serif;
+  
+ 
+}
+
+.voltar i
+{
+  font-size: 40px;
+}
+
+.voltar i:hover
+{
+  color: yellowgreen;
+}
+
+.logo
+{
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 1.0)!important;
+
+}
+
+.about,
+.about .img-area,
+.social-icons a,
+.buttons button{
+  background: #ecf0f3;
+  box-shadow: -3px -3px 7px #ffffff,
+               3px 3px 5px #ceced1;
+
+}
+
+#about
+{
+  background: #ecf0f3!important;
+  position: relative;
+  width: 100%;
+  padding: 30px;
+  border-radius: 10px;
+  
+
+}
+
+.about .img-area{
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.img-area .inner-area{
+  height: calc(100% - 25px);
+  width: calc(100% - 25px);
+  border-radius: 50%;
+}
+.inner-area img{
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+
+.intro h1::before {
+
+    content: '{{ crypto.symbol }}';
+
+}
+
+.intro h1::before {
+
+    position: absolute!important;
+    left: 50px!important;
+    top: -95px!important;
+    font-size: 224px!important;
+    z-index: -1!important;
+    color: #f4f4f4!important;
+
+}
+
+.raking
+{
+  font-family: "Lato",Arial,sans-serif;
+  color: #4e4e4e;
+  font-size: 1em;
+  line-height: 1.75em;
+}
+
+
+
+.typed-cursor {
+  opacity: 1;
+  font-weight: 100;
+  -webkit-animation: blink 0.7s infinite;
+  -moz-animation: blink 0.7s infinite;
+  -ms-animation: blink 0.7s infinite;
+  -o-animation: blink 0.7s infinite;
+  animation: blink 0.7s infinite; }
+
+@-webkit-keyframes blink {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+@-moz-keyframes blink {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+@-ms-keyframes blink {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+@-o-keyframes blink {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+
+.intro {
+  padding: 95px 0px 70px 0px;
+  overflow-x: hidden; }
+  .intro img {
+    width: 81px;
+    height: 81px;
+    border-radius: 99px; }
+  .intro .wrap {
+    margin: 30px 0px; }
+  .intro h1:before {
+    position: absolute;
+    left: -220px;
+    top: -150px;
+    font-size: 270px;
+    z-index: -1;
+    color: #f4f4f4; }
+  .intro h1 span {
+    font-size: 47px; }
+
+.name
+{
+  font-family: "Playfair Display SC", serif;
+  color: #333333;
+}
+
+.info-title::before{
+
+  content:" ";
+  position: absolute;
+  border-left: 4px solid #F2FF19;
+  height: 19px;
+  margin-left: -10px;
+  margin-top: 6px;
+
+}
+
+
+.skill-bars{
+  padding: 25px 30px;
+  width: 100%;  
+ 
+ 
+}
+.skill-bars .bar{
+  margin: 20px 0;
+}
+.skill-bars .bar:first-child{
+  margin-top: 0px;
+}
+.skill-bars .bar .info{
+  margin-bottom: 5px;
+}
+.skill-bars .bar .info span{
+  font-weight: 500;
+  font-size: 17px;
+  opacity: 0;
+  animation: showText 0.5s 1s linear forwards;
+}
+@keyframes showText {
+  100%{
+    opacity: 1;
+  }
+}
+.skill-bars .bar .progress-line{
+  height: 10px;
+  width: 100%;
+  background: #f0f0f0;
+  position: relative;
+  transform: scaleX(0);
+  transform-origin: left;
+  border-radius: 10px;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.05),
+              0 1px rgba(255,255,255,0.8);
+  animation: animate 1s cubic-bezier(1,0,0.5,1) forwards;
+}
+@keyframes animate {
+  100%{
+    transform: scaleX(1);
+  }
+}
+.bar .progress-line span{
+  height: 100%;
+  position: absolute;
+  border-radius: 10px;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: #6665ee;
+  animation: animate 1s 1s cubic-bezier(1,0,0.5,1) forwards;
+}
+.bar .progress-line.html span{
+  width: 90%;
+}
+.bar .progress-line.css span{
+  width: 60%;
+}
+.bar .progress-line.jquery span{
+  width: 85%;
+}
+.bar .progress-line.python span{
+  width: 50%;
+}
+.bar .progress-line.mysql span{
+  width: 75%;
+}
+.progress-line span::before{
+  position: absolute;
+  content: "";
+  top: -10px;
+  right: 0;
+  height: 0;
+  width: 0;
+  border: 7px solid transparent;
+  border-bottom-width: 0px;
+  border-right-width: 0px;
+  border-top-color: #000;
+  opacity: 0;
+  animation: showText2 0.5s 1.5s linear forwards;
+}
+.progress-line span::after{
+  position: absolute;
+  top: -28px;
+  right: 0;
+  font-weight: 500;
+  background: #000;
+  color: #fff;
+  padding: 1px 8px;
+  font-size: 12px;
+  border-radius: 3px;
+  opacity: 0;
+  animation: showText2 0.5s 1.5s linear forwards;
+}
+@keyframes showText2 {
+  100%{
+    opacity: 1;
+  }
+}
+.progress-line.html span::after{
+  content: "90%";
+}
+.progress-line.css span::after{
+  content: "60%";
+}
+.progress-line.jquery span::after{
+  content: "85%";
+}
+.progress-line.python span::after{
+  content: "50%";
+}
+.progress-line.mysql span::after{
+  content: "75%";
+}
+
+
+.skills{
+    width: 100%;;
+    padding: 0 20px;
+}
+.section-title {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 40px;
+}
+.section-title h1{
+    display: inline-block;
+    font-size: 35px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #000000;
+    margin: 0 0 5px;
+    position: relative;
+}
+.section-title h1:before{
+    content: '';
+    left: 0;
+    position: absolute;
+    height: 2px;
+    right: 32%;
+    background-color: #50c5fc;
+    bottom: 0px;
+}
+.skills .section-title h1:before{
+    left: 30%;
+}
+.text-center{
+    text-align: center;
+}
+.skill-name{
+   font-weight: 500;
+    font-size: 17px;
+    opacity: 0;
+    animation: showText 0.5s 1s linear forwards;
+}
+.skill-bar{
+  height: 10px;
+  width: 100%;
+  background: #f0f0f0;
+  position: relative;
+  transform: scaleX(0);
+  transform-origin: left;
+  border-radius: 10px;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.05),
+              0 1px rgba(255,255,255,0.8);
+  animation: animate 1s cubic-bezier(1,0,0.5,1) forwards;
+
+}
+.skill-per{
+    height: 10px;
+    background-color: #fdd835;
+    border-radius: 8px;
+    width: 0;
+    transition: 1s linear;
+    position: relative;
+}
+.skill-per::before{
+    content: attr(per);
+    position: absolute;
+    padding: 4px 6px;
+    background-color: #000;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 4px;
+    top: -35px;
+    right: 0;
+    transform: translateX(50%);
+}
+.skill-per::after{
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #000;
+    border-radius: 2px;
+    top: -16px;
+    right: 0;
+    transform: translateX(50%) rotate(45deg);
+}
+</style>
+
+<div style="height: 110px!important;" class="section-header">
+  <h5 style="margin-top: -28px; color:#cccccc;" class="position-absolute ml-2 mb-4">Ativo</h5>
+  <br>
+  <h1 style="color: #8898aa; font-size: 40px;" class="mt-4 ml-2">{{ crypto.name }}</h1>
+  <div class="section-header-breadcrumb">     
+    <i><img width="90" src="{% static 'images/crypto/moeda.png' %}"></i> 
+  </div>
+</div>
+<div class="section-body">
+  <a href="{% url 'crypto:investimento' %}"><div class=" float-right icon-top text-dark voltar"  data-toggle="tooltip" data-placement="top" title="Voltar"><i class="fas fa-reply"></i></div></a>   
+  <h2 class="section-title">Informações do ativo</h2>
+  <p class="section-lead">
+   O Seu Dinheiro mostra para você como investir com inteligência, entregando notícias e análises sobre finanças, economia e empresas..
+  </p>
+  <div class="row mt-sm-4">
+    <div class="col-12 col-md-12 col-lg-12">
+      <div id="about" class="card about">
+        <div class="container">
+          <div class="row">
+              <div class="col-12 col-md-4 col-lg-2">
+                <div class="img-area">
+                  <div class="inner-area">
+                    {% if crypto.image %}
+                    <img alt="image" src="{{ crypto.image.large }}" class="">
+                    {% else %}
+                    <img alt="image" src="{% static 'images/crypto/moeda.png' %}" class="">
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-8 col-lg-10">
+                <canvas id="estatisticas" height="60"></canvas>
+              </div>
+              <br>
+              <div class="col-12 col-md-12 col-lg-12 mt-4">
+                <!-- Introduction -->
+                <div class="intro section" id="about">
+                  <div class="container">                    
+                    <p class="rating text-dark">Classificação de capitalização de mercado Nº <span>{{ crypto.market_data.market_cap_rank }}</span></p>
+                    <div class="units-row units-split wrap">                      
+                      <div class="unit-80">
+                        <h1 class="name">{{ crypto.name }}<br><span id="typed"></span></h1>
+                      </div>
+                      <div class="profile-widget-description">
+                        <p class="text-justify">
+                          {{ crypto.description.pt |truncatechars:190  }}
+                        </p>                                      
+                      </div>                     
+                    </div>
+                  </div>
+                </div>
+              </div>       
+          </div>                 
+          <div class="card-body">         
+            <div class="statistic-details ">
+              <div class="statistic-details-item">
+                <span class="text-muted">
+                  {% if investimento.total > 0 %}
+                  <span class="text-primary"><i class="fas fa-caret-up"></i></span> 0%
+                  {% elif investimento.total < 0 %}
+                  <span class="text-danger"><i class="fas fa-caret-down"></i></span> 0%
+                  {% else %}
+                   0%
+                  {% endif %}
+                </span>
+                {% if investimento.total > 0 %}
+                  <div class="detail-value">R$ <span class="text-success"> +{{ investimento.total |truncatechars:10}}</span></div>
+                {% elif investimento.total < 0 %}
+                <div class="detail-value">R$ <span class="text-danger">{{ investimento.total }}</span></div>
+                {% else %}
+                <div class="detail-value">R$ 0,00</div>
+                {% endif %}
+                <div class="detail-name">Investimento</div>
+              </div>
+              <div class="statistic-details-item">
+                {% if porcetagem_investimento > 0 %}
+                  <span class="text-primary"><i class="fas fa-caret-up"></i></span> 0%
+                  {% elif porcetagem_investimento < 0 %}
+                  <span class="text-danger"><i class="fas fa-caret-down"></i></span> 0%
+                  {% else %}
+                   0%
+                  {% endif %}
+                  {% if investimento.quantidade > 0 %}
+                <div class="detail-value">{{ investimento.quantidade }}</div>                
+                {% else %}
+                <div class="detail-value">0,00</div>
+                {% endif %}
+                <div class="detail-name">Quantidade</div>
+              </div>
+              <div class="statistic-details-item">
+                {% if porcetagem_investimento > 0 %}
+                  <span class="text-primary"><i class="fas fa-caret-up"></i></span> 0%
+                  {% elif porcetagem_investimento < 0 %}
+                  <span class="text-danger"><i class="fas fa-caret-down"></i></span> 0%
+                  {% else %}
+                   0%
+                  {% endif %}
+                <div class="detail-value">R$ 0,00</div>
+                <div class="detail-name">ROI</div>
+              </div>
+              <div class="statistic-details-item">
+                {% if investimento.preco > crypto.market_data.current_price.brl  %}
+                <span class="text-danger"><i class="fas fa-caret-down"></i></span> {{ investimento.taxa_retorno }}%
+                {% elif investimento.preco < crypto.market_data.current_price.brl %}
+                <span class="text-success"><i class="fas fa-caret-up"></i></span> {{ investimento.taxa_retorno }}%
+                {% else %}
+                 0%
+                {% endif %}
+                {% if investimento.preco > crypto.market_data.current_price.brl %}
+                <div class="detail-value text-danger" >{{ investimento.saldo |truncatechars:10}}</div>  
+                {% elif investimento.preco < crypto.market_data.current_price.brl %}
+                <div class="detail-value text-success" >{{ investimento.saldo |truncatechars:9}}</div>                
+                {% else %}
+                <div class="detail-value">0,00</div>
+                {% endif %}
+                <div class="detail-name">Saldo do investimento</div>
+              </div>
+            </div>
+          </div>      
+                       
+          <div class="card-footer text-center">
+          </div>
+        </div>       
+      </div>
+    </div>
+    <div class="col-12 col-md-12 col-lg-12">
+      <div class="card profile-widget">
+
+       
+      </div>
+    </div>
+
+
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header">
+      <h4 class="name"><span class="nome info-title text-dark">Movimentação Financeira do investimento</span></h4>
+        <div class="card-header-action">
+          <a href="{% url 'crypto:aporte' investimento.id %}" class="btn btn-primary">Deposito <i class="fas fa-donate"></i></a>
+          <a href="{% url 'crypto:aporte' investimento.id %}" class="btn btn-success">Retirada <i class="fas fa-money-bill-wave"></i></a>
+        </div>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive table-invoice">
+        <table class="table table-de mb-0 text-center">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Valor</th>
+              <th>Cotação</th>
+              <th>Quantidade</th>        
+              <th>Roi</th>
+              <th>Status</th>
+              <th>Tipo</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for movimentacao in movimentacoes %}
+            <tr>
+              <td>{{ movimentacao.data |date }}</td>              
+              <td><i class="cc BTC-alt"></i>{{ movimentacao.valor }}</td>
+              <td><i class="cc BTC-alt"></i> {{ movimentacao.preco }}</td>
+              <td>{{ movimentacao.quantidade }}</td>              
+              <td>
+                <span class="text-primary"><i class="fas fa-caret-up"></i></span> {{ movimentacao.retorno }}</span></td>
+              <td>
+                <div class="badge badge-success">{{ movimentacao.status }}</div>
+              </td>
+              <th>{{ movimentacao.tipo }}</th>
+              <td>{{ movimentacao.total }}</td>
+            </tr>
+            {% endfor %}
+                             
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>                      
+  </div>
+</div>
+
+{% block chart %}
+<script type="text/javascript">
+
+var balance_chart = document.getElementById("estatisticas").getContext('2d');
+
+var balance_chart_bg_color = balance_chart.createLinearGradient(0, 0, 0, 70);
+balance_chart_bg_color.addColorStop(0, 'rgba(63,82,227,.2)');
+balance_chart_bg_color.addColorStop(1, 'rgba(63,82,227,0)');
+
+var myChart = new Chart(balance_chart, {
+  type: 'line',
+  data: {
+    labels: [{% for movimentacao in movimentacoes %} '{{ movimentacao.data |date:"d-m-Y" }}' {% endfor%}],
+    datasets: [{
+      label: 'Balance',
+      data: [{% for movimentacao in movimentacoes %}  {{ movimentacao.total }} {% endfor%}],
+      backgroundColor: balance_chart_bg_color,
+      borderWidth: 3,
+      borderColor: 'rgba(63,82,227,1)',
+      pointBorderWidth: 0,
+      pointBorderColor: 'transparent',
+      pointRadius: 3,
+      pointBackgroundColor: 'transparent',
+      pointHoverBackgroundColor: 'rgba(63,82,227,1)',
+    }]
+  },
+  options: {
+    layout: {
+      padding: {
+        bottom: -1,
+        left: -1
+      }
+    },
+    legend: {
+      display: false
+    },
+    scales: {
+      yAxes: [{
+        gridLines: {
+          display: false,
+          drawBorder: false,
+        },
+        ticks: {
+          beginAtZero: true,
+          display: false
+        }
+      }],
+      xAxes: [{
+        gridLines: {
+          drawBorder: false,
+          display: false,
+        },
+        ticks: {
+          display: false
+        }
+      }]
+    },
+  }
+});
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
+<script type="text/javascript">
+  
+var ctx = document.getElementById("statistics_unidade").getContext('2d');
+var boleto = JSON.parse('{{ boleto |safe }}');
+var pagamento = JSON.parse('{{ pagamento |safe }}');
+
+var myChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: [{% for taxa in taxa_anual %} '{{ taxa.vencimento |date:"M" }}', {% endfor %}],
+    datasets: [{
+      label: 'Vencimento R$',
+      data: boleto,
+      borderWidth: 2,
+      backgroundColor: 'rgba(254,86,83,.7)',
+      borderColor: 'rgba(254,86,83,.7)',
+      borderWidth: 2.5,
+      pointBackgroundColor: '#ffffff',
+      pointRadius: 4
+    },{
+      label: 'Pagamento R$',
+      data: pagamento,
+      borderWidth: 2,
+      backgroundColor: 'rgba(63,82,227,.8)',
+      borderColor: 'transparent',
+      borderWidth: 0,
+      pointBackgroundColor: '#999',
+      pointRadius: 4
+    }]
+  },
+  options: {
+    legend: {
+      display: false
+    },
+    scales: {
+      yAxes: [{
+        gridLines: {
+          drawBorder: false,
+          color: '#f2f2f2',
+        },
+        ticks: {
+          beginAtZero: true,
+          stepSize: 150
+        }
+      }],
+      xAxes: [{
+        gridLines: {
+          display: false
+        }
+      }]
+    },
+  }
+});
+</script>
+{% endblock %}
+{% endblock %}
+<!DOCTYPE html>
+<!-- Created By CodingNepal -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Animated Skills Bar | CodingNepal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+ 
+
+</body>
+</html>

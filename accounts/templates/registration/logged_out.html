@@ -1,0 +1,33 @@
+{% extends "accounts.html" %}
+{% load static %}
+
+{% block title %} EducaOne | Logged out{% endblock %}
+
+{% block content %}
+
+
+        <div class="dashboard-wrapper dashboard-wrapper-logout">
+            <div class="container-fluid dashboard-content">
+               
+                <div class="row row-logout ">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 logo-logout">
+                  <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
+                </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 logout-text">
+                            <h1 class='text-desconectado'>Desconectado....</h1>
+                         <p class = "text-write">Você foi desconectado com sucesso. Você pode fazer.</p>
+                          <a class= 'text-login' href="{% url "login" %}">login novamente.</a>
+                    </div>
+                </div>
+            </div>
+    
+
+
+
+
+
+
+
+
+
+{% endblock %}

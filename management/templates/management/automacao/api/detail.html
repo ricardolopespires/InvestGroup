@@ -1,0 +1,309 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+
+
+
+{% block dashboard %}
+<style type="text/css">
+
+
+
+
+.name span{
+
+  font-size: 23px;
+  font-weight: 500;
+  color: #31344b;
+  margin: 10px 0 5px 0;
+  position: relative;
+  top: 5px;
+}
+
+.about{
+  color: #44476a;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.about span
+{
+  font-weight: 350;
+}
+
+.info-title::before{
+
+  content:" ";
+  position: absolute;
+  border-left: 4px solid #F2FF19;
+  height: 19px;
+  margin-left: -10px;
+  margin-top: 4px;
+
+}
+.info-basic{
+  font-size: 23px;
+  font-weight: 500;
+  color: #31344b;
+  margin: 10px 0 5px 0;
+  border-bottom: 1px solid #f2f2f2;
+  margin-bottom: 28px!important;
+}
+
+
+.info-basic::before{
+
+  content:" ";
+  position: absolute;
+  border-left: 4px solid #F2FF19;
+  height: 19px;
+  margin-left: -10px;
+  margin-top: 7px;
+
+}
+
+.wizard-step a
+{
+  color: #fff!important;
+}
+
+.wizard-step .membros
+{
+  color: #8898aa!important;
+ 
+}
+
+.border
+{
+   border: 1px solid #8898aa;
+}
+
+.api-valor
+{
+  font-size: 19px;
+}
+
+.link-voltar i
+{
+  font-size: 40px;
+}
+
+
+.link-voltar i:hover
+{
+  color: yellowgreen;
+}
+</style>
+
+<div style="height: 110px!important;" class="section-header">
+  <h5 style="margin-top: -28px; color:#cccccc;" class="position-absolute ml-2 mb-4">Moradores</h5>
+  <br>
+  <h1 style="color: #8898aa; font-size: 40px;" class="mt-4 ml-2">Details</h1>
+  <div class="section-header-breadcrumb">       
+      <i style="font-size: 70px; color: #000066;" class="fas fa-house-user"></i>
+  </div>
+</div>
+<div class="section-body">
+<a class="float-right" style="z-index: 99;" href="{% url 'management:api' %}"><div class=" float-left icon-top text-dark link-voltar" data-toggle="tooltip" data-placement="top" title="Voltar"><i class="fas fa-reply-all"></i></div></a>   
+  <h2 class="section-title">Informações dos moradores da unidade</h2>
+    <p class="section-lead">
+      Dados cadastrais, financeiro do condomínio todos os dados devem ser legitimo para o calculo correto na contabilidade do sistema.
+    </p>
+    <br>
+    <br>
+</div>
+<div class="container">
+  <div class="section-body">
+
+    <div class="row">
+    <div class="col-12 col-sm-12 col-lg-12">        
+        <div class="card">
+          <div class="card-header">                   
+            <h4 class="name"><span class="nome info-title">{{ api.nome }}</span></h4>
+              <div class="card-header-action">
+              <a href="#" class="btn btn-outline-primary"><i class="mr-2 fas fa-edit"></i>Editar</a>
+              </div>
+              </div>
+              <div class="card-body">
+                <div class="col-12 col-sm-6 col-lg-3 float-left"> 
+                   <div class="chocolat-parent">
+                    <a href="#" class="chocolat-image" title="Just an example">
+                      <div data-crop-image="285">
+                        {% if api.image %}
+                        <img alt="image image-morador" src="{{ api.image.url }}" class="img-fluid">
+                        {% else %}
+                        <img alt="image image-morador" src="/static/img/avatar.png" class="img-fluid">
+                        {% endif %}
+                      </div>
+                    </a>
+                </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-9 float-left">                  
+                  <div class="about mb-2">API: {{ api.nome  }} </div>
+                  <div class="about mb-2">Criada: {{ api.created | date }} </div>
+                  <div class="about mb-2">Status: {% if api.is_active == True %}
+                  <span class="text-success">Ativo</span>{% else %} <span class="text-danger">Não Ativo</span>{% endif %} </div> 
+                  <div class="about mb-2">Api Key: {{ api.api_key  }} </div>                
+                </div>                  
+                  <p>{{ api.descricao }}</p>
+                 <div class="col-12 col-sm-6 col-lg-3 float-right"> 
+                 <img alt="image image-morador" src="{{ api.qr_code.url }}" class="img-fluid">
+              </div>
+                <div class="card-header">                   
+                  <h4 class="name"><span class="nome info-title">Informações Basícas</span></h4>
+                </div>
+                <div class="col-12 col-md-12 col-sm-12 ">               
+                   <div class="row">
+                      <div class="col-6 col-md-6 col-sm-6">                       
+                        <div class="about mb-2">Nome:  
+                          <span class="text-dark">{{ morador.nome}}</span> 
+                        </div>  
+                        <div class="about mb-2">Status:
+                          <span class="text-dark">{{ morador.status }}</span> 
+                        </div>  
+                        <div class="about mb-2">Sexo:
+                          <span class="text-dark">{{ morador.genero }}</span>
+                        </div>  
+                        <div class="about mb-2">Data de Nascimento:
+                          <span class="text-dark"> {{ morador.data_nascimento }}</span> 
+                        </div>                       
+                        <div class="about mb-2">CPF:
+                          <span class="text-dark">{{ morador.cpf }}</span>
+                        </div> 
+                        <div class="about mb-2">RG: 
+                          <span class="text-dark">{{ morador.rg }}</span>
+                        </div> 
+                        <div class="about mb-2">Email:
+                          <span class="text-dark">{{ morador.email }}</span> 
+                        </div>                    
+                      </div>
+                      <div class="col-6 col-md-6 col-sm-6">                                       
+                        <div class="about mb-2">Telefone: 
+                          <span class="text-dark">{{ morador.telefone }}</span>
+                        </div> 
+                        <div class="about mb-2">Endereço: 
+                          <span class="text-dark"> {{ morador.endereco }}</span>
+                        </div>   
+                        <div class="about mb-2">Bairro: 
+                          <span class="text-dark"> {{ morador.bairro }}</span>
+                        </div>
+                        <div class="about mb-2">Cidade: 
+                          <span class="text-dark">{{ morador.city }}</span>
+                        </div>
+                        <div class="about mb-2">CEP:
+                            <span class="text-dark">{{ morador.cep }}</span> 
+                        </div>          
+                   </div>          
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="row">
+        <div class="col-12">
+        <div class="card">
+          <div class="card-header">                   
+            <h4 class="name"><span class="nome info-title">Movimento Finaceiro do Usuário</span></h4>            
+          </div>
+          <div class="card-body p-0">
+            <div class="container">
+              <div class="mt-5 mb-5">
+                <div class="row text-center">
+                  <div class="col-sm-4">
+                    <h2 class="api-valor">
+                    {% if morador.taxa < 0 %}              
+                     Investimento R$ - <span class="text-danger">{{ morador.taxa }} </span>
+                    {% elif  morador.taxa > 0 %}
+                      Investimento R$ <span class="text-success">+ {{ morador.taxa }}</span></span>
+                    {% else %}
+                      Investimento R$ <span class="text-dark">0,00 </span>
+                    {% endif %}
+                    </h2>              
+                  </div>
+                   <div class="col-sm-4">
+                    <h2 class="api-valor">
+                    {% if morador.taxa_extra < 0 %}              
+                      Retorno R$ - <span class="text-danger">{{ morador.taxa_extra}}</span>
+                    {% elif  morador.taxa_extra > 0 %}
+                      Retorno R$ <span class="text-success"> + {{ morador.taxa_extra }}</span>
+                    {% elif  morador.taxa_extra  == None %}
+                      Retorno R$ <span class="text-dark">0,00 </span>
+                    {% else %}
+                      Retorno R$ <span class="text-dark">{{ morador.taxa_extra }} </span></span>
+                    {% endif %}
+                    </h2>              
+                  </div>
+                   <div class="col-sm-4">
+                    <h2 class="api-valor">
+                    {% if morador.valor_total < 0 %}              
+                      Saldo R$ - <span class="text-danger">{{ morador.valor_total }}</span>
+                    {% elif  morador.valor_total > 0 %}
+                      Saldo R$ <span class="text-success"> + {{ morador.valor_total }}</span> 
+                    {% elif  morador.valor_total  == None %}
+                     Saldo R$ <span class="text-dark">0,00 </span>
+                    {% else %}
+                      Saldo R$ <span class="">{{ morador.valor_total}}</span>
+                    {% endif %}
+                    </h2>              
+                  </div>
+                </div>             
+              </div>   
+            </div>                   
+          </div>
+          <div class="card-body p-0">          
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <tbody class="text-center">
+                  <tr>                       
+                    <th>Status</th>
+                    <th>Mês de Referência</th>
+                    <th>Vencimento</th>
+                    <th>Dias faltantes</th>
+                    <th>Boleto</th>
+                     <th>Multa</th>
+                    <th>Juros</th>                   
+                    <th>Total</th>                                              
+                  </tr>
+                  {% if faturas %}
+                  {%for  fatura in faturas %} 
+                  <tr>                                         
+                    {% if fatura.status == 'aberto' %}
+                    <td><div class="badge badge-primary">{{ fatura.status }}</div></td>
+                    {% elif fatura.status == 'em dia' %}
+                    <td><div class="badge badge-primary">{{ fatura.status }}</div></td>
+                    {% elif fatura.status == 'atrasado' %}
+                    <td><div class="badge badge-warning">{{ fatura.status }}</div></td>
+                    {% elif fatura.status == 'adiantado' %}
+                    <td><div class="badge badge-success">{{ fatura.status }}</div></td> 
+                    {% elif fatura.status == 'quitado' %}
+                    <td><div class="badge badge-success">{{ fatura.status }}</div></td> 
+                    {% elif fatura.status == 'acordo' %}
+                    <td><div class="badge badge-info">{{ fatura.status }}</div></td> 
+                    {% elif fatura.status == 'juridico' %}
+                    <td><div class="badge badge-dark">{{ fatura.status }}</div></td> 
+                    {% else %}                        
+                    <td><div class="badge badge-danger"> Inadimplente</div></td>
+                    {% endif %}                   
+                    <td>{{ fatura.vencimento |date:'m'}}</td>
+                    <td>{{ fatura.vencimento |date:'d'}}</td>
+                    <td>{{ fatura.dias }}</td>
+                    <td>R${{ fatura.boleto }}</td>
+                    <td>R${{ fatura.multa }}</td>
+                    <td>R${{ fatura.juros }}</td>
+                    <td>R${{ fatura.total }}</td>                                 
+                  </tr>
+                  {% endfor %}
+                  {% else %}
+
+
+                  {% endif %}                      
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>   
+  </div>
+</div>
+{% endblock %}
+

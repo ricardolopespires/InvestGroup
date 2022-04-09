@@ -1,0 +1,63 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+ 
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>TraderOne | Registro de usuário</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link href=" {% static 'assets/vendor/fonts/circular-std/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href=" {% static 'assets/libs/css/style.css' %}">
+    <link rel="stylesheet" href="../assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
+    <link rel="shortcut icon" href="{% static 'img/logo1.png' %}" type="image/x-icon">
+    <style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+    </style>
+</head>
+<!-- ============================================================== -->
+<!-- signup form  -->
+<!-- ============================================================== -->
+
+<body>
+    <!-- ============================================================== -->
+    <!-- signup form  -->
+    <!-- ============================================================== -->
+    <form class="splash-container" method="POST">
+        {% csrf_token  %}
+        <div class="card">
+            <div class="card-header">
+                <a href="{% url 'index' %}"><img class="logo-img" src=" {% static 'img/logo.png' alt = 'logo' %}"></a>
+                <p>Você pode editar sua conta usando o seguinte formulário</p>
+            </div>
+            <div class="card-body">
+                <form action="." method="post" enctype="multipart/form-data">
+                    {{ user_form.as_p }}
+                    {{ profile_form.as_p }}
+                    {% csrf_token %}
+                    
+                <div class="form-group pt-2">
+                    <button class="btn btn-block btn-primary" type="submit">Salvar alterações</button>
+                </div>                              
+            </div>          
+        </div>
+    </form>
+</body> 
+</html>
+
+
+

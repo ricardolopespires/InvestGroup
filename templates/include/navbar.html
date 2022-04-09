@@ -1,0 +1,68 @@
+{% load static %}
+
+<style>
+.navbar.transparent.navbar-inverse .navbar-inner {
+    border-width: 0px;
+    -webkit-box-shadow: 0px 0px;
+    box-shadow: 0px 0px;
+    background-color: rgba(0,0,0,0.0);
+    background-image: -webkit-gradient(linear, 50.00% 0.00%, 50.00% 100.00%, color-stop( 0% , rgba(0,0,0,0.00)),color-stop( 100% , rgba(0,0,0,0.00)));
+    background-image: -webkit-linear-gradient(270deg,rgba(0,0,0,0.00) 0%,rgba(0,0,0,0.00) 100%);
+    background-image: linear-gradient(180deg,rgba(0,0,0,0.00) 0%,rgba(0,0,0,0.00) 100%);
+}
+
+.nav-link{
+    color: #fff;
+}
+
+.logo
+{
+  color: yellow;
+
+}
+
+
+
+.secondary
+{
+    background-image: linear-gradient(-45deg, #13051f, #233671);
+    box-shadow: 0px 0px 12px #fff;
+}
+
+
+</style>
+
+<section  class="w3l-header ">
+    <nav class="navbar transparent navbar-expand-lg   fixed-top py-3">
+      <div class="container">
+        <img style="margin-right: 19px;" width="19" src="{% static 'images/favicon.png' %}">
+        <a class="navbar-brand logo mt-4" href="index.html"> Invest<label class="logo-view text-white">Group<span class="point">.</span></label></a>
+        <!-- if logo is image enable this   
+      <a class="navbar-brand" href="#index.html">
+          <img src="image-path" alt="Your logo" title="Your logo" style="height:35px;" />
+      </a> -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>  
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item menu ">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item menu">
+              <a class="nav-link" href="#">Sobre nós</a>
+            </li>           
+            <li class="nav-item  menu">
+              <a class="nav-link" href="#">Contatos</a>
+            </li>
+            <li class="nav-item login ">
+                <a class="nav-link " href="{% url 'login' %}">Login </a>
+              </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </section>
+
+
+  

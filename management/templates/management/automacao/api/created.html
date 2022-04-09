@@ -1,0 +1,143 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+
+
+
+
+
+
+
+
+{% block dashboard %}
+
+      <div style="height: 110px!important;" class="section-header">
+    <h5 style="margin-top: -28px; color:#cccccc;" class="position-absolute ml-2 mb-4">Automação</h5>
+    <br>
+    <h1 style="color: #8898aa; font-size: 40px;" class="mt-4 ml-2">Adicionar API</h1>
+    <div class="section-header-breadcrumb">       
+        <i style="font-size: 70px; color: #000066;" class="fas  fa-server"></i>
+    </div>
+    </div>
+
+    <div class="section-body">
+        <h2 class="section-title">Adicionar Nova API</h2>
+        <p class="section-lead">
+          Adicionar os dados da nova <strong>Api</strong>, para você fazer uso dos dados da api.
+        </p>
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">         
+                <div class="card">
+              <div class="card-header">
+                <h4>Formulário de adição de dados</h4>
+              </div>
+              <div class="card-body">
+                <div class="alert alert-danger">
+                  <b>Nota!</b> Os dados devem ser verdadeiro.
+                </div>
+                <form action="." method="POST"  enctype="multipart/form-data" >
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="group">
+                      <p><label for="id_id">Id:</label> 
+                        <input class="form-control" value="{{ codigo_api }}" type="text" name="id" maxlength="150" required id="id_id" >
+                        <span class="helptext">codigo identificador da apis na plataforma</span>
+                       </p>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="group">
+                      <p><label for="id_usuario">Usuario:</label> 
+                        <select class="form-control" name="usuario" required id="id_usuario">
+                          <option value="" selected>---------</option>
+                          {% for usuario in usuarios %}
+                          <option value="{{ usuario.id }}">{{ usuario.name |title }}</option>
+                          {% endfor %}
+                        </select>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="group">
+                      <p><label for="id_nome">Nome:</label> 
+                        <input class="form-control"  type="text" name="nome" maxlength="150" required id="id_nome">
+                        <span class="helptext">Nome da plataforma da api</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="group">
+                      <p><label for="id_descricao">Descricao:</label> 
+                        <textarea style="height: 199px;" class="form-control" name="descricao" cols="40" rows="10" required id="id_descricao"></textarea>
+                        <span class="helptext">Descricao da plataforma da api</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="group">
+                       <p><label for="id_status">Status:</label>
+                        <select class="form-control" name="status" id="id_status">
+                          <option value="gratis" selected>Gratis</option>
+                          <option value="paga">Paga</option>
+                        </select> <span class="helptext">Status da api</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="group">
+                      <p><label for="id_image">Image:</label>
+                        <input class="form-control" type="file" name="image" accept="image/*" required id="id_image">
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="group">
+                      <p><label for="id_api_key">API Key:</label> 
+                        <input class="form-control" type="text" name="api_key" maxlength="400" required id="id_api_key">
+                        <span class="helptext">Chave de acesso da apis do usuário</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="group">
+                      <p><label for="id_secret_key">Secret Key:</label>
+                        <input class="form-control" type="text" name="secret_key" maxlength="400" required id="id_secret_key"> 
+                        <span class="helptext">Chave secreta de acesso da api do usuário</span>
+                      </p>
+                    </div>
+                  </div>		
+                </div>
+                <div class="selectgroup selectgroup-pills">             
+                  <label class="selectgroup-item">
+                    <input type="checkbox"    name="is_active" id="id_is_active" value="is_active" class="selectgroup-input">
+                    <span class="selectgroup-button">Está Ativo</span>
+                  </label>                                    
+                </div>             
+              </div>     			             
+                <div>
+                    {% for key, value in form.errors.items %}
+                    <span class="fieldWrapper">
+                        <div class="alert alert-danger">
+                            <b>Nota!</b> {{ key }}:{{ value }}
+                          </div>
+                        
+                    </span>
+                {% endfor %}
+                </div>         
+                <div class="card-footer text-left">
+                <button class="btn btn-success mr-1" type="submit">Cadastrar</button>
+                <button class="btn btn-danger" type="reset">Cancelar</button>
+                </form>
+                </div>
+                </div>            
+            </div>            
+        </div>         
+    </div> 
+    </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+</div>
+
+
+{% endblock %}
