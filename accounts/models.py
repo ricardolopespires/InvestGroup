@@ -31,18 +31,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     city = models.CharField('Cidade', max_length = 190, blank = True)
     phone = PhoneField(blank=True, help_text='Contact phone number')
     is_active = models.BooleanField('Está ativo?', blank=True, default=True)
+    is_investidor = models.CharField(max_length = 150, blank = True)
     is_staff = models.BooleanField('É da equipe?', blank=True, default=False)
+    situation = models.BooleanField('Situação financeira', blank=True, default=False)
+    perfil = models.BooleanField('Já fez perfil', blank=True, default=False)
     date_joined = models.DateTimeField('Data de Entrada', auto_now_add=True)
     img = models.ImageField(upload_to = 'user')
-    dinheiro = models.FloatField( default=0 , help_text = "Valor do capital em dinheiro")
-    acoes = models.FloatField( default=0 , help_text = "Valor do capital em ações")
-    crypto = models.FloatField( default=0 , help_text = "Valor do capital em crypto moedas")
-    imobiliario = models.FloatField( default=0 , help_text = "Valor do capital em fundos imobiliario")
-    investimento = models.FloatField( default=0 , help_text = "Valor do capital investido")
-    retorno = models.FloatField( default=0 , help_text = "Valor do retorno em capital ")
-    balanco = models.FloatField( default=0 , help_text = "Valor do balanço do capital ")
-    capital = models.FloatField( default=0 , help_text = "Valor total do capital")
-
+    
+  
     objects = UserManager()
 
     USERNAME_FIELD = 'username'
@@ -61,12 +57,73 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name = 'Usuário'
         verbose_name_plural = 'Usuários'
 
+    
+ 
+
+
+
+
+class Financeiro(models.Model):
+
+    id = models.CharField(max_length  = 110, primary_key = True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name = 'usuário_financeiro', on_delete = models.CASCADE)   
+    dinheiro = models.FloatField( default=0 , help_text = "Valor do capital em dinheiro")
+    acoes = models.FloatField( default=0 , help_text = "Valor do capital em ações")
+    crypto = models.FloatField( default=0 , help_text = "Valor do capital em crypto moedas")
+    imobiliario = models.FloatField( default=0 , help_text = "Valor do capital em fundos imobiliario")
+    forex = models.FloatField( default=0 , help_text = "Valor do capital em forex")   
+    balanco = models.FloatField( default=0 , help_text = "Valor do balanço do capital ")
+    capital = models.FloatField( default=0 , help_text = "Valor total do capital")
+    retorno = models.FloatField( default=0 , help_text = "Valor do retorno em capital ")
+
+
+    def __str__(self):
+        return f'{self.user}'
+
+
     def save(self, *args, **kwargs):
-        self.capital = self.dinheiro + self.acoes + self.crypto + self.imobiliario 
-        self.investimento = self.acoes + self.crypto + self.imobiliario
+
+
+        self.capital = self.acoes + self.crypto + self.imobiliario + self.forex 
+        self.balanco =  self.dinheiro + self.capital
+        self.retorno = ((self.capital - self.balanco) / self.balanco) 
         super().save(*args, **kwargs)
 
 
 
 
- 
+
+
+class Movimentacoes(models.Model):
+
+    STATUS_CHOICES = (
+
+        ('deposito', 'deposito'),
+        ('retirada','retirada'),
+        ('transferencia','transferencia'),
+        )
+
+
+    STATUS_TIPO = (
+
+        ('acoes','acoes'),
+        ('crypto','crypto'),
+        ('imobiliario','investimento'),
+        ('forex','forex'),
+        ('movimentocao','movimetacao'),
+        )
+
+    id = models.CharField(max_length  = 110, primary_key = True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name = 'movimetação_financeira', on_delete = models.CASCADE)
+    operacao = models.CharField( max_length = 110, choices = STATUS_CHOICES, default ='deposito', help_text = 'transferência do capital')
+    tipo = models.CharField(max_length = 110, choices = STATUS_TIPO, default = 'acoes', help_text = 'O tipo da movimento')
+    data = models.DateTimeField(auto_now_add = False)
+    descricao  = models.TextField(help_text = 'Descrição da movimentação')
+    valor  = models.FloatField(help_text = 'O valor total do usuário')
+
+
+
+    def __str__(self):
+        return f'{self.operacao}'
+
+

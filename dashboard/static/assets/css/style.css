@@ -796,7 +796,9 @@ select.form-control:not([size]):not([multiple]) {
     height: 50px;
     line-height: 50px;
     font-size: 22px;
-    margin: 25px; }
+    margin: 25px;
+    background: #C79845;
+   }
   .card.card-statistic-1 .card-header, .card.card-statistic-2 .card-header {
     padding-bottom: 0;
     padding-top: 25px; }
@@ -843,7 +845,7 @@ select.form-control:not([size]):not([multiple]) {
       text-align: center;
       padding: 5px 20px; }
       .card .card-stats .card-stats-item .card-stats-item-label {
-        font-size: 12px;
+        font-size: 9px;
         letter-spacing: .5px;
         margin-top: 4px;
         text-overflow: ellipsis;
@@ -852,8 +854,8 @@ select.form-control:not([size]):not([multiple]) {
       .card .card-stats .card-stats-item .card-stats-item-count {
         line-height: 1;
         margin-bottom: 8px;
-        font-size: 11px;
-        font-weight: 700; }
+        font-size: 12px!important;
+        font-weight: 400; }
   .card.card-large-icons {
     display: flex;
     flex-direction: row; }
@@ -1527,7 +1529,7 @@ h6 .badge {
   z-index: 890;
   background-color: transparent; }
   .navbar.active {
-    background-color: #6777ef;
+    background-color: #343a40;
     box-shadow: rgba(103, 119, 239, 0.2) rgba(0, 0, 0, 0.03); }
 
 .navbar-bg {
@@ -1537,8 +1539,7 @@ h6 .badge {
   left: 0;
   width: 100%;
   height: 115px;
-  background: rgb(4,8,230);
-  background: linear-gradient(90deg, rgba(4,8,230,1) 0%, rgba(5,55,106,1) 50%, rgba(33,37,41,1) 100%); 
+  background-color: #343a40;
   z-index: -1; }
 
 .navbar {
@@ -2209,21 +2210,7 @@ pre {
     width: 100%; } }
 
 .background-walk-y {
-  background-repeat: no-repeat;
-  background-position: 0 0%;
-  -webkit-animation-name: backgroundWalkY;
-          animation-name: backgroundWalkY;
-  -webkit-animation-duration: 70s;
-          animation-duration: 70s;
-  -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
-  -webkit-animation-direction: alternate;
-          animation-direction: alternate;
-  -webkit-animation-fill-mode: forwards;
-          animation-fill-mode: forwards;
-  -webkit-animation-timing-function: linear;
-          animation-timing-function: linear;
-  background-size: 100%; }
+   background: linear-gradient( to bottom,rgba(15, 15, 54, 0.9),rgba(0,0,0,0.9)),url('/static/assets/images/g2.jpg'); }
 
 @media (max-width: 1199.98px) {
   .background-walk-y {
@@ -2981,3 +2968,10 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
   100% {
     -webkit-transform: scale(1.2, 1.2);
     opacity: 0.0; } }
+
+
+.text-login-banner
+{
+  top: 280px!important;
+
+}

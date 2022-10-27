@@ -2,12 +2,15 @@ from django.urls import path
 from . import views
 
 
-app_name = 'dashboad'
+app_name = 'dashboard'
 
 
-urlpatterns =[
 
-    path('dashboard/Investimentos', views.DashboadTemplateView.as_view(), name = 'manager'),
+
+urlpatterns = [
+
+
+	path('manager/', views.Dashboard_Templates_View.as_view(), name = 'manager'),
 
 
 ]

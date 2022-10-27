@@ -1,77 +1,45 @@
 {% load static %}
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js">
-<!--<![endif]-->
-
-
-<!-- Mirrored from webdesign-finder.com/html/eximgroup/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 02 Jan 2020 18:22:45 GMT -->
+ <html lang="en">
 <head>
-	<title>{% block title %}        {% endblock %}</title>
-	<meta charset="utf-8">
-	<!--[if IE]>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<![endif]-->
+    <link rel="canonical" href="https://https://demo.themesberg.com/landwind/" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InvestGroup | IA mudando cenário de investimentos de formas que os investidores irão valorizar mais a qualidade dos ativos de IA de uma empresa </title>
 
-	<link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
-	<meta name="description" content="">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
-	<link rel="stylesheet" href="{% static 'css/fonts.css' %}">
-	<link rel="stylesheet" href="{% static 'css/main.css' %}">
-	<script src="{% static 'js/vendor/modernizr-2.6.2.min.js' %}"></script>
+    <!-- Meta SEO -->
+    <meta name="title" content="Landwind - Tailwind CSS Landing Page">
+    <meta name="description" content="Get started with a free and open-source landing page built with Tailwind CSS and the Flowbite component library.">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <meta name="author" content="Themesberg">
 
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-	<!--[if lt IE 9]>
-		<script src="js/vendor/html5shiv.min.js"></script>
-		<script src="js/vendor/respond.min.js"></script>
-		<script src="js/vendor/jquery-1.12.4.min.js"></script>
-	<![endif]-->
+    <!-- Social media share -->
+    <meta property="og:title" content="Landwind - Tailwind CSS Landing Page">
+    <meta property="og:site_name" content="Themesberg">
+    <meta property="og:url" content="https://https://demo.themesberg.com/landwind/">
+    <meta property="og:description" content="Get started with a free and open-source landing page for Tailwind CSS built with the Flowbite component library featuring dark mode, hero sections, pricing cards, and more.">
+    <meta property="og:type" content="">
+    <meta property="og:image" content="https://themesberg.s3.us-east-2.amazonaws.com/public/github/landwind/og-image.png">
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@themesberg" />
+    <meta name="twitter:creator" content="@themesberg" />
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
 </head>
-
-
 <body>
-	<!--[if lt IE 9]>
-		<div class="bg-danger text-center">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" class="highlight">upgrade your browser</a> to improve your experience.</div>
-	<![endif]-->
-	<div class="preloader">
-		<div class="preloader_image"></div>
-	</div>
-	{% include 'include/navbar.html' %}
-	{% block index %}
+{% block index %}
 
-
-
-
-
-	{% endblock %}
-	<script src="{% static 'js/compressed.js' %}"></script>
-	<script src="{% static 'js/selectize.min.js' %}"></script>
-	<script src="{% static 'js/main.js' %}"></script>
-	<!-- Google Map Script -->
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTwYSMRGuTsmfl2z_zZDStYqMlKtrybxo"></script>
+{% endblock %}  
 </body>
-
-
-<script>
-    $(window).scroll(function(){
-      var top = $(window).scrollTop();
-  
-      if (top>=60){
-        $("nav").addClass('secondary');
-  
-      }
-      else
-        if($('nav').hasClass('secondary')){
-          $("nav").removeClass('secondary');
-  
-        } 
-    });
-  </script>
-<!-- Mirrored from webdesign-finder.com/html/eximgroup/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 02 Jan 2020 18:24:14 GMT -->
-</html>
+</html>   

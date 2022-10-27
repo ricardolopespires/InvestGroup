@@ -52,10 +52,10 @@ var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    labels: ["Janeiro", "Fevereiro", "Março", "Abrir", "Maio", "Junho", "Julho","Agosto","Setembo","Outubro","Novembro","Dezembro"],,
     datasets: [{
       label: 'Statistics',
-      data: [460, 458, 330, 502, 430, 610, 488],
+      data: [460, 458, 330, 502, 430, 610, 488,390, 600, 390, 280, 600, 430],
       borderWidth: 2,
       backgroundColor: 'rgba(63,82,227,.8)',
       borderWidth: 0,
@@ -66,7 +66,7 @@ var myChart = new Chart(ctx, {
       pointHoverBackgroundColor: 'rgba(63,82,227,.8)',
     },{
       label: 'Statistics',
-      data: [390, 600, 390, 280, 600, 430, 638],
+      data: [390, 600, 390, 280, 600, 430, 638,460, 458, 330, 502, 430, 610],
       borderWidth: 2,
       backgroundColor: 'rgba(254,86,83,.7)',
       borderWidth: 0,

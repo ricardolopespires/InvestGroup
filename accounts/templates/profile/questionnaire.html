@@ -1,0 +1,249 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'img/favicon.png' %}">
+
+    <title>InvestGroup - perfil de investidor.</title>
+
+    <!-- Principal CSS do Bootstrap -->
+    <link href="https://getbootstrap.com.br/docs/4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/massages.css' %}">
+    <script src="https://kit.fontawesome.com/55bcbae4d6.js" crossorigin="anonymous"></script>
+
+    <!-- Estilos customizados para esse template -->
+    <link href="form-validation.css" rel="stylesheet">
+  </head>
+
+  <body class="bg-light">
+    <style type="text/css">
+      
+
+
+
+.card-body
+{
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
+  background-color: #fff;
+  border-radius: 3px;
+  border: none;
+  position: absolute;
+  top: -90px;
+  margin-bottom: 30px;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+}
+
+.content
+{
+      margin-left: 40px;
+    top: 10px;
+    position: relative;
+    width: 80%;
+}
+
+.details span
+{
+    font-size: 23px;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+#messages
+{
+    height: 110px!important; 
+    width: 109%!important;
+}
+
+#messages h1
+{
+    margin-top: -28px!important;
+}
+
+.info
+{
+  
+  color: var(--info)!important;
+}
+
+.border-info
+{
+  border-left: 5px solid  var(--info)!important;
+  height: 109px;
+}
+
+.icon
+{
+    font-size: 59px;    
+    float: right;
+    left: 119px;    
+    position: relative;
+}
+
+.error
+{
+  
+  color: var(--red)!important;
+}
+
+.border-error
+{
+  border-left: 9px solid  var(--red)!important;
+}
+
+.success
+{
+  
+  color: var(--green)!important;
+}
+
+.border-success
+{
+  border-left: 9px solid  var(--green)!important;
+}
+
+
+    </style>
+    {% if messages %}
+          <div style="top: 110px; position: relative; z-index: 999;" class="container">
+            <div class="row">
+              <div class="col-sm-12 col-sm-offset-3">      
+                  <div class="card-body">
+                    {% for message in messages %} 
+                    {% if message.tags == 'error' %}    
+                    <div id="messages" class="messages">
+                      <div class="card-messages border-error">
+                        <div class="content">
+                          <div class="icon error"><i class="fas fa-exclamation"></i></div>
+                          <div class="details">
+                            <span class="text-dark">Ops, error.... </span>
+                            <p  class="text-dark">{{ message }}</p>
+                          </div>
+                        </div>
+                        <div class="close" onclick="hide()" class="close-icon"><i class="uil uil-times"></i></div>
+                      </div>
+                    </div>           
+                    {% elif message.tags == 'success' %}
+                    <div id="messages" class="messages">
+                      <div class="card-messages border-success">
+                        <div class="content">
+                          <div class="icon success"><i class="fas fa-check"></i></div>
+                          <div class="details">
+                            <span class="text-dark">Parabéns..... </span>
+                            <p  class="text-dark">{{ message }}</p>
+                          </div>
+                        </div>
+                        <div class="close" onclick="hide()" class="close-icon"><i class="uil uil-times"></i></div>
+                      </div>
+                    </div>
+                    {% elif message.tags == 'info' %}
+                    <div id="messages" class="messages">
+                      <div class="card-messages border-info">
+                        <div class="content">
+                          <div class="icon info"><i class="fas fa-file-signature"></i></div>
+                          <div class="details">
+                            <span class="text-dark">Atenção..... </span>
+                            <p  class="text-dark">{{ message }}</p>
+                          </div>
+                        </div>
+                        <div class="close" onclick="hide()" class="close-icon"><i class="uil uil-times"></i></div>
+                      </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}    
+                  </div>      
+                </div>
+              </div>
+          </div>  
+          {% endif %}
+          
+    <div class="container">
+      <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="{% static 'img/logo.png' alt = 'logo' %}" alt="" width="400" height="90">
+        <h2>Qual o seu perfil de investidor?</h2>
+        <p class="lead">O questionário vai apurar a situação financeira, o nível de experiência e a tolerância ao risco do investidor. Para conhecer a si mesmo é o primeiro passo para se ter sucesso no mundo dos investimentos.</p>
+      </div>
+      <form action="." method="POST"> 
+      {% csrf_token %}     
+      {% for questionario in questionnaires %}
+      <div class="row mb-5">       
+        <div class="col-md-12 order-md-1">          
+          
+            <div class="question mb-2">
+              <h4 class="mb-3">{{ questionario.title }}</h4>          
+              <hr class="mb-4">
+              {% for question in questions %}
+                {% if question.questionnaire.id == questionario.id %}
+                  <div class="custom-control custom-checkbox mb-2">
+                    <input type="checkbox" class="custom-control-input" name="question" value="{{ question.id }}" id="{{ question.answers }}">
+                    <label class="custom-control-label" for="{{ question.answers }}">{{ question.answers }}.</label>
+                  </div>
+                {% endif %}
+             {% endfor %}
+            </div>
+        </div>
+      </div>
+      {% endfor %}
+      <div class="card-footer text-right bg-light">
+        <button class="btn btn-outline-success mr-1" type="submit">Concluir</button>
+        <button class="btn btn-danger" type="reset">Cancelar</button>
+      </div>
+    </form>
+      
+      <footer class="my-5 mt-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2017-2018 investGroup</p>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">Privacidade</a></li>
+          <li class="list-inline-item"><a href="#">Termos</a></li>
+          <li class="list-inline-item"><a href="#">Suporte</a></li>
+        </ul>
+      </footer>
+    </div>
+
+    <!-- Principal JavaScript do Bootstrap
+    ================================================== -->
+    <!-- Foi colocado no final para a página carregar mais rápido -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../assets/js/vendor/popper.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script src="../../assets/js/vendor/holder.min.js"></script>
+    <script>
+      // Exemplo de JavaScript para desativar o envio do formulário, se tiver algum campo inválido.
+      (function() {
+        'use strict';
+
+        window.addEventListener('load', function() {
+          // Selecione todos os campos que nós queremos aplicar estilos Bootstrap de validação customizados.
+          var forms = document.getElementsByClassName('needs-validation');
+
+          // Faz um loop neles e previne envio
+          var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+              if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.classList.add('was-validated');
+            }, false);
+          });
+        }, false);
+      })();
+    </script>
+      <script> 
+
+    setTimeout(function () {
+      document.getElementById("messages").style.display = "none";
+    }, 4000);
+    function hide(){
+    document.getElementById("messages").style.display = "none";
+    }
+  </script>
+  </body>
+</html>

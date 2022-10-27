@@ -1,0 +1,102 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+
+
+{% block dashboard %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/economia.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/importancia.css' %}">
+
+
+<section class="section">
+
+<div style="height: 110px!important;" class="section-header">
+    <h5 style="margin-top: -28px; color:#cccccc;" class="position-absolute ml-2 mb-4">Calendario</h5>
+    <br>
+    <h1 style="color: #8898aa; font-size: 40px;" class="mt-4 ml-2">Economico</h1>
+    <div class="section-header-breadcrumb">       
+        <i style="font-size: 70px; color: #000066;" class="fab fa-buromobelexperte"></i>        
+    </div>
+</div>
+</section>
+<div class="section-body">  
+  <h2 class="section-title">Calendario Economico</h2>
+    <p class="section-lead">
+      Um calendário econômico é usado pelos investidores para monitorar eventos que movimentam o mercado, como indicadores econômicos e decisões de política monetária..
+    </p>
+    <br>
+    <br>
+</div>
+<div class="section-body">  
+  <table class="table">
+    <thead>
+      <tr class="text-center">
+        <th>Moeda</th>
+        <th>Pais</th>       
+        <th>Data/Time</th>
+        <th>Importancia</th>
+        <th>Evento</th>
+        <th>Atual</th>
+        <th>Projeção</th>
+        <th>Anterior</th>
+      </tr>
+    </thead>   
+    <tbody>
+      {% for data in calendario %}
+        <tr class="text-center">
+          <td>
+            <div class="user-info">
+              <div class="user-info__img">
+                {% if data.img %}
+                <img src="{{ data.img.url }}" alt="User Img">
+                {% else %}
+                 <img src="{% static 'img/bandeira.png' %}" alt="User Img">
+                {% endif %}
+              </div>
+              <div class="user-info__basic">
+                <h5 class="mb-0">{{ data.moeda }}</h5>                
+              </div>
+            </div>
+          </td>
+          <td>
+            {{ data.pais}}
+          </td>
+          <td>
+              <h6 class="mb-0">{{ data.horario }}</h6>
+              <small>{{ data.data |date:'d M Y'}}</small>
+          </td>
+          <td>
+            {% if data.importancia == 'low' %}
+              <h6 class="importancia mb-0">
+                <i class="text-success fas fa-thermometer-quarter"></i> 
+                <i class="fas fa-thermometer-quarter"></i> 
+                <i class="fas fa-thermometer-quarter"></i>
+              </h6>              
+            {% elif data.importancia == 'medium' %}
+              <h6 class="importancia mb-0">
+                <i class="text-warning fas fa-thermometer-three-quarters"></i>
+                <i class="text-warning fas fa-thermometer-three-quarters"></i>
+                <i class="fas fa-thermometer-quarter"></i>
+              </h6> 
+            {% elif data.importancia == 'high' %}
+              <h6 class="importancia mb-0">                
+                <i class="text-danger fas fa-thermometer-full"></i>
+                <i class="text-danger fas fa-thermometer-full"></i>
+                <i class="text-danger fas fa-thermometer-full"></i>
+              </h6>  
+            {% endif %}
+          </td>
+          <td>
+            <h6 class="mb-0">{{ data.evento }}</h6>
+          </td>
+          <td>{{ data.actual }}</td>
+          <td>{{ data.forecast }}</td>
+          <td>{{ data.previous }}</td>
+        </tr>         
+      {% endfor %}
+    </tbody>    
+    </table>    
+</div>
+
+{% endblock %}
