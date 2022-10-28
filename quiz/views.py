@@ -85,7 +85,7 @@ class List_Quiz_View(LoginRequiredMixin, View):
         subjects= Subject.objects.all() 
         usuarios = subjects.aggregate(total = Sum('usuario'))['total']
         
-        return render(request, 'quiz/management/manager/index.html',{
+        return render(request, 'quiz/management/subject/index.html',{
 
             'subjects':subjects,
             'usuarios':usuarios,
@@ -110,7 +110,7 @@ class Detail_Quiz_View(LoginRequiredMixin, View):
             subjects.total = questionarios.count()
             subjects.save()
         
-        return render(request, 'quiz/management/manager/detail.html', {
+        return render(request, 'quiz/management/subject/questionnaire/detail.html', {
             
             'subjects': subjects,
             'questionarios':questionarios,
@@ -125,7 +125,7 @@ class Created_Quiz_View(LoginRequiredMixin, View):
 
         subjects = Subject.objects.all()
 
-        return render(request, 'quiz/management/manager/created.html',{'subjects':subjects})
+        return render(request, 'quiz/management/subject/questionnaire/created.html',{'subjects':subjects})
 
 
 
@@ -154,3 +154,46 @@ class Created_Quiz_View(LoginRequiredMixin, View):
                 
                 messages.success(request, 'Parabéns, A nova questão já foi adicionada no banco de dados')
                 return HttpResponseRedirect(reverse('quiz:quiz_detail', args  = [ subject_id ]))
+
+
+
+class Updated_Quiz_View(LoginRequiredMixin, View):
+
+    def get(self, request, question_id, subject_id):
+
+        questionnaire = get_object_or_404(Questionnaire, id = question_id)
+
+        return render(request, 'quiz/management/subject/questionnaire/updated.html',{'questionnaire':questionnaire})
+
+
+
+    def post(self, request, question_id, subject_id):
+
+        if request.method == 'POST':
+
+            title = request.POST.get('title')
+            subjects = request.POST.get('subject')
+
+            
+            questionnaire = get_object_or_404(Questionnaire, id = question_id)
+
+
+            
+            #fazendo a atualização
+            questionnaire.title = title
+            questionnaire.subject.add(subjects)
+            questionnaire.save()
+
+            messages.success(request, 'Parabéns, A questão foi atualizada no banco de dados')
+            return HttpResponseRedirect(reverse('quiz:quiz_detail', args  = [ subject_id ]))
+
+
+
+
+class Delete_Quiz_View(LoginRequiredMixin, View):
+
+    def get(self, request, question_id, subject_id):
+
+        questionnaire = get_object_or_404(Questionnaire, id = question_id)
+
+        return render(request, 'quiz/management/subject/questionnaire/delete.html',{'questionnaire':questionnaire})

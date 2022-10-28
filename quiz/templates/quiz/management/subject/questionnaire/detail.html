@@ -1,0 +1,88 @@
+{% extends 'management/base.html' %}
+{% load static %}
+
+
+
+
+
+{% block management %}
+<link rel="stylesheet" href="{% static 'css/administration.css' %}">
+<section class="section">
+
+    <div style="height: 110px!important;" class="section-header">
+    <h5 style="margin-top: -28px; color:#cccccc;" class="position-absolute ml-2 mb-4">Questionário</h5>
+    <br>
+    <h1 style="color: #8898aa; font-size: 40px;" class="mt-4 ml-2">{{ subjects.title }}</h1>
+    <div class="section-header-breadcrumb">       
+        <i style="font-size: 70px; color: #000066;" class="fas  fa-user-tie"></i>
+    </div>
+    </div>
+  
+</section>
+ <div class="section-body ">
+    <a href="{% url 'quiz:questionnaires' %}">
+    <div class=" float-right icon-top text-dark add-despesas"  data-toggle="tooltip" data-placement="top" title="Voltar">
+      <i class="fas fa-reply-all"></i>
+    </div>
+  </a>
+  <h2 class="section-title">Informações do {{ subjects.title }}</h2>
+  <p class="section-lead">
+     A análise {{ subjects.title }} é realizada através de um questionário, que analisa suas preferências e expectativas em investimentos.
+  </p>  
+   <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                  <div class="card-header">
+                    <h4 class="text-primary">Questões sobre {{ subjects.title  }}</h4>
+                    <div class="card-header-action">
+                      <a href="{% url 'quiz:created_quiz' subjects.id %}" class="btn btn-outline-success">
+                        Criar  
+                        <i class="fas fa-plus"></i>
+                      </a>
+                      <a href="{% url 'quiz:created_quiz' subjects.id %}" class="btn btn-warning">
+                        Atualizar 
+                        <i class="far fa-edit"></i>
+                      </a>
+                      <a href="{% url 'quiz:created_quiz' subjects.id %}" class="btn btn-danger">
+                        Excluir 
+                        <i class="fas fa-trash"></i>
+                      </a>   
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-striped" id="table-1">
+                        <thead>
+                          <tr>                  
+                            <th>Title</th>
+                            <th>Assunto</th>                            
+                            <th>Questões</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for questionario in questionarios %}                         
+                          <tr>
+                            <td ><a class="text-decoration-none" style="color: #6c757d;" href="#">{{ questionario.title |truncatechars:70}}</a></td>                                  
+                            <td>{% for assunto in questionario.subject.all %}{{ assunto.title }}{% endfor %}</td>      
+                            <td>
+                                <div class="buttons">
+                                  <a href="{% url 'quiz:updated_quiz' questionario.id subjects.id %}" class="btn btn-icon btn-primary">
+                                    <i class="far fa-edit"></i>
+                                  </a>         
+                                  <a href="{% url 'quiz:delete_quiz' questionario.id subjects.id %}" class="btn btn-icon btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                  </a>         
+                                </div>
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div></div>
+
+
+{% endblock %}
