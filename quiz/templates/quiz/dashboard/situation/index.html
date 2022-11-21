@@ -13,193 +13,14 @@
     <!-- Principal CSS do Bootstrap -->
     <link href="https://getbootstrap.com.br/docs/4.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/massages.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/quiz.css' %}">
     <script src="https://kit.fontawesome.com/55bcbae4d6.js" crossorigin="anonymous"></script>
 
     <!-- Estilos customizados para esse template -->
     <link href="form-validation.css" rel="stylesheet">
   </head>
 
-  <body class="bg-light">
-    <style type="text/css">
-      
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@500&display=swap');
-body
-{
-  background:    #f2f2f2;
-  font-family: 'Comfortaa', cursive;
-}
-
-.card-body
-{
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
-  background-color: #fff;
-  border-radius: 3px;
-  border: none;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  margin-bottom: 30px;
-  padding: 0px;
-  display: flex;
-  align-items: center;
-  width: 101%;
-}
-
-.content
-{
-      margin-left: 40px;
-    top: 10px;
-    position: relative;
-    width: 80%;
-}
-
-.details span
-{
-    font-size: 23px;
-    font-weight: 600;
-    margin-bottom: 7px;
-    color: #00e600!important;
-}
-
-.details p
-{
-  font-size: 15px;
-  position: relative;
-  margin-top: 10px;
-}
-
-#messages
-{
-    height: 110px!important; 
-    width: 109%!important;
-}
-
-#messages h1
-{
-    margin-top: -28px!important;
-}
-
-.info
-{
-  
-  color:#00e600!important;
-  font-size: 15px;
-  position: relative;
-  margin-top: 10px;
-}
-
-.border-info
-{
-  border-left: 5px solid  #00e600!important;
-  height: 109px;
-}
-
-.icon
-{
-    font-size: 59px;    
-    float: right;
-    left: 162px;    
-    position: relative;
-}
-
-.error
-{
-  
-  color: var(--red)!important;
-}
-
-.border-error
-{
-  border-left: 9px solid  var(--red)!important;
-}
-
-.success
-{
-  
-  color: var(--green)!important;
-}
-
-.border-success
-{
-  border-left: 9px solid  var(--green)!important;
-}
-
-a{
-    text-decoration: none;
-}
-
-li{
-    list-style-type: none;
-}
-
-header{
-
-    width: 100%;
-    position: fixed;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 0px 10%;
-    background-color: #fff;
-    justify-content: space-between;
-    z-index: 2;
-}
-
-.logo{
-    color: #FFF;
-    font-weight: 900;
-}
-
-.logo img
-{
-  position: relative;
-  top: 10px;
-}
-
-.section-title
-{
-  position: relative;  
-  bottom: 28px;
-}
-
-.section-title::before
-{
-  content: '';
-  position: absolute;
-  height: 2px;
-  width: 67%;
-  top: 40px;
-  border-bottom: 4px solid #ff8000;
-}
-.questionario
-{
-  position: relative;
-  top: 140px;
-  
-}
-
-.title
-{
-
-  font-weight: 600;
-  color: #527a7a;
-}
-
-.welcome
-{
-  position: relative;
-  top: 10px;
-}
-
-.welcome span
-{
-  color: #999999;
-  
-}
-
-
-</style>
+  <body class="bg-light">  
     {% if messages %}
           <div style="top: 110px; position: relative; z-index: 999;" class="container">
             <div class="row">
@@ -257,7 +78,8 @@ header{
         <img class="d-block mx-auto mb-4" src="{% static 'img/logo.png' alt = 'logo' %}" alt="" width="140" >
   </a>
   <div>
-    <h4 class="welcome">Bem Vindo! <span>{{ user.name.title }}</span></h4>
+    <h4 class="welcome">Bem Vindo! <span>{{ user }}</span></h4>
+    <h1 style="display:none;" id="welcome">{{ user.id }}</h1>
   </div>
 </header>    
     <div class="container questionario">      
@@ -265,41 +87,79 @@ header{
        
         <h2 class="section-title">Verifique informações de sua vida financeira</h2>
         <p class="lead">O questionário vai apurar a situação financeira, o nível de experiência e a tolerância ao risco sobre os investimentos. O primeiro passo para se ter sucesso e independência financeira.</p>
-      </div>
-      <form action="." method="POST"> 
-      {% csrf_token %}     
-      {% for questionario in questionnaires %}
-      <div class="row mb-5">       
-        <div class="col-md-12 order-md-1">          
-          
-            <div class="question mb-2">
-              <h4 class="mb-3 title">{{ questionario.title }}</h4>          
-              <hr class="mb-4">
-              {% for question in questions %}
-                {% if question.questionnaire.id == questionario.id %}
-                  <div class="custom-control custom-checkbox mb-2">
-                    <input type="checkbox" class="custom-control-input" name="question" value="{{ question.id }}" id="{{ question.answers }}">
-                    <label class="custom-control-label" for="{{ question.answers }}">{{ question.answers }}.</label>
-                  </div>
-                {% endif %}
-             {% endfor %}
+      </div>    
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="btn-start">
+                    <!--    Start Section     -->
+                    <div id="start">Iniciar</div>
+                </div>
+
+                <!--    Guide Section    -->
+                <div id="guide">
+                   <h2>Guia do questionário </h2>
+                     <h4>1. Você tem apenas 1 Minuto para cada pergunta.</h4>
+                     <h4>2. Depois de selecionar sua resposta. Não pode ser desfeito.</h4>
+                     <h4>3. Você será avaliados com base nas suas respostas.</h4>
+                     <h4>4. Você não pode sair do questionário para passar para outra fase.</h4>
+                    <div id="button">
+                        <button id="exit" >Exit</button>
+                        <button id="continue">Continue</button>
+                    </div>
+                </div>             
+                  
+                <!--    Quiz Section    -->
+                <div id="quiz">
+                    <div id="quiz_header">
+                        <h5>Aplicativo de situação financeira</h5>
+                        <div id="timer">
+                            <h6>Tempo </h6>
+                            <h6 id="time">00</h6>
+                        </div>
+                    </div>
+
+                    <!--     Quiz Questions  -->
+
+                    <div id="question">
+                        <h2 id="questionNo"></h2>
+                        <h2 id="questionText"></h2>
+                    </div>
+
+                    <!--       Quiz Choices   -->
+
+                    <div id="optionList">
+                        <h4 class="choice_que" data-number = "1" id="option1"></h4>
+                        <h4 class="choice_que" data-number = "2" id="option2"></h4>
+                        <h4 class="choice_que" data-number = "3"  id="option3"></h4>                        
+                    </div>
+
+                    <!--  Answers Section-->
+
+                    <div id="answersSection" >
+                      <div class="progress-question">
+                        <div class="progress-bar"></div>
+                      </div>
+                    </div>
+                </div>
+                <!--   Result Section  -->
+                <div id="result">
+                    <div class="completed">                       
+                      <i class="fas fa-trophy"></i>
+                      <h6>Você concluiu o questionário</h6>
+                      <br>
+                      <h6 class="perfil">O seu Perfil de Investidor é <span id="points"></span></h6>                
+                      
+                </div>
             </div>
-        </div>
-      </div>
-      {% endfor %}
-      <div class="card-footer text-right bg-light">
-        <button class="btn btn-outline-success mr-1" type="submit">Concluir</button>
-        <button class="btn btn-danger" type="reset">Cancelar</button>
-      </div>
-    </form>
-      
+        </div>          
       <footer class="my-5 mt-5 pt-5 text-muted text-center text-small">
         <p class="mb-1">&copy; 2017-2018 investGroup</p>
         <ul class="list-inline">
           <li class="list-inline-item"><a href="#">Privacidade</a></li>
           <li class="list-inline-item"><a href="#">Termos</a></li>
           <li class="list-inline-item"><a href="#">Suporte</a></li>
-        </ul>
+        </ul>        
       </footer>
     </div>
 
@@ -342,5 +202,9 @@ header{
     document.getElementById("messages").style.display = "none";
     }
   </script>
+
+  <script src="{% static 'js/main.js' %}"></script>
+    
+
   </body>
 </html>

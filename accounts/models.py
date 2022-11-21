@@ -34,7 +34,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_investidor = models.CharField(max_length = 150, blank = True)
     is_staff = models.BooleanField('É da equipe?', blank=True, default=False)
     situation = models.BooleanField('Situação financeira', blank=True, default=False)
-    perfil = models.BooleanField('Já fez perfil', blank=True, default=False)
+    perfil = models.BooleanField('Perfil do Investidor', blank=True, default=False)
     date_joined = models.DateTimeField('Data de Entrada', auto_now_add=True)
     img = models.ImageField(upload_to = 'user')
     

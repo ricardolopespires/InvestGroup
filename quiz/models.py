@@ -1,88 +1,105 @@
+from django.template.defaultfilters import slugify
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.conf import settings
+from .fields import OrderField
 from django.db import models
-
+from uuid import uuid4
 # Create your models here.
 
 
 
 
 
-class Subject(models.Model):
-    id = models.CharField(max_length = 190, primary_key = True, unique = True)
-    title = models.CharField(max_length = 150, help_text = 'Titulo do assunto do questionario')
+class Quiz(models.Model):
+
+    id = models.CharField(max_length = 150, primary_key = True, unique = True)
+    order = models.IntegerField(help_text = 'O numero da questao', default = 1)    
+    name = models.CharField(max_length=100)   
+    slug = models.SlugField(blank=True)
     description = models.TextField(help_text = 'Descrição do Assuntos do questionario')
     created = models.DateTimeField( auto_now_add = False)
+    topic = models.CharField(max_length = 150, blank = True, help_text = 'O tópico do questionário')
     percentage = models.IntegerField( help_text = 'A porcentagem do usuários', default = 0)
     total = models.IntegerField(help_text = 'O total de questionarios', default = 0)
-    questionnaire = models.ManyToManyField('quiz.Questionnaire', related_name = 'subject_questionnaire', blank = True)
-    usuario = models.ManyToManyField( 'accounts.User', related_name = 'subject_usuario', blank = True)
-
-        
-
-    def __str__(self):
-        return  f'{self.title}'
-
+    active = models.BooleanField(default=False)
+    timestamp = models.IntegerField(help_text = 'Duração do questionarios')
 
     class Meta:
-        verbose_name = 'Assunto'
-        verbose_name_plural = 'Assuntos'
-
-
-
-
-class Questionnaire(models.Model):
-
-    id = models.CharField(max_length = 190, primary_key = True, unique = True)
-    title = models.CharField(max_length = 400, help_text = 'A Perguntas do questionario')
-    subject = models.ManyToManyField('quiz.Subject', related_name = 'questionario_assunto')
-        
+        ordering = ['timestamp',]
+        verbose_name_plural = "Quizzes"
 
     def __str__(self):
-        return  f'{self.title}'
+        return f'{self.name}'
 
 
-    class Meta:
-        verbose_name = 'Questionário'
-        verbose_name_plural = 'Questionários'
+    def get_questions(self):
+        return self.question_set.all()
 
 
+class Question(models.Model):
 
-class Questions(models.Model):
-
-    id = models.CharField(max_length = 190, primary_key = True, unique = True)    
-    questionnaire = models.ForeignKey(Questionnaire, related_name = 'questionario', on_delete = models.CASCADE)
-    answers = models.CharField(max_length = 400, help_text = 'respostas')
-    correct = models.BooleanField()
-    valor = models.IntegerField()
-    usuario = models.ManyToManyField('accounts.User', related_name = 'questoes', blank = True)
+    id = models.CharField(max_length = 150, primary_key = True, unique = True)
+    quiz = models.ForeignKey(Quiz, on_delete = models.CASCADE)
+    label = models.CharField(max_length = 100)
+    order = models.IntegerField(default = 0)
+    answers = models.IntegerField(default = 0)
 
 
     def __str__(self):
-        return  f'{self.answers}'
-
-    class Meta:
-        verbose_name = 'Questão'
-        verbose_name_plural = 'Questões'
+        return self.label
 
 
+        def get_answers(self):
+            return self.answer_set.all()
 
-class Perfil(models.Model):
 
-    STATUS_CHOICES = (
-
-        ('cconservador','Conservador'),
-        ('moderado','Moderado'),
-        ('dinâmico','Dinâmico'),
-        ('arrojado','Arrojado'),
-        ('Agressivo','Agressivo'),
-        )
-
-    id = models.CharField(max_length = 190, primary_key = True, unique = True)
-    investor = models.CharField(max_length = 190, choices = STATUS_CHOICES, default = 'Conservador')
-    description = models.TextField()
-    risk_profile = models.CharField(max_length = 150,)
-    minimum = models.IntegerField()
-    maximum = models.IntegerField()
-
+class Answer(models.Model):
+   
+    id = models.CharField(max_length = 150, primary_key = True, unique = True)
+    question = models.ForeignKey(Question,  on_delete = models.CASCADE)
+    label = models.CharField(max_length = 100)    
+    order = models.IntegerField( default = 0)
+    score = models.IntegerField( default = 0)
+    
+    
 
     def __str__(self):
-        return f'{self.investor}'
+        return f"{self.question}"
+
+
+class QuizTaker(models.Model):
+
+    
+    id = models.CharField(max_length = 190, primary_key = True, unique = True)   
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    score = models.IntegerField( default = 0)
+    completed = models.BooleanField( default = False)
+    date_finished = models.DateTimeField( null = True)
+    timestamp = models.DateTimeField( auto_now_add = True)
+
+    def __str__(self):
+        return f'{self.quiz}'
+
+
+class UsersAnswer(models.Model):
+
+    id = models.CharField(max_length = 190, primary_key = True, unique = True)  
+    question = models.ForeignKey(Question, on_delete = models.CASCADE)
+    answer = models.ForeignKey(Answer, on_delete = models.CASCADE, null = True)
+    score = models.IntegerField( default = 0)
+    completed = models.BooleanField( default = False)
+    date_finished = models.DateTimeField( null = True)
+
+    def __str__(self):
+        return self.question.label
+
+
+@receiver(pre_save, sender = Quiz)
+def slugify_name(sender, instance, *args, **kwargs):
+    instance.slug = slugify(instance.name)
+
+
+
+

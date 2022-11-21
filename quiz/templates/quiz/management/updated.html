@@ -1,0 +1,144 @@
+{% extends 'management/base.html' %}
+{% load static %}
+
+
+
+
+
+{% block management %}
+<link rel="stylesheet" href="{% static 'css/administration.css' %}">
+<section class="section">
+
+    <div style="height: 110px!important;" class="section-header">
+    <h5 style="margin-top: -28px; color:#cccccc;" class="position-absolute ml-2 mb-4">Questionário</h5>
+    <br>
+    <h1 style="color: #8898aa; font-size: 40px;" class="mt-4 ml-2">Updated</h1>
+    <div class="section-header-breadcrumb">       
+        <i style="font-size: 70px; color: #000066;" class="fas  fa-server"></i>
+    </div>
+    </div>
+  
+</section>
+<div class="section-body ">
+    <a href="{% url 'quiz:list_question'  quiz.id %}">
+    <div class=" float-right icon-top text-dark add-despesas"  data-toggle="tooltip" data-placement="top" title="Voltar">
+        <i class="fas fa-reply-all"></i>
+    </div>
+    </a>
+    <h2 class="section-title">Atualização das Questões</h2>
+    <p class="section-lead">
+        Atualização da  questão <strong class="text-primary">{{ quiz.name }}</strong> para melhorias. 
+    </p>
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Formulario de Questões</h4>
+                </div>
+                <form action="." method="post">
+                    {% csrf_token %}
+                <div class="card-body">
+                    <div class="alert alert-danger">
+                      <b>Observação!</b> Todos os dados deve ser preenchido corretamente.
+                    </div>
+                 
+                        {% csrf_token %}
+                        <div class="row">                        
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <p>
+                                        <label for="id_order">Id:</label>
+                                       <input class="form-control" disabled value="{{ subject.id }}" type="text" name="id" maxlength="190" required id="id_id">
+                                    </p>                                        
+                                    <span class="helptext">Código Identificador</span>                  
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <p>
+                                        <label for="id_title">Title:</label>
+                                        <input class="form-control" value="{{ subject.title }}" type="text" name="title" maxlength="150" required id="id_title">
+                                      <span class="helptext">Titulo do assunto do questionario</span>
+                                    </p>
+                                </div>
+                            </div>
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                      <p>
+                                        <label for="id_usuario">Usuario:</label>
+                                        <select class="form-control" name="usuario" id="id_usuario" multiple>
+                                            {% for usuario in subject.usuario.all  %}
+                                            <option value="{{ usuario.id }}">{{ usuario.name.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </p>
+                                </div>
+                            </div> 
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                      <p>
+                                        <label for="id_description">Description:</label>
+                                        <textarea style="height: 190px;" class="form-control" name="description" cols="40" rows="10" required id="id_description">
+                                            {{ subject.description }}
+                                        </textarea>
+                                        <span class="helptext">Descrição do Assuntos do questionario</span>
+                                      </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <p>
+                                        <label for="id_percentage">Percentage:</label>
+                                        <input disabled class="form-control" type="number" name="percentage" value="{{ subject.percentage }}" required id="id_percentage">
+                                        <span class="helptext">A porcentagem de usuários</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <p>
+                                        <label for="id_total">Total:</label>
+                                        <input disabled class="form-control" type="number" name="total" value="{{ subject.total }}" required id="id_total">
+                                        <span class="helptext">O total de questionarios</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <p>
+                                        <label for="id_quiz">Quiz:</label>
+                                        <select disabled class="form-control" name="quiz" id="id_quiz" multiple>
+                                            {% for question in subject.quiz.all %}
+                                            <option value="{{ question.id }}"> {{ question.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                      </p>
+                                </div>
+                            </div>                                                               
+                        </div>                  
+                    </div>                
+                <div class="card-footer text-right">
+                    <button class="btn btn-outline-success mr-1" type="submit">Atualizar</button>
+                    <button class="btn btn-danger" type="reset">Cancelar</button>
+                </div>
+                </form>  
+            </div>            
+        </div>             
+    </div>
+</div>
+{% endblock %}
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+  </p>

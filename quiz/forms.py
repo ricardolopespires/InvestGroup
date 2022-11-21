@@ -1,13 +1,26 @@
 from django import forms
-from .models import Questionnaire 
+from .models import Quiz, Subject
 
 
 
 
-class Questionnaire_Form(forms.ModelForm):
+
+
+class Subject_Form(forms.ModelForm):
 
 
 	class Meta:
-		model = Questionnaire
+		model = Subject
+		fields = ('__all__')
+
+
+
+
+
+class Quiz_Form(forms.ModelForm):
+
+
+	class Meta:
+		model = Quiz
 		fields = ('__all__')
 

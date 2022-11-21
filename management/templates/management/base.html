@@ -20,7 +20,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
   <!-- CSS Libraries -->
   <!-- CSS Libraries -->
-  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/massages.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/massages.css' %}">
   <link rel="stylesheet" href="{% static 'node_modules/jqvmap/dist/jqvmap.min.css'%}">
   <link rel="stylesheet" href="{% static 'node_modules/summernote/dist/summernote-bs4.css'%}">
   <link rel="stylesheet" href="{% static 'node_modules/owl.carousel/dist/assets/owl.carousel.min.css'%}">
@@ -57,6 +57,56 @@
       font-size: 70px;
       margin-top: -10px;
     }
+
+    
+
+#messages
+{
+    height: 110px!important; 
+    width: 109%!important;
+}
+
+#messages h1
+{
+    margin-top: -28px!important;
+}
+
+.info
+{
+  
+  color: var(--info)!important;
+}
+
+.border-info
+{
+  border-left: 9px solid  var(--info)!important;
+}
+
+
+
+.error
+{
+  
+  color: var(--red)!important;
+}
+
+.border-error
+{
+  border-left: 9px solid  var(--red)!important;
+}
+
+.success
+{
+  
+  color: var(--green)!important;
+}
+
+.border-success
+{
+  border-left: 9px solid  var(--green)!important;
+}
+
+
     </style>
 
 
@@ -246,7 +296,9 @@
           <ul class="sidebar-menu">
               <li class="menu-header mt-4">Dashboard</li> 
                <li><a class="nav-link" href="{% url 'management:manager' %}"><i class="fa fa-desktop"></i> <span>Painel Principal</span></a></li>
-               <li><a class="nav-link" href="{% url  'quiz:questionnaires' %}"><i class="fa fa-sitemap"></i> <span>Questionários</span></a></li>
+               <li><a class="nav-link" href="{% url  'quiz:list_quiz' %}"><i class="fa fa-sitemap"></i> <span>Questionários</span></a></li>
+               <li><a class="nav-link" href="#"><i class="fa fa-tasks"></i> <span>Questões</span></a></li>
+               <li><a class="nav-link" href="{% url  'investor:list' %}"><i class="fa fa-address-card-o"></i> <span>Perfil do Investidor</span></a></li>
                 <li class="nav-item dropdown">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-globe-americas"></i><span>Econômia</span></a>
                   <ul class="dropdown-menu">

@@ -1,30 +1,42 @@
 from import_export.admin import ImportExportModelAdmin
-from .models import Subject, Questionnaire, Questions, Perfil
+from .models import  Quiz, Question, Answer, QuizTaker, UsersAnswer
 from django.contrib import admin
+import nested_admin
+
+
+
+
+@admin.register(Quiz)
+class AnswerInline(ImportExportModelAdmin):
+	list_display = ['name', 'topic', 'percentage','total']
+	prepopulated_fields = {"slug": ("name",)}
+
+	
+
+
+@admin.register(Question)
+class QuestionInline(ImportExportModelAdmin):
+	list_display  = ['order','label','answers']
+
+
+
+@admin.register(Answer)
+class QuizAdmin(ImportExportModelAdmin):
+	list_display = ['label','score']
+
+
+
+@admin.register(QuizTaker)
+class UsersAnswerInline(ImportExportModelAdmin):
+	list_display = ['id']
+
+
+
+@admin.register(UsersAnswer)
+class QuizTakerAdmin(ImportExportModelAdmin):
+	list_display = ['id']
 
 
 
 
 
-
-# Register your models here.
-
-@admin.register(Subject)
-class AdminQuestions(ImportExportModelAdmin):
-	list_display = ['title', 'percentage', 'total']
-	list_filter = ['title', 'percentage', 'total']
-
-@admin.register(Questionnaire)
-class AdminQuestionnaire(ImportExportModelAdmin):
-	list_display = ['title']
-
-
-@admin.register(Questions)
-class AdminQuestions(ImportExportModelAdmin):
-	list_display = ['questionnaire', 'valor']
-	list_filter = ['questionnaire', 'valor']
-
-
-@admin.register(Perfil)
-class AdminPerfil(ImportExportModelAdmin):
-	list_display = ['investor','risk_profile', 'minimum', 'maximum']

@@ -37,7 +37,16 @@ urlpatterns = [
 
     #---------------------------- Management Administration ---------------------------
     path('management/', include('management.urls', namespace = 'management')),
-    path('questionnaire/',include('quiz.urls', namespace = 'quiz')),
+    path('quiz/',include('quiz.urls', namespace = 'quiz')),
+    path('investor/',include('investor.urls', namespace = 'investor')),
+
+
+
+    path('api/save_question_result/' , views.save_question_result),
+    
+
+
+    
 ]
 
 

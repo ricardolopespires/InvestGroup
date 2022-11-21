@@ -29,6 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+CORS_ORIGIN_APPS = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -52,11 +53,14 @@ INSTALLED_APPS = [
     'import_export',
     "bootstrap4",
     'corsheaders',
-    'rest_framework', 
+    'rest_framework',
+    'nested_admin', 
+    'rest_framework.authtoken',
 
     #---------------------------- Management Administration ------------------------------------------
     'management.apps.ManagementConfig',
     'quiz.apps.QuizConfig',
+    'investor.apps.InvestorConfig',
 
 
     #---------------------------- API application ----------------------------------------------------
@@ -69,6 +73,13 @@ INSTALLED_APPS = [
 
 
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
