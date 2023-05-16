@@ -1,4 +1,4 @@
-# SmatCity
+# InvesGroup
 EducaOne é especialmente projetado para atender a todas as necessidades de um Sistema de Gerenciamento de Aprendizagem. Usamos um modelo Django, HTML, Css3,  JavaScript, etc. inclui lista de cursos, detalhamento dos cursos, página de instrutores e também blog. EducaOne é um modelo altamente personalizável que o ajudará no seu próprio sistema de gerenciamento de aprendizado.
 
 
