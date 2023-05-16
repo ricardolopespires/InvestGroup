@@ -4,9 +4,9 @@ InvestGroup é uma plataforma sistemas autônomatizada para utilizar as informa�
 
 <p align = left'> 
                
-   <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/ricardolopespires/SmartCity">
+   <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/ricardolopespires/InvestGroup">
     <img alt="Mozilla HTTP Observatory Grade" src="https://img.shields.io/mozilla-observatory/grade/github.com?publish">
-    <img alt="GitHub Language Count" src="https://img.shields.io/github/languages/count/ricardolopespires/SmartCity"/>
+    <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/ricardolopespires/InvestGroup">
     <img alt="" src="https://img.shields.io/github/repo-size/ricardolopespires/SmartCity"/>
     <img alt="GitHub Pull Requests" src="https://img.shields.io/github/issues-pr/ricardolopespires/SmartCity"/>
     <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/ricardolopespires/SmartCity"/>
