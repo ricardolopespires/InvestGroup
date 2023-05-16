@@ -1,4 +1,11 @@
 {% load static %}
+
+<style type="text/css">
+   /* Google Font Import - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+
+</style>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -29,14 +36,16 @@
 
   <!-- Template CSS -->
     <link rel="stylesheet" href="{% static 'css/normalize.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/notification.css' %}" />
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">    
     <link rel="stylesheet" href="{% static 'assets/css/components.css' %}">
     <link id="sleek-css" rel="stylesheet" href="{% static 'assets/css/sleek.css' %}" />
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.6/css/line.css">
     <script src="https://kit.fontawesome.com/55bcbae4d6.js" crossorigin="anonymous"></script>
+     
 
-    <style>
+<style>
 
     @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
 
@@ -46,68 +55,117 @@
       font-size: 28px;
       color: #fff;
     }
-        .border-info
-    {
-      border-left: 10px solid #007bff ;    
+
+
+
+.notification{
+    position: absolute;
+    top: 25px;
+    right: 0px;
+    border-radius: 12px;
+    background: #fff;
+    padding: 20px 35px 20px 25px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    border-left: 6px solid #4070f4;
+    overflow: hidden;
+    transform: translateX(calc(100% + 30px));
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
+    display: none;
+}
+
+
+.notification.active{
+    transform: translateX(0%);
+    display: block;
+    z-index: 9999;
+}
+
+.notification .notification-content{
+    display: flex;
+    align-items: center;
+}
+
+
+
+
+.notification-content .check{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    width: 35px;
+    background-color: #4070f4;
+    color: #fff;
+    font-size: 20px;
+    border-radius: 50%;
+}
+
+
+.notification-content .message{
+    display: flex;
+    flex-direction: column;
+    margin: 0 20px;
+}
+
+
+.message .text{
+    font-size: 15px;
+    font-weight: 400;;
+    color: #666666;
+}
+
+.message .text.text-1{
+    font-weight: 600;
+    color: #333;
+}
+
+
+.notification .close{
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    padding: 5px;
+    cursor: pointer;
+    opacity: 0.7;
+    color: #000;
+    font-size: 15px;
+}
+
+.notification .close:hover{
+    opacity: 0;
+}
+
+
+
+.notification .progress{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: #ddd;
+}
+
+.notification .progress:before{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #4070f4;
+}
+
+.progress.active:before{
+    animation: progress 5s linear forwards;
+}
+
+@keyframes progress {
+    100%{
+        right: 100%;
     }
-
-    .border-info .info i
-    {
-      color: #007bff;
-      font-size: 70px;
-      margin-top: -10px;
-    }
-
-    
-
-#messages
-{
-    height: 110px!important; 
-    width: 109%!important;
 }
-
-#messages h1
-{
-    margin-top: -28px!important;
-}
-
-.info
-{
-  
-  color: var(--info)!important;
-}
-
-.border-info
-{
-  border-left: 9px solid  var(--info)!important;
-}
-
-
-
-.error
-{
-  
-  color: var(--red)!important;
-}
-
-.border-error
-{
-  border-left: 9px solid  var(--red)!important;
-}
-
-.success
-{
-  
-  color: var(--green)!important;
-}
-
-.border-success
-{
-  border-left: 9px solid  var(--green)!important;
-}
-
-
-    </style>
+</style>
 
 
 </head>
@@ -296,20 +354,32 @@
           <ul class="sidebar-menu">
               <li class="menu-header mt-4">Dashboard</li> 
                <li><a class="nav-link" href="{% url 'management:manager' %}"><i class="fa fa-desktop"></i> <span>Painel Principal</span></a></li>
+               <li><a class="nav-link" href="{% url 'dashboard:manager' %}"><i class="fas fa-laptop-house"></i><span>Dashboard</span></a></li>
                <li><a class="nav-link" href="{% url  'quiz:list_quiz' %}"><i class="fa fa-sitemap"></i> <span>Questionários</span></a></li>
                <li><a class="nav-link" href="#"><i class="fa fa-tasks"></i> <span>Questões</span></a></li>
-               <li><a class="nav-link" href="{% url  'investor:list' %}"><i class="fa fa-address-card-o"></i> <span>Perfil do Investidor</span></a></li>
+               <li><a class="nav-link" href="#"><i class="fa fa-address-card-o"></i> <span>Perfil do Investidor</span></a></li>
                 <li class="nav-item dropdown">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-globe-americas"></i><span>Econômia</span></a>
                   <ul class="dropdown-menu">
                     <li><a class="nav-link" href="#">Global</a></li> 
                     <li><a class="nav-link" href="#">Calendario</a></li>     
-                    <li><a class="nav-link" href="#">America Norte</a></li>
+                    <li><a class="nav-link" href="{% url 'economia:america_norte' %}">America Norte</a></li>
                     <li><a class="nav-link" href="{% url 'economia:america_sul' %}">America Sul</a></li>
                     <li><a class="nav-link" href="#">Europa </a></li>
                     <li><a class="nav-link" href="#">África</a></li> 
-                    <li><a class="nav-link" href="#">Ásia</a></li>
+                    <li><a class="nav-link" href="{% url 'economia:asia' %}">Ásia</a></li>
                     <li><a class="nav-link" href="#">Oceania</a></li>                                        
+                  </ul>
+                </li>             
+                <li class="nav-item dropdown">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-child"></i><span>Finanças Pessoal</span></a>
+                  <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="#">Manager</a></li>                 
+                    <li><a class="nav-link" href="#">Dividas</a></li>
+                    <li><a class="nav-link" href="">Analytics</a></li>
+                    <li><a class="nav-link" href="#">Sentimento</a></li> 
+                    <li><a class="nav-link" href="#">Relatórios</a></li>
+                     <li><a class="nav-link" href="#">Previsões</a></li>                                          
                   </ul>
                 </li>
            
@@ -321,59 +391,20 @@
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-          {% if messages %}
-          <div style="top: 110px; position: relative; z-index: 999;" class="container">
-            <div class="row">
-              <div class="col-sm-12 col-sm-offset-3">      
-                  <div class="card-body">
-                    {% for message in messages %} 
-                    {% if message.tags == 'error' %}    
-                    <div id="messages" class="messages">
-                      <div class="card-messages border-error">
-                        <div class="content">
-                          <div class="icon error"><i class="fas fa-exclamation"></i></div>
-                          <div class="details">
-                            <span class="text-dark">Ops, error.... {{ user|title }}</span>
-                            <p  class="text-dark">{{ message }}</p>
-                          </div>
-                        </div>
-                        <div class="close" onclick="hide()" class="close-icon"><i class="uil uil-times"></i></div>
-                      </div>
-                    </div>           
-                    {% elif message.tags == 'success' %}
-                    <div id="messages" class="messages">
-                      <div class="card-messages border-success">
-                        <div class="content">
-                          <div class="icon success"><i class="fas fa-check"></i></div>
-                          <div class="details">
-                            <span class="text-dark">Parabéns..... {{ user|title }}</span>
-                            <p  class="text-dark">{{ message }}</p>
-                          </div>
-                        </div>
-                        <div class="close" onclick="hide()" class="close-icon"><i class="uil uil-times"></i></div>
-                      </div>
-                    </div>
-                    {% elif message.tags == 'info' %}
-                    <div id="messages" class="messages">
-                      <div class="card-messages border-info">
-                        <div class="content">
-                          <div class="icon info"><i class="fas fa-info"></i></div>
-                          <div class="details">
-                            <span class="text-dark">Atenção..... {{ user|title }}</span>
-                            <p  class="text-dark">{{ message }}</p>
-                          </div>
-                        </div>
-                        <div class="close" onclick="hide()" class="close-icon"><i class="uil uil-times"></i></div>
-                      </div>
-                    </div>
-                    {% endif %}
-                    {% endfor %}    
-                  </div>      
-                </div>
-              </div>
-          </div>  
-          {% endif %}
-          
+
+          <div class="notification">
+              <div class="notification-content">
+                  <i class="fas fa-solid fa-check check"></i>
+
+                  <div class="message">
+                      <span class="text text-1">Success</span>
+                      <span class="text text-2">Your changes has been saved</span>
+                  </div>
+              </div>              
+              <i class="fas fa-times close"></i>
+
+              <div class="progress"></div>
+          </div>
         {% block management %}
 
 
@@ -472,725 +503,7 @@
   </script>
 <!-- Created By CodingNepal - www.codingnepalweb.com -->
 {% block scripts %}
- <script>
-
-$(document).ready(function(){
-
-var ctx = document.getElementById("myChart").getContext('2d');
-var myChart = new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: [{% for despesa in despesas %} '{{ despesa.pagamento |date:"d/m/Y" }}',{% endfor %}],
-    datasets: [{
-      label: 'Receitas',
-      data: [{% for receita in receitas %} {{ receita.valor_total }},{% endfor %}],
-      borderWidth: 2,
-      backgroundColor: 'rgba(63,82,227,.8)',
-      borderWidth: 0,
-      borderColor: 'transparent',
-      pointBorderWidth: 0,
-      pointRadius: 3.5,
-      pointBackgroundColor: 'transparent',
-      pointHoverBackgroundColor: 'rgba(63,82,227,.8)',
-    },
-    {
-      label: 'Despesas',
-      data: [{% for despesa in despesas %} {{ despesa.valor }},{% endfor %}],
-      borderWidth: 2,
-      backgroundColor: 'rgba(254,86,83,.7)',
-      borderWidth: 0,
-      borderColor: 'transparent',
-      pointBorderWidth: 0 ,
-      pointRadius: 3.5,
-      pointBackgroundColor: 'transparent',
-      pointHoverBackgroundColor: 'rgba(254,86,83,.8)',
-    }]
-  },
-  options: {
-    legend: {
-      display: false
-    },
-    scales: {
-      yAxes: [{
-        gridLines: {
-          // display: false,
-          drawBorder: false,
-          color: '#f2f2f2',
-        },
-        ticks: {
-          beginAtZero: true,
-          stepSize: 1500,
-          callback: function(value, index, values) {
-            return 'R$ ' + value;
-          }
-        }
-      }],
-      xAxes: [{
-        gridLines: {
-          display: false,
-          tickMarkLength: 15,
-        }
-      }]
-    },
-  }
-});
-});
-
-
-
-
-
-$(document).ready(function(){
-  var ctx = document.getElementById("myChart3").getContext('2d');
-var myChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          datasets: [{
-            data: [ 30, 20, 20, 20, 10],
-            backgroundColor: [
-              '#191d21',
-              '#63ed7a',
-              '#ffa426',
-              '#fc544b',
-              '#6777ef',
-            ],
-            label: 'Dataset 1'
-          }],
-          labels: [
-            'Ações',
-            'Imobiliários',
-            'Crypto',
-            'Multimercado',
-            'Renda Fixa'      
-          ],
-        },
-        options: {
-          responsive: true,
-          legend: {
-            position: 'bottom',
-          },
-        }
-      });
-
-      });
-$(document).ready(function(){
-  var ctx = document.getElementById("myChart4").getContext('2d');
-      var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: [{% for despesa in despesas %} '{{ despesa.pagamento |date:"d/m/Y" }}',{% endfor %}],
-          datasets: [{
-            label: 'Receitas',
-            data: [{% for receita in receitas %} {{ receita.valor_total }},{% endfor %}],
-            borderWidth: 2,
-            backgroundColor: 'transparent',
-            borderColor: 'rgba(254,86,83,.7)',
-            borderWidth: 2.5,
-            pointBackgroundColor: 'transparent',
-            pointBorderColor: 'transparent',
-            pointRadius: 4
-          },
-          {
-            label: 'Despesas',
-            data: [{% for despesa in despesas %} {{ despesa.valor }},{% endfor %}],
-            borderWidth: 2,
-            backgroundColor: 'transparent',
-            borderColor: 'rgba(63,82,227,.8)',
-            borderWidth: 0,
-            pointBackgroundColor: 'transparent',
-            pointBorderColor: 'transparent',
-            pointRadius: 4
-          },
-          ]
-        },
-        options: {
-          legend: {
-            display: false
-          },
-          scales: {
-            yAxes: [{
-              gridLines: {
-                drawBorder: false,
-                color: '#f2f2f2',
-              },
-              ticks: {
-                beginAtZero: true,
-                stepSize: 200
-              }
-            }],
-            xAxes: [{
-              gridLines: {
-                display: false
-              }
-            }]
-          },
-        }
-      });
-});
-
-</script>
-
-<script>
-
-var balance_chart = document.getElementById("balance-chart").getContext('2d');
-
-var balance_chart_bg_color = balance_chart.createLinearGradient(0, 0, 0, 70);
-balance_chart_bg_color.addColorStop(0, 'rgba(63,82,227,.2)');
-balance_chart_bg_color.addColorStop(1, 'rgba(63,82,227,0)');
-
-var balance_chart = new Chart(balance_chart, {
-  type: 'line',
-  data: {
-    labels: [{% for receita in receitas %} '{{ receita.data_pagamento |date:"d/m/Y" }}',{% endfor %}],
-    datasets: [{
-      label: 'Receitas R$',
-      data: [{% for receita in receitas %} {{ receita.valor_total }},{% endfor %}],
-      backgroundColor: balance_chart_bg_color,
-      borderWidth: 3,
-      borderColor: 'rgba(63,82,227,1)',
-      pointBorderWidth: 0,
-      pointBorderColor: 'transparent',
-      pointRadius: 3,
-      pointBackgroundColor: 'transparent',
-      pointHoverBackgroundColor: 'rgba(63,82,227,1)',
-    }]
-  },
-  options: {
-    layout: {
-      padding: {
-        bottom: -1,
-        left: -1
-      }
-    },
-    legend: {
-      display: false
-    },
-    scales: {
-      yAxes: [{
-        gridLines: {
-          display: false,
-          drawBorder: false,
-        },
-        ticks: {
-          beginAtZero: true,
-          display: false
-        }
-      }],
-      xAxes: [{
-        gridLines: {
-          drawBorder: false,
-          display: false,
-        },
-        ticks: {
-          display: false
-        }
-      }]
-    },
-  }
-});
-
-
-
-
-var sales_chart = document.getElementById("sales-chart").getContext('2d');
-
-var sales_chart_bg_color = sales_chart.createLinearGradient(0, 0, 0, 80);
-balance_chart_bg_color.addColorStop(0, 'rgba(63,82,227,.2)');
-balance_chart_bg_color.addColorStop(1, 'rgba(63,82,227,0)');
-
-var sales_chart = new Chart(sales_chart, {
-  type: 'line',
-  data: {
-    labels: ['16-07-2018', '17-07-2018', '18-07-2018', '19-07-2018', '20-07-2018', '21-07-2018', '22-07-2018', '23-07-2018', '24-07-2018', '25-07-2018', '26-07-2018', '27-07-2018', '28-07-2018', '29-07-2018', '30-07-2018', '31-07-2018'],
-    datasets: [{
-      label: 'Despesas',
-      data: [70, 62, 44, 40, 21, 63, 82, 52, 50, 31, 70, 50, 91, 63, 51, 60],
-      borderWidth: 2,
-      backgroundColor: balance_chart_bg_color,
-      borderWidth: 3,
-      borderColor: 'rgba(63,82,227,1)',
-      pointBorderWidth: 0,
-      pointBorderColor: 'transparent',
-      pointRadius: 3,
-      pointBackgroundColor: 'transparent',
-      pointHoverBackgroundColor: 'rgba(63,82,227,1)',
-    }]
-  },
-  options: {
-    layout: {
-      padding: {
-        bottom: -1,
-        left: -1
-      }
-    },
-    legend: {
-      display: false
-    },
-    scales: {
-      yAxes: [{
-        gridLines: {
-          display: false,
-          drawBorder: false,
-        },
-        ticks: {
-          beginAtZero: true,
-          display: false
-        }
-      }],
-      xAxes: [{
-        gridLines: {
-          drawBorder: false,
-          display: false,
-        },
-        ticks: {
-          display: false
-        }
-      }]
-    },
-  }
-});
-
-</script>
-
-<script>
-
-    // MAKE ROUNDED EDGES FOR PIE CHARTS
-Chart.defaults.RoundedDoughnut    = Chart.helpers.clone(Chart.defaults.doughnut);
-Chart.controllers.RoundedDoughnut = Chart.controllers.doughnut.extend({
-    draw: function(ease) {
-        var ctx           = this.chart.ctx;
-        var easingDecimal = ease || 1;
-        var arcs          = this.getMeta().data;
-        Chart.helpers.each(arcs, function(arc, i) {
-            arc.transition(easingDecimal).draw();
-
-            var pArc   = arcs[i === 0 ? arcs.length - 1 : i - 1];
-            var pColor = pArc._view.backgroundColor;
-
-            var vm         = arc._view;
-            var radius     = (vm.outerRadius + vm.innerRadius) / 2;
-            var thickness  = (vm.outerRadius - vm.innerRadius) / 2;
-            var startAngle = Math.PI - vm.startAngle - Math.PI / 2;
-            var angle      = Math.PI - vm.endAngle - Math.PI / 2;
-
-            ctx.save();
-            ctx.translate(vm.x, vm.y);
-
-            ctx.fillStyle = i === 0 ? vm.backgroundColor : pColor;
-            ctx.beginPath();
-            ctx.arc(radius * Math.sin(startAngle), radius * Math.cos(startAngle), thickness, 0, 2 * Math.PI);
-            ctx.fill();
-
-            ctx.fillStyle = vm.backgroundColor;
-            ctx.beginPath();
-            ctx.arc(radius * Math.sin(angle), radius * Math.cos(angle), thickness, 0, 2 * Math.PI);
-            ctx.fill();
-
-            ctx.restore();
-        });
-    }
-});
-
-
-// EXAMPLE 1
-var ctx1 = document.getElementById("pieChart1");
-var pieChart1 = new Chart(ctx1, {
-    type: 'RoundedDoughnut',
-    options: {
-        cutoutPercentage: 75,
-        legend: {
-            position: 'left',
-            labels: {
-                boxWidth: 10,
-                fontStyle: 'italic',
-                fontColor: '#aaa',
-                usePointStyle: true,
-            }
-        },
-
-    },
-    data: {
-        labels: [
-            "First",
-            "Second",
-            "Third",
-            "Fourth"
-        ],
-        datasets: [
-            {
-                data: [250, 100, 100, 200],
-                borderWidth: 0,
-                backgroundColor: [
-                    '#e63a54',
-                    '#d8f4ff',
-                    "#110f48",
-                    "#f8f8fa"
-                ],
-                hoverBackgroundColor: [
-                    '#e63a54',
-                    '#d8f4ff',
-                    "#110f48",
-                    "#f8f8fa"
-                ]
-            }]
-        }
-    });
-
-
-// EXAMPLE 2
-var ctx2 = document.getElementById("pieChart2");
-var pieChart2 = new Chart(ctx2, {
-    type: 'pie',
-    options: {
-        legend: {
-            position: 'left',
-            labels: {
-                boxWidth: 10,
-                fontStyle: 'italic',
-                fontColor: '#aaa',
-                usePointStyle: true,
-            }
-        },
-    },
-    data: {
-        labels: [
-            "First",
-            "Second",
-            "Third",
-            "Fourth"
-        ],
-        datasets: [
-            {
-                data: [300, 50, 100, 80],
-                borderWidth: 0,
-                backgroundColor: [
-                    '#44b2d7',
-                    "#59c2e6",
-                    "#71d1f2",
-                    "#96e5ff"
-                ],
-                hoverBackgroundColor: [
-                    '#44b2d7',
-                    "#59c2e6",
-                    "#71d1f2",
-                    "#96e5ff"
-                ]
-            }]
-        }
-    });
-
-
-
-// EXAMPLE 3
-var ctx3 = document.getElementById("pieChart3");
-var pieChart3 = new Chart(ctx3, {
-    type: 'pie',
-    options: {
-        legend: {
-            position: 'left',
-            labels: {
-                boxWidth: 10,
-                fontStyle: 'italic',
-                fontColor: '#aaa',
-                usePointStyle: true,
-            }
-        },
-    },
-    data: {
-        labels: [
-            "First",
-            "Second",
-            "Third"
-        ],
-        datasets: [
-            {
-                data: [300, 50, 100],
-                borderWidth: 7,
-                backgroundColor: [
-                    '#46d8d5',
-                    "#182390",
-                    "#f5e132",
-                ],
-                hoverBackgroundColor: [
-                    '#46d8d5',
-                    "#182390",
-                    "#f5e132",
-                ]
-            }]
-        }
-    });
-
-
-
-// EXAMPLE 4
-var ctx4 = document.getElementById("pieChart4");
-var pieChart4 = new Chart(ctx4, {
-    type: 'RoundedDoughnut',
-    options: {
-        cutoutPercentage: 70,
-        legend: {
-            position: 'left',
-            labels: {
-                boxWidth: 10,
-                fontStyle: 'italic',
-                fontColor: '#aaa',
-                usePointStyle: true,
-            }
-        },
-
-    },
-    data: {
-        labels: [
-            "First",
-            "Second",
-            "Third",
-            "Fourth"
-        ],
-        datasets: [
-            {
-                data: [250, 100, 100, 200],
-                borderWidth: 5,
-                backgroundColor: [
-                    '#615dff',
-                    '#ffb0d0',
-                    "#ff8bb9",
-                    "#f8f8fa"
-                    ],
-                    hoverBackgroundColor: [
-                        '#615dff',
-                        '#ffb0d0',
-                        "#ff8bb9",
-                        "#f8f8fa"
-                    ]
-                }]
-            }
-        });
-
-
-// EXAMPLE 5
-var ctx5 = document.getElementById("pieChart5");
-var pieChart5 = new Chart(ctx5, {
-    type: 'pie',
-    options: {
-        cutoutPercentage: 50,
-        legend: {
-            position: 'left',
-            labels: {
-                boxWidth: 10,
-                fontStyle: 'italic',
-                fontColor: '#aaa',
-                usePointStyle: true,
-            }
-        },
-    },
-    data: {
-        labels: [
-            "First",
-            "Second",
-        ],
-        datasets: [
-            {
-                data: [300, 50],
-                borderWidth: 2,
-                borderColor: [
-                    '#46d8d5',
-                    "#f5e132",
-                ],
-                backgroundColor: [
-                    'rgba(70, 215, 212, 0.22)',
-                    "rgba(245, 225, 50, 0.23)",
-                ],
-                hoverBackgroundColor: [
-                    '#46d8d5',
-                    "#f5e132",
-                ]
-            }]
-        }
-    });
-
-
-
-// EXAMPLE 6
-var ctx6 = document.getElementById("pieChart6");
-var pieChart6 = new Chart(ctx6, {
-    type: 'pie',
-    options: {
-        rotation: -20,
-        cutoutPercentage: 10,
-        animation: {
-            animateScale: true,
-        },
-        legend: {
-            position: 'left',
-            borderAlign: 'inner',
-            labels: {
-                boxWidth: 10,
-                fontStyle: 'italic',
-                fontColor: '#aaa',
-                usePointStyle: true,
-            }
-        },
-    },
-    data: {
-        labels: [
-            "First",
-            "Second",
-        ],
-        datasets: [
-            {
-                data: [300, 120],
-                borderWidth: 2,
-                backgroundColor: [
-                    'rgba(70, 215, 212, 0.2)',
-                    "rgba(245, 225, 50, 0.2)",
-                ],
-                borderColor: [
-                    '#46d8d5',
-                    "#f5e132",
-                ],
-                hoverBackgroundColor: [
-                    '#46d8d5',
-                    "#f5e132",
-                ]
-            }]
-        }
-    });
-
-
-
-// EXAMPLE 7
-var ctx7 = document.getElementById("pieChart7").getContext('2d');
-    var pieChart7 = new Chart(ctx7, {
-    type: 'RoundedDoughnut',
-    options: {
-        cutoutPercentage: 92,
-        borderAlign: 'center',
-        animation: {
-            duration: 2000,
-            easing: 'linear'
-        },
-        legend: {
-            position: 'top',
-            labels: {
-                padding: 10,
-                fontStyle: 'italic',
-                fontColor: '#333',
-                usePointStyle: true,
-            }
-        },
-    },
-    data: {
-        labels: [
-            "First",
-            "Second",
-            "Third",
-            "Fourth",
-        ],
-        datasets: [
-            {
-                data: [120, 50, 80, 140],
-                borderWidth: 6,
-                borderColor: '#fff',
-                backgroundColor: [
-                    '#f9d65c',
-                    "#a9d876",
-                    "#39be83",
-                    "#0e8a73",
-                ],
-                hoverBackgroundColor: [
-                    '#f9d65c',
-                    "#a9d876",
-                    "#39be83",
-                    "#0e8a73",
-                ]
-            }]
-        },
-    });
-
-
-    
-
-// EXAMPLE 8
-var ctx7 = document.getElementById("pieChart8").getContext('2d');
-    var pieChart7 = new Chart(ctx7, {
-    type: 'RoundedDoughnut',
-    options: {
-        cutoutPercentage: 92,
-        borderAlign: 'center',
-        animation: {
-            duration: 2000,
-            easing: 'linear'
-        },
-        legend: {
-            position: 'top',
-            labels: {
-                padding: 10,
-                fontStyle: 'italic',
-                fontColor: '#333',
-                usePointStyle: true,
-            }
-        },
-    },
-    data: {
-        labels: [
-            "First",
-            "Second",
-            "Third",
-            "Fourth",
-        ],
-        datasets: [
-            {
-                data: [120, 50, 80, 140],
-                borderWidth: 6,
-                borderColor: '#fff',
-                backgroundColor: [
-                    '#f9d65c',
-                    "#a9d876",
-                    "#39be83",
-                    "#0e8a73",
-                ],
-                hoverBackgroundColor: [
-                    '#f9d65c',
-                    "#a9d876",
-                    "#39be83",
-                    "#0e8a73",
-                ]
-            }]
-        },
-    });
-
-
-    
-</script>
-
-<script>
-    $(function() {
-
-$(".progresss").each(function() {
-
-  var value = $(this).attr('data-value');
-  var left = $(this).find('.progress-left .progress-bar');
-  var right = $(this).find('.progress-right .progress-bar');
-
-  if (value > 0) {
-    if (value <= 50) {
-      right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')
-    } else {
-      right.css('transform', 'rotate(180deg)')
-      left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
-    }
-  }
-
-})
-
-function percentageToDegrees(percentage) {
-
-  return percentage / 100 * 360
-
-}
-
-});
-
+ 
 
 </script>
 <script type="text/javascript">

@@ -1,0 +1,45 @@
+{% extends 'dashboard/base.html'%}
+{% load static %}
+
+
+{% block dashboard %}
+<style type="text/css">
+.card-setor
+{ 
+    display: flex;
+    flex-direction: row;
+}
+
+</style>
+<link rel="stylesheet" type="text/css" href="{% static 'css/acoes.css' %}">
+<div style="height: 110px!important;" class="section-header">
+  <h5 style="margin-top: -28px; color:#cccccc;" class="position-absolute ml-2 mb-4">Ativo</h5>
+  <br>
+  <h1 style="color: #8898aa; font-size: 40px;" class="mt-4 ml-2">{{ ativo.nome }}</h1>
+  <div class="section-header-breadcrumb">     
+    <i><img width="70" src="{{ ativo.logo }}" alt=""></i>
+
+    
+  </div>
+</div>
+<div class="section-body">
+  <a href="{% url 'acoes:setor_detail' ativo.setor.id %}">
+    <div class=" float-left icon-top text-dark voltar"  data-toggle="tooltip" data-placement="top" title="Voltar"><i class="fas fa-reply-all"></i>
+    </div>
+  </a>
+  <br> 
+  <h2 class="section-title">Informações da empresa <strong>{{ ativo.nome |lower }}</strong></h2>
+  <p class="section-lead">
+    Análise da situação financeira do ativo <strong class="text-primary font-weight-bold">{{ ativo.id |lower }}</strong> e das perspectivas da empresa, com o objetivo de avaliar o investimento.
+  </p>  
+   <!-- Dark table -->
+   <div class="row mt-5">
+    <div class="col">
+   
+    </div>
+  </div>
+
+
+
+  {% endblock %}
+ 

@@ -38,8 +38,8 @@ class Profile_View(LoginRequiredMixin, View):
 
 class Profile_Perfil_Investor(LoginRequiredMixin,View):
 
-    def get(self, request, usuario_id):
-        usuario = get_object_or_404(User, id = usuario_id)
+    def get(self, request):
+        
         quiz = Quiz.objects.all()
         questions = Question.objects.all()
 
@@ -82,9 +82,7 @@ class Profile_Perfil_Investor(LoginRequiredMixin,View):
 
 class Profile_Financial_Situation(LoginRequiredMixin, View):
 
-
-
-    def get(self, request, usuario_id):
+    def get(self, request):
 
         return render(request, 'quiz/dashboard/situation/index.html')
 
@@ -107,9 +105,7 @@ class List_Quiz_View(LoginRequiredMixin, View):
 
 class Created_Quiz_View(LoginRequiredMixin, View):
 
-    def get(self, request):
-
-        
+    def get(self, request):        
 
         return render(request, 'quiz/management/created.html')
 
@@ -227,7 +223,7 @@ class Question_List_View(LoginRequiredMixin, View):
 
     def get(self, request, question_id):
         
-        quiz = get_object_or_404(Quiz.objects, id = question_id)
+        quiz = get_object_or_404(Quiz, id = question_id)
         questions = Question.objects.filter(quiz_id = quiz.id)
         total = Question.objects.filter(quiz_id = quiz.id).count()
 
@@ -243,7 +239,6 @@ class Question_List_View(LoginRequiredMixin, View):
             
 
             })
-
 
 
 
@@ -292,38 +287,77 @@ class Question_Created_View(LoginRequiredMixin, View):
 
 
 
-            
+
+class Question_Updated_View(LoginRequiredMixin, View):
+
+    def get(self, request, question_id):
+
+      
+        
+        question = get_object_or_404(Question, id = question_id)
+        quiz = get_object_or_404(Quiz, id=  question.quiz.id )       
+
+
+        return render(request, 'quiz/management/questions/updated.html',{                    
+           
+            'question':question,
+            'quiz':quiz,
+
+            })
+
+
+    def post(self, request, question_id):
+
+        question = get_object_or_404(Question, id = question_id)
+        quiz = get_object_or_404(Quiz, id=  question.quiz.id )
+
+        if request.method == 'POST' :
+
+            name = request.POST.get('label')
+
+            print(name)
+
+
+            Question.objects.filter(id = question.id).update(                        
+                        
+                        label =  name,                       
+
+                        )
+
+            messages.success(request, 'Parabéns, A questão foi atualizada no banco de dados')
+            return HttpResponseRedirect(reverse('quiz:list_questions', args  = [ quiz.id ]))
+
 
 
 
 class Delete_Question_View(LoginRequiredMixin, View):
 
-    def get(self, request, quiz_id, question_id):
-
-      
+    def get(self, request, question_id):      
+            
         question = get_object_or_404(Question, id = question_id)
-        quiz = get_object_or_404(Quiz, id = quiz_id)
-
-
+        quiz = get_object_or_404(Quiz, id=  question.quiz.id )
 
 
         return render(request, 'quiz/management/questions/delete.html',{
 
-            'question':question,           
+                    
             'quiz':quiz,
+            'question':question,
 
 
             })
 
 
-    def post(self, request, quiz_id, question_id):
+    def post(self, request, question_id):
 
         question = get_object_or_404(Question, id = question_id)
+        quiz = get_object_or_404(Quiz, id=  question.quiz.id )
 
         question.delete()
 
         messages.success(request, 'Parabéns, A questão foi excluida no banco de dados')
-        return HttpResponseRedirect(reverse('quiz:list_questions', args  = [ quiz_id ]))
+        return HttpResponseRedirect(reverse('quiz:list_questions', args  = [ quiz.id ]))
+
 
 
 
@@ -331,13 +365,12 @@ class Delete_Question_View(LoginRequiredMixin, View):
 class Answer_List_View(LoginRequiredMixin, View):
 
 
-    def get(self, request, question_id):
+    def get(self, request,pk):
 
         
-        question = get_object_or_404(Question, id = question_id)
-        answers = Answer.objects.filter(question_id = question_id)
+        question = get_object_or_404(Question, id =pk)
+        answers = Answer.objects.filter(question_id =pk)
         quiz = get_object_or_404(Quiz, id = question.quiz.id)
-
         
 
         return render(request, 'quiz/management/questions/answer/list.html',{
@@ -349,8 +382,6 @@ class Answer_List_View(LoginRequiredMixin, View):
 
 
     
-
-
 
 
 class Answer_Created_View(LoginRequiredMixin, View):
@@ -373,7 +404,8 @@ class Answer_Created_View(LoginRequiredMixin, View):
 
         if request.method == 'POST':
 
-            name = request.POST.get('name')            
+            name = request.POST.get('name')
+            score = request.POST.get('score')
             order = Answer.objects.filter(question_id = question_id).count()
             question = get_object_or_404(Question, id = question_id)
             
@@ -392,6 +424,7 @@ class Answer_Created_View(LoginRequiredMixin, View):
                     question_id = question_id, 
                     label = name,
                     order = order,
+                    score = score,
                     
                     )
 
@@ -407,104 +440,83 @@ class Answer_Created_View(LoginRequiredMixin, View):
 
 
 
+class Answer_Updated_View(LoginRequiredMixin, View):
+
+
+    def get(self, request, question_id):
+       
+        
+        answer = get_object_or_404(Answer, id = question_id)
+        question = get_object_or_404(Question, id = answer.question.id)
+
+
+        return render(request, 'quiz/management/questions/answer/updated.html',{
+
+            'question':question,
+            'answer':answer,                        
+            })
+
+
+
+    def post(self, request, question_id):
+
+        answer = get_object_or_404(Answer, id = question_id)
+        question = get_object_or_404(Question, id = answer.question.id)
+
+        if request.method == 'POST':
+
+            name = request.POST.get('name')
+            score = request.POST.get('score')            
+            
+
+            Answer.objects.filter(id = question_id).update(
+
+                label = name,
+                score = score,
+            )
+
+            messages.success(request, 'Parabéns, A resposta foi atualizada no banco de dados com sucesso')
+            return HttpResponseRedirect(reverse('quiz:answer_list', args  = [ question.id ]))
+
+
+
+
+
+class Answer_Delete_View(LoginRequiredMixin, View):
+
+
+    def get(self, request, question_id):
+       
+        question = get_object_or_404(Question, id = question_id)
+        for answer in Answer.objects.filter( question_id = question.id):
+            answer
+
+
+        return render(request, 'quiz/management/questions/answer/delete.html',{
+
+            'question':question,
+            'answer':answer,                        
+            })
+
+
+
+    def post(self, request, question_id):
+
+        if request.method == 'POST':
+
+            question = get_object_or_404(Question, id = question_id)
+            for answer in Answer.objects.filter( question_id = question.id):
+                answer           
+            
+
+            answer.delete()
+
+            messages.success(request, 'Parabéns, A resposta foi excluida no banco de dados')
+            return HttpResponseRedirect(reverse('quiz:answer_list', args  = [ question_id ]))
+
+
+
      
-
-
-
+     
 #--------------------------------------------- API  ----------------------------------------------------
 
-class Question_Api_List(LoginRequiredMixin, View):
-    
-
-    def get(self, request):
-
-        if request.method == "GET":
-            try:
-                questions = []
-
-                for question in Question.objects.all():
-
-                    a = {'question': question.label, 'choice1':" ", 'choice2':" ", "choice3":" ", 'A':" ",'B':" ", 'C':" ",}
-
-                    for answer in Answer.objects.filter(question_id = question.id):
-                        answer
-                        if answer.order == 1:
-                            a['choice1'] = answer.label
-                            a['A'] = answer.score 
-                        elif answer.order == 2:
-                            a['choice2'] = answer.label
-                            a['B'] = answer.score  
-                        elif answer.order == 3:
-                            a['choice3'] = answer.label
-                            a['C'] = answer.score 
-
-                    questions.append(a) 
-                    
-                    
-
-
-                return JsonResponse({"questions": questions})
-            except:
-                return JsonResponse({"status": 1})
-
-
-
-
-class Situacao_Question_Api(LoginRequiredMixin, View):
-
-
-    def get(self, request):
-
-        if request.method == 'GET':
-
-            nome = request.GET.get('nome')
-            email = request.GET.get('email')
-
-            print(nome)
-            print(email)
-
-            return JsonResponse({'email':email})
-
-
-    def post(self, request):
-
-
-        if request.method == "POST":
-            nome = request.POST.get('nome')
-            email = request.POST.get('email')
-
-            print(nome)
-            print(email)
-
-            return JsonResponse({'email':email})
-
-
-
-
-
-class Question_User_View(LoginRequiredMixin, View):
-
-
-    def get(sel, request):
-        question = Question.objects.filter( id  = '3b02eae4-314a-413c-be2c-94377e6a8020')
-        return render(request, 'quiz/dashboard/situation/list.html' )
-
-
-
-class UsersAnswerAPIView(generics.ListAPIView):
-
-    queryset = UsersAnswer.objects.all()
-    serializer_class = UsersAnswerListSerializer
-
-
-
-class UserAnswerRetrieveAPIView(generics.RetrieveAPIView):
-
-    Lookup_field = 'id'
-    queryset = UsersAnswer.objects.all()
-    serializer_class = UsersAnsweraDetailSerializer 
-
-
-class UserAnswerCreateAPIView(generics.CreateAPIView):
-    queryset = UsersAnswer.objects.all()
-    serializer_class = UsersAnsweraDetailSerializer 

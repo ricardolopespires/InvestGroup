@@ -332,7 +332,7 @@ header{
 /*Quiz Questions*/
 #quiz #question {
     position: absolute;
-    top: 90px;
+    top: 95px;
     display: flex;
     flex-direction: row;
 }
@@ -351,7 +351,7 @@ header{
     height: 400px;
     width: 100%;
     position: absolute;
-    top: 160px;
+    top: 175px;
 
 }
 
@@ -397,12 +397,15 @@ header{
 #quiz #answersSection {
     
     height: 23px;
-    width: 0%;
-    background: #f8d201;
+    width: 95%;    
     position: absolute;
-    top: 457px;
-    left: 0px;
-    border-radius: 0px 0px 10px 10px;
+    top: 434px;
+    display: flex;
+    flex-direction: row;    
+    justify-content: end;
+    color: #fff;
+    
+    
     
 }
 
@@ -448,6 +451,19 @@ header{
     color: #ffffffca;
 }
 
+#result #perfil
+{
+    position: relative;
+    top: 292px;
+}
+
+
+#result #pontuacao
+{
+    position: relative;
+    top: 0px;
+    left: 10px;
+}
 #result #points {
     font-size: 30px;
     top: 275px;

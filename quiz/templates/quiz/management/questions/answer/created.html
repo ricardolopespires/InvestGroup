@@ -6,7 +6,7 @@
 
 
 {% block management %}
-<link rel="stylesheet" href="{% static 'css/administration.css' %}">
+
 <section class="section">
 
     <div style="height: 110px!important;" class="section-header">
@@ -21,8 +21,8 @@
 </section>
 <div class="section-body ">
     <a href="{% url 'quiz:answer_list' question.id %}">
-    <div class=" float-left icon-top text-dark add-despesas"  data-toggle="tooltip" data-placement="top" title="Voltar">
-        <i class="fas fa-reply-all"></i>
+    <div class=" float-left icon-top text-dark voltar"  data-toggle="tooltip" data-placement="top" title="Voltar">
+        <i  style="font-size: 40px;" class="fas fa-reply-all"></i>
     </div>
     </a>
     <br>
@@ -45,19 +45,28 @@
                  
                         {% csrf_token %}
                         <div class="row">                        
-                        <div class="col-md-12">
+                        <div class="col-md-8">
                             <div class="form-group">
                                 <p>
                                     <label for="id_title">Title:</label>
                                     <input class="form-control" type="text" name="name" maxlength="400" required id="id_title">
-                                    <span class="helptext">A Perguntas do questionario</span>
+                                    <span class="helptext">A Perguntas do questionario <strong class="text-info">{{ question}}</strong></span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <p>
+                                    <label for="id_title">Pontuação:</label>
+                                    <input class="form-control" type="number" name="score" maxlength="400" required id="id_title">
+                                    <span class="helptext">Valor da Pontuação da questão</span>
                                 </p>
                             </div>
                         </div>                                      
                     </div>                  
                 </div>                
                 <div class="card-footer text-right">
-                    <button class="btn btn-outline-success mr-1" type="submit">Created</button>
+                    <button class="btn btn-outline-success mr-1" type="submit">Adicionar</button>
                     <button class="btn btn-danger" type="reset">Cancelar</button>
                 </div>
                 </form>  

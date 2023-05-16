@@ -1,0 +1,152 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+
+
+
+
+{% block dashboard %}
+    
+<style>
+.bg-warning
+{
+  background: #ffa426!important;
+}
+
+</style>
+  <section class="section">
+    <div class="row">            
+      <div class="col-lg-4 col-md-4 col-sm-12">
+        <div class="card card-statistic-2">
+          <div class="card-stats">
+            <div class="card-stats-title">Gerenciamento de Trading
+              <div class="dropdown d-inline ml-2">
+                {% if month == '1' %}                      
+                <a href="#" class="font-weight-600 dropdown-toggle"> Janeiro</a>
+                {% elif month == '2' %}
+                <li><a href="#" class="font-weight-600 dropdown-toggle"> Fevereiro</a></li>
+                {% elif month == '3' %}
+                <a href="#" class="font-weight-600 dropdown-toggle"> Março</a>
+                {% elif month == '4' %}
+                <a href="#" class="font-weight-600 dropdown-toggle"> Abril</a>
+                {% elif month == '5' %}
+                <a href="#" class="font-weight-600 dropdown-toggle"> Maio</a>
+                {% elif month == '6' %}
+                <a href="#" class="font-weight-600 dropdown-toggle"> Junho</a>
+                {% elif month == '7'  %}
+                <a href="#" class="font-weight-600 dropdown-toggle"> Julho</a>
+                {% elif month == '8' %}
+                <a href="#" class="font-weight-600 dropdown-toggle">Agosto</a>
+                {% elif month == '9' %}
+                <a href="#" class="font-weight-600 dropdown-toggle">Setembro</a>
+                {% elif month == '10' %}
+                <a href="#" class="font-weight-600 dropdown-toggle">Outubro</a>
+                {% elif month == '11' %}
+                <a href="#" class="font-weight-600 dropdown-toggle">Novembro</a>
+                {% else %}
+                <a href="#" class="font-weight-600 "> Dezembro</a>
+                {% endif %}                      
+              </div>
+            </div>
+            <div class="card-stats-items">
+              <div class="card-stats-item">
+                      {% if condominio.caixa > 0%}
+                      <div class="card-stats-item-count">R$: {{ condominio.caixa  }}</div>
+                      {% else %}
+                      <div class="card-stats-item-count">R$: 0,00</div>
+                      {% endif %}
+                      <div class="card-stats-item-label">Operações</div>
+              </div>
+              <div class="card-stats-item">
+                      {% if condominio.receitas > 0 %}
+                      <div class="card-stats-item-count text-su">R$: {{ condominio.receitas }}</div>
+                      {% else %}
+                      <div class="card-stats-item-count">R$: 0,00</div>
+                      {% endif %}
+                      <div class="card-stats-item-label">Profit</div>
+              </div>
+              <div class="card-stats-item">
+                      {% if condominio.despesas > 0 %}
+                      <div class="card-stats-item-count">R$:{{ condominio.despesas }}</div>
+                      {% else %}
+                      <div class="card-stats-item-count">R$: 0,00</div>
+                      {% endif %}
+                      <div class="card-stats-item-label">Loss</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon shadow-primary">
+            <i class="fas fa-dollar-sign"></i>
+          </div>
+          <div class="card-wrap">
+            <div class="card-header">
+              <h4>Capital Total</h4>
+            </div> 
+            <div class="card-body">
+              R$:
+              {% if condominio.caixa > 0%}          
+                  <span class="text-success"> + {{ condominio.caixa }}</span>              
+              {% elif condominio.caixa < 0 %}             
+                  <span class="text-danger"> {{ condominio.caixa }}</span>              
+              {% else %}         
+                0,00              
+              {% endif %}
+              </div>                   
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-12">
+              <div class="card card-statistic-2">
+                <div class="card-chart">
+                  <canvas id="balance-chart" height="80"></canvas>
+                </div>
+                <div class="card-icon shadow-primary">
+                  <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="card-header">
+                    <h4>Profit</h4>
+                  </div>
+                  <div class="card-body">
+                     587
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+              <div class="card card-statistic-2">
+                <div class="card-chart">
+                  <canvas id="sales-chart" height="80"></canvas>
+                </div>
+                <div class="card-icon shadow-primary">
+                  <i class="fas fa-shopping-bag"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="card-header">
+                    <h4>Loss</h4>
+                  </div>
+                  <div class="card-body">
+                    473
+                  </div>
+                </div>
+              </div>
+            </div>
+                 
+    </div>
+  <div class="section-body">
+    <h2 class="section-title">Trading</h2>
+      <p class="section-lead">
+         O trader é uma atividade intensa, que exige estratégia, equilíbrio e disciplina para lidar com o sobe e desce do mercado e colocar o lucro no bolso.
+      </p>
+
+    <div class="row">
+
+    </div>
+  </div>
+  </section>   
+<!---->
+
+<script type="text/javascript" src="{% static 'js/trading.js' %}"></script>
+
+
+{% endblock %}

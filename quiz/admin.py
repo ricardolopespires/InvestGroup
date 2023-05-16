@@ -7,28 +7,31 @@ import nested_admin
 
 
 @admin.register(Quiz)
-class AnswerInline(ImportExportModelAdmin):
-	list_display = ['name', 'topic', 'percentage','total']
+class AnswerAdmin(ImportExportModelAdmin):
+	list_display = ['id','name', 'topic', 'percentage','total']
 	prepopulated_fields = {"slug": ("name",)}
 
 	
 
 
 @admin.register(Question)
-class QuestionInline(ImportExportModelAdmin):
-	list_display  = ['order','label','answers']
+class QuestionAmin(ImportExportModelAdmin):
+	list_display  = ['id','order','label','answers']
+	search_fields = ['label']
 
 
 
 @admin.register(Answer)
 class QuizAdmin(ImportExportModelAdmin):
-	list_display = ['label','score']
+	list_display = ['id','question','label','score']
+	list_filter = ['question']
+	search_fields = ['label']
 
 
 
 @admin.register(QuizTaker)
-class UsersAnswerInline(ImportExportModelAdmin):
-	list_display = ['id']
+class UsersAnswerAdmin(ImportExportModelAdmin):
+	list_display = ['id',]
 
 
 

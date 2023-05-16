@@ -20,14 +20,15 @@
   
 </section>
  <div class="section-body ">
-    <a href="{% url 'quiz:quiz_detail' subject.id %}">
-    <div class=" float-right icon-top text-dark add-despesas"  data-toggle="tooltip" data-placement="top" title="Voltar">
+    <a href="{% url 'quiz:list_questions' quiz.id %}">
+    <div class=" float-left icon-top text-dark add-despesas"  data-toggle="tooltip" data-placement="top" title="Voltar">
       <i class="fas fa-reply-all"></i>
     </div>
   </a>
+  <br>
   <h2 class="section-title">Deletar a Questão</h2>
   <p class="section-lead">
-     A ação exclui a questão<strong> Nº {{ quiz.order }}</strong> - <strong class="text-danger">{{ quiz.name }}</strong> vai apagar do banco de dados.
+     A ação exclui a questão<strong><span class="text-primary"> Nº </span>{{ question.order }}</strong> - <strong class="text-danger">{{ question.label }}</strong> vai apagar do banco de dados.
   </p>
   <div class="row">
     <div class="col-12 col-md-12 col-sm-12">

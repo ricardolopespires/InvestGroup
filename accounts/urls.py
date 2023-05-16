@@ -14,5 +14,25 @@ urlpatterns =[
     path('register/',views.Register_User_View.as_view(), name = 'register'),
 
 
+    path('perfil/list/',views.Perfil_Investor_View.as_view(), name = 'list'),
+
+    #-------------------------------------- Api Perfil Usuarios ---------------------------------------------------------
+
+
+    path('quiz/perfil/usuario/list/',views.perfilList),
+    path('quiz/perfil/usuario/detail/<int:pk>/',views.perfilDetail),
+    path('quiz/perfil/usuario/create/',views.perfilCreate),
+    path('quiz/perfil/usuario/update/<int:pk>/',views.perfilUpdate),
+    path('quiz/perfil/usuario/delete/<int:pk>/',views.perfilDelete),
+
+     #-------------------------------------- Api Situação Usuarios ---------------------------------------------------------
+
+    path('quiz/situacao/usuario/list/',views.situacaoList),
+    path('quiz/situacao/usuario/detail/<int:pk>/',views.situacaoDetail),
+    path('quiz/situacao/usuario/create/',views.situacaoCreate),
+    path('quiz/situacao/usuario/update/<int:pk>/',views.situacaoUpdate),
+    path('quiz/situacao/usuario/delete/<int:pk>/',views.perfilDelete),
+
+
     
 ]

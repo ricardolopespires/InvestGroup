@@ -3,6 +3,18 @@ i{% extends 'dashboard/base.html'%}
 
 
 {% block dashboard %}
+<style type="text/css">
+  .add i
+  {
+    font-size: 40px;
+
+  }
+
+  .add i:hover
+  {
+    color: yellowgreen;
+  }
+</style>
 <link rel="stylesheet" type="text/css" href="{% static 'css/forex.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/card.css' %}">
 <div style="height: 110px!important;" class="section-header">
@@ -35,13 +47,15 @@ i{% extends 'dashboard/base.html'%}
             </div>
             <div class="icon arrow"></div>
             <div class="icon dots"><i class="fas fa-thermometer-empty"></i></div>
-            <div class="name">{{ pais.name }}</div>
-            <div class="about">{{ pais.official }}</div>
+            <div class="name">{{ pais.name  }}</div>
+            <div class="about">{{ pais.official |truncatechars:28}}</div>
             <br>
             <br>
 
             <div class="buttons">
-              <button>Mais Informações</button>             
+              <a href="{% url 'economia:europa_detail' pais.id %}">
+                <button>Mais Informações</button>             
+              </a>
             </div>
             <div class="social-share">
               {% for currency in pais.currencies.all %}

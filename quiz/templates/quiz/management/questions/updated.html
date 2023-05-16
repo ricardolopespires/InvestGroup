@@ -20,11 +20,12 @@
   
 </section>
 <div class="section-body ">
-    <a href="{% url 'quiz:list_question' quiz.id %}">
-    <div class=" float-right icon-top text-dark add-despesas"  data-toggle="tooltip" data-placement="top" title="Voltar">
+    <a href="{% url 'quiz:list_questions' quiz.id %}">
+    <div class=" float-left icon-top text-dark add-despesas"  data-toggle="tooltip" data-placement="top" title="Voltar">
         <i class="fas fa-reply-all"></i>
     </div>
     </a>
+    <br>
     <h2 class="section-title">Atualização das Questões</h2>
     <p class="section-lead">
         Atualização da  questão <strong class="text-primary">{{ quiz.name }}</strong> para melhorias. 
@@ -44,31 +45,17 @@
                  
                         {% csrf_token %}
                         <div class="row">                        
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <p>
                                     <label for="id_title">Name:</label>
-                                    <input class="form-control" value="{{ quiz.name }}" type="text" name="name" maxlength="400" required id="id_title">
+                                    <input class="form-control" value="{{ question.label }}" type="text" name="label" maxlength="400" required id="id_title">
                                     <span class="helptext">A Perguntas do questionario</span>
                                 </p>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <p>
-                                    <label for="id_subject">Subject:</label>
-                                    <select class="form-control" name="subject" required id="id_subject" multiple>
-                                      {% for subject in quiz.subject.all  %}
-                                      <option value="{{ subject.id }}">{{ subject.title }}</option>
-                                      {% endfor %}
-                                      
-                                    </select>
-                                  </p>
-                            </div>
-                        </div> 
-                                                    
-                </div>                  
-                </div>                
+                        </div>                                           
+                        </div>                  
+                    </div>                
                 <div class="card-footer text-right">
                     <button class="btn btn-outline-success mr-1" type="submit">Atualizar</button>
                     <button class="btn btn-danger" type="reset">Cancelar</button>

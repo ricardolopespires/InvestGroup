@@ -4,124 +4,10 @@
 
 {% block dashboard %}
 <style type="text/css">
-  .gray-bg {
-    background-color: #f5f5f5;
-}
-img {
-    max-width: 100%;
-}
-img {
-    vertical-align: middle;
-    border-style: none;
-}
-/* About Me 
----------------------*/
-.about-text h3 {
-  font-size: 45px;
-  font-weight: 700;
-  margin: 0 0 6px;
-}
-@media (max-width: 767px) {
-  .about-text h3 {
-    font-size: 35px;
-  }
-}
-.about-text h6 {
-  font-weight: 600;
-  margin-bottom: 15px;
-}
-@media (max-width: 767px) {
-  .about-text h6 {
-    font-size: 18px;
-  }
-}
-.about-text p {
-  font-size: 18px;
-  max-width: 450px;
-}
-.about-text p mark {
-  font-weight: 600;
-  color: #20247b;
-}
 
-.about-list {
-  padding-top: 10px;
-}
-.about-list .media {
-  padding: 5px 0;
-}
-.about-list label {
-  color: #20247b;
-  font-weight: 600;
-  width: 88px;
-  margin: 0;
-  position: relative;
-}
-.about-list label:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 11px;
-  width: 1px;
-  height: 12px;
-  background: #20247b;
-  -moz-transform: rotate(15deg);
-  -o-transform: rotate(15deg);
-  -ms-transform: rotate(15deg);
-  -webkit-transform: rotate(15deg);
-  transform: rotate(15deg);
-  margin: auto;
-  opacity: 0.5;
-}
-.about-list p {
-  margin: 0;
-  font-size: 15px;
-}
-
-@media (max-width: 991px) {
-  .about-avatar {
-    margin-top: 30px;
-  }
-}
-
-.about-section .counter {
-  padding: 22px 20px;
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 0 30px rgba(31, 45, 61, 0.125);
-}
-.about-section .counter .count-data {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-.about-section .counter .count {
-  font-weight: 700;
-  color: #20247b;
-  margin: 0 0 5px;
-}
-.about-section .counter p {
-  font-weight: 600;
-  margin: 0;
-}
-mark {
-    background-image: linear-gradient(rgba(252, 83, 86, 0.6), rgba(252, 83, 86, 0.6));
-    background-size: 100% 3px;
-    background-repeat: no-repeat;
-    background-position: 0 bottom;
-    background-color: transparent;
-    padding: 0;
-    color: currentColor;
-}
-.theme-color {
-    color: #fc5356;
-}
-.dark-color {
-    color: #20247b;
-}
 
 </style>
-<link rel="stylesheet" type="text/css" href="{% static 'css/card.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/economia.css' %}">
 <div style="height: 110px!important;" class="section-header">
   <h5 style="margin-top: -28px; color:#cccccc;" class="position-absolute ml-2 mb-4">America do Sul</h5>
   <br>
@@ -134,56 +20,150 @@ mark {
 </div>
 <div class="section-body mb-5">
 <a href="{% url 'economia:america_sul' %}">
-    <div class=" float-right icon-top text-dark add"  data-toggle="tooltip" data-placement="top" title="Voltar"><i class="fas fa-reply-all"></i>
+    <div class=" float-left icon-top text-dark voltar"  data-toggle="tooltip" data-placement="top" title="Voltar"><i class="fas fa-reply-all"></i>
     </div>
-  </a>  
+  </a>
+  <br>  
   <h2 class="section-title">Informações do {{pais.name }}</h2>
   <p class="section-lead">
     Informações da Econômina da <strong class="text-success">{{ pais.official }} </strong >para saber qual as tendências desses ativos é importante
   </p>
   <div class="row mt-sm-4">
     <div class="col-12 col-md-12 col-lg-12">
-      <div class="card profile-widget">
-        <div class="profile-widget-header">
-          <img alt="image" src="{{ pais.flags }}" class="img-fluid img-thumbnail profile-widget-picture">
-          <div class="profile-widget-items">
-            <div class="profile-widget-item">
-              <div class="profile-widget-item-label">PIB</div>
-              <div class="profile-widget-item-value">187</div>
+      <div class="wrapper">
+        <div class="icon arrow"><i class="fas fa-arrow-up text-success" data-toggle="tooltip" data-placement="top" title="PIB"></i></div>
+        <div class="icon dots"><i class="fas fa-thermometer-empty "  data-toggle="tooltip" data-placement="top" title="Inflação Baixa"></i></div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="img-area">
+                    <div class="inner-area">
+                        <img src="{{ pais.flags }}" alt="">
+                    </div>
+                </div>
             </div>
-            <div class="profile-widget-item">
-              <div class="profile-widget-item-label">Selic</div>
-              <div class="profile-widget-item-value">6,8K</div>
+            <div class="col-md-10">
+                <div class="description"> 
+                <div class="name">{{pais.name }}</div>
+                <div class="about">{{ pais.official }}</div>
+                <br>
+                <h5 class="text-dark">Descrição</h5>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+                <div class="social-share">
+                  <div class="row">
+                    <span class="mr-2">PIB </span>
+                    <span >20.4</span>
+                  </div>
+                  <div class="row">
+                    <span class="mr-2">SELIC </span>
+                    <span>14.3</span>
+                  </div>
+                  <div class="row">
+                    <span class="mr-2">IPCA </span>
+                    <span>12.8</span>
+                  </div>
+                    </div>
+                </div> 
             </div>
-            <div class="profile-widget-item">
-              <div class="profile-widget-item-label">IPCA</div>
-              <div class="profile-widget-item-value">2,1K</div>
+        </div>   
+      </div>   
+    </div>
+    <br>
+    <br>
+    <div class="col-12">
+         <div class="card">
+            <div class="card-header border-0">
+              <h3 class="mb-0">Card tables</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Index</th>
+                    <th scope="col">Pontos</th>
+                    <th scope="col">Alta</th>
+                    <th scope="col">Baixa</th>
+                    <th scope="col">Valor</th>
+                    <th scope="col">Porcent</th>
+                    <th scope = "col" >Tempo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      <div class="media align-items-center">
+                        <a href="#" class="  mr-3">
+                          <img alt="Image placeholder" width="40" src="{{ pais.flags }}">
+                        </a>
+                        <div class="media-body">
+                          <span class="mb-0 text-sm">Bovespa</span>
+                        </div>
+                      </div>
+                    </th>
+                    <td>
+                      113,028.00
+                    </td>
+                    <td>
+                      113,040.00
+                    </td>
+                    <td>
+                      111,669.00
+                    </td>
+                    <td>
+                      <span class="text-success">+1,291</span>
+                    </td>
+                    <td class="text-right">
+                      <span class="text-success">+1.16% </span>
+                    </td>
+                    <td>24/01 <i class="far fa-clock ml-2 text-danger"></i></td>
+                  </tr>
+                 
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer py-4">
+              <nav aria-label="...">
+                <ul class="pagination justify-content-end mb-0">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">
+                      <i class="fas fa-angle-left"></i>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">
+                      <i class="fas fa-angle-right"></i>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
-        </div>
-        <div class="profile-widget-description">
-          <div class="profile-widget-name">{{pais.name }}<div class="text-muted d-inline font-weight-normal"><div class="slash"></div> {{ pais.official }}</div></div>
-            Ujang maman is a superhero name in <b>Indonesia</b>, especially in my family. He is not a fictional character but an original hero in my family, a hero for his children and for his wife. So, I use the name as a user in this template. Not a tribute, I'm just bored with <b>'John Doe'</b>.
-        </div>
-        <div class="card-footer text-center">
-                    <div class="font-weight-bold mb-2">Follow Ujang On</div>
-                    <a href="#" class="btn btn-social-icon btn-facebook mr-1">
-                      <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" class="btn btn-social-icon btn-twitter mr-1">
-                      <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="btn btn-social-icon btn-github mr-1">
-                      <i class="fab fa-github"></i>
-                    </a>
-                    <a href="#" class="btn btn-social-icon btn-instagram">
-                      <i class="fab fa-instagram"></i>
-                    </a>
-                  </div>
-      </div>
+          <br>
+          <br>
+          <div>
+        </div>   
     </div>
-  </div>   
 </div>
+
+
+<script type="text/javascript">
+    
+</script>
 
 
 {% endblock %}

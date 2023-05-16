@@ -132,14 +132,17 @@
                     <div id="optionList">
                         <h4 class="choice_que" data-number = "1" id="option1"></h4>
                         <h4 class="choice_que" data-number = "2" id="option2"></h4>
-                        <h4 class="choice_que" data-number = "3"  id="option3"></h4>                        
+                        <h4 class="choice_que" data-number = "3"  id="option3"></h4>
+                        <h4 class="choice_que" data-number = "4"  id="option4"></h4>                        
                     </div>
 
                     <!--  Answers Section-->
 
                     <div id="answersSection">
-                        <h3 id="total_correct">3 de 10 Perguntas</h3>
-                        <h3 id="next_question" onclick="proxima()">Proxima</h3>
+                        <h3 id="total_correct">
+                          <span id="answer"></span> de 
+                          <span id="total"></span> Perguntas
+                        </h3>                        
                     </div>
                 </div>
                 <!--   Result Section  -->
@@ -147,9 +150,9 @@
                     <div class="completed">                       
                         <i class="fas fa-trophy"></i>
                         <h6>Você concluiu o questionário</h6>
-                        <h6 id="perfil" >O seu Perfil de Investidor é <span id="perfil-result"></span></h6>
-                        <button id="quit" onclick="finalizar()">Quit Quiz</button>
-                        <button id="startAgain" onclick="finalizar()">Continue</button>
+                        <h6 id="perfil" >O seu Perfil de Investidor é
+                          <span id="pontuacao"></span>
+                        </h6>                        
                 </div>
             </div>
         </div> 
@@ -170,14 +173,15 @@
     <!-- Principal JavaScript do Bootstrap
     ================================================== -->
     <!-- Foi colocado no final para a página carregar mais rápido -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" ></script>
+    
     <script src="../../assets/js/vendor/popper.min.js"></script>
     <script src="../../dist/js/bootstrap.min.js"></script>
     <script src="../../assets/js/vendor/holder.min.js"></script>
 
     <script type="text/javascript" src="{% static 'js/messages.js'  %}"></script>
-     <script src="{% static 'js/quiz.js' %}"></script>
+    <script src="{% static 'js/perfil.js' %}"></script>
+  
   
   </body>
 </html>

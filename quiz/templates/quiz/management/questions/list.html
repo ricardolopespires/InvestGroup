@@ -55,11 +55,11 @@
                   <div class="card-header">
                     <h4 class="text-dark" >Questões sobre <span class="text-primary">{{ quiz.name  }}</span></h4>
                     <div class="card-header-action">                     
-                      <a href="#" class="btn btn-warning"  data-toggle="tooltip" data-placement="top" title="Atualizar o questionário">
+                      <a href="{% url 'quiz:updated_quiz' quiz.id  %}" class="btn btn-warning"  data-toggle="tooltip" data-placement="top" title="Atualizar o questionário">
                         Atualizar 
                         <i class="far fa-edit"></i>
                       </a>
-                      <a href="#" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Excluir o questionário">
+                      <a href="{% url 'quiz:delete_quiz' quiz.id  %}" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Excluir o questionário">
                         Excluir 
                         <i class="fas fa-trash"></i>
                       </a>   
@@ -81,7 +81,7 @@
                         {% for question in questions %}                         
                           <tr class="text-center">
                             <td>{{ question.order }}</td>
-                            <td ><a class="text-decoration-none" style="color: #6c757d;" href="{% url 'quiz:answer_list' question.id %}">{{ question.label |truncatechars:50}}</a></td>                                  
+                            <td ><a class="text-decoration-none" style="color: #6c757d;" href="{% url 'quiz:answer_list' question.id %}">{{ question.label | slice:"40"}}</a></td>                                  
                             <td>{{ question.quiz }}</td>
                             <td>
                               <div class="badges">
@@ -95,10 +95,10 @@
                             </td>      
                             <td>
                                 <div class="buttons">
-                                  <a href="#" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title="Atualizar a questão">
+                                  <a href="{% url 'quiz:updated_questions' question.id %}" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title="Atualizar a questão">
                                     <i class="far fa-edit"></i>
                                   </a>         
-                                  <a href="#" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title="Excluir a Questão">
+                                  <a href="{% url 'quiz:delete_questions' question.id %}" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title="Excluir a Questão">
                                     <i class="fa fa-trash"></i>
                                   </a>         
                                 </div>

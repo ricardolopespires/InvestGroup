@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+  <title>InvestGroup | Planejamento Financeiro - Finanças Pessoais</title>
+
+     <!-- Principal CSS do Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">    
+    <script src="https://kit.fontawesome.com/55bcbae4d6.js" crossorigin="anonymous"></script>
+
+    <!-- Estilos customizados para esse template -->
+    <link href="{% static 'css/planejamento.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+</head>
+<body>
+<header>
+    <div class="container">
+        <a href="{% url 'index' %}" class="logo">
+            <img class="d-block mx-auto mb-4" src="{% static 'img/logo.png' alt = 'logo' %}" alt="" width="190" >
+        </a>
+    </div>
+</header>
+<main>
+    <div class="section-body">
+        <h2 class="section-title">Seu Planejamento Financeiro</h2>
+        <p class="section-lead">
+            Organizar as finanças é fundamental para garantir segurança e tranquilidade para alcançar a sua independência financeira.
+        </p>
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-6">            
+            <div class="row">
+                <div class="col-12">
+                    <div class="wrapper">
+                         <input type="checkbox" id="click">
+                         <label class="btn-1" for="click">Renda Mensal</label>
+                         <div class="field">
+                            <input type="text" placeholder="Digite sua renda" id="renda">
+                            <label for="click" id="button" class="btn-2">Enviar</label>
+                         </div>
+                      </div>
+                </div>
+                <div class="col-12">
+                    <div class="card table-result">
+                        <div class="card-header">
+                            <h4>Planejamento financeiro</h4>                   
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="sortable-table">
+                                    <thead>
+                                        <tr>                         
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>                                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody >                                      
+                                        <tr>
+                                            <td>Despesa basica</td>                                             
+                                            <td><span>R$ </span> <span id="basica"></span></td>
+                                            <td>50%</td> 
+                                        </tr>
+                                        <tr>
+                                            <td>Estilo de vida</td>
+                                            <td><span>R$ </span>  <span id="vida"></span></td>             
+                                            <td>30%</td>                                                       
+                                        </tr>
+                                        <tr>
+                                            <td>Investimento</td>
+                                            <td><span>R$ </span> <span id="investimento"></span></td>
+                                            <td>20%</td>                                    
+                                        </tr>
+                                          <tr>
+                                            <td>Sua renda Atual</td>                                    
+                                            <td ><span>R$ </span> <span id="atual"></span></td>
+                                             <td>100%</td>
+                                        </tr>                                                           
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-6">
+                <img class="banner-planejamento" src="{% static 'img/banner-planejamento.png' %}">
+          </div>
+          <div class="col-6">
+             
+          </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+</main>
+
+
+<script type="text/javascript" src="{% static 'js/planejamento.js'%}"></script>
+</body> 
+</html>
+

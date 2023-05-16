@@ -3,6 +3,18 @@
 
 
 {% block dashboard %}
+<style type="text/css">
+  .add i
+  {
+    font-size: 40px;
+
+  }
+
+  .add i:hover
+  {
+    color: yellowgreen;
+  }
+</style>
 <link rel="stylesheet" type="text/css" href="{% static 'css/forex.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/card.css' %}">
 <div style="height: 110px!important;" class="section-header">
@@ -41,7 +53,7 @@
             <br>
 
             <div class="buttons">
-              <button>Mais Informações</button>             
+              <a href="{% url 'economia:america_norte_detail' pais.id %}"><button>Mais Informações</button></a>          
             </div>
             <div class="social-share">
               {% for currency in pais.currencies.all %}

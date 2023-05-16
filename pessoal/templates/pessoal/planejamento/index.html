@@ -1,0 +1,311 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+
+
+
+
+{% block dashboard %}
+<style type="text/css">
+  
+.add i
+{
+  font-size: 40px;
+}
+
+.add i:hover
+{
+  color: yellowgreen;
+}
+</style>
+<section class="section">
+    <div class="row">            
+      	<div class="col-lg-4 col-md-4 col-sm-12">
+        <div class="card card-statistic-2">
+          <div class="card-stats">
+            <div class="card-stats-title">Gerenciamento Financeiro
+              <div class="dropdown d-inline ml-2">
+                {% if month == 1 %}                      
+                <a href="#" class="font-weight-600 dropdown-toggle"> Janeiro</a>
+                {% elif month == 2 %}
+                <li><a href="#" class="font-weight-600 dropdown-toggle"> Fevereiro</a></li>
+                {% elif month == 3 %}
+                <a href="#" class="font-weight-600 dropdown-toggle"> Março</a>
+                {% elif month == 4 %}
+                <a href="#" class="font-weight-600 dropdown-toggle"> Abril</a>
+                {% elif month == 5 %}
+                <a href="#" class="font-weight-600 dropdown-toggle"> Maio</a>
+                {% elif month == 6 %}
+                <a href="#" class="font-weight-600 dropdown-toggle"> Junho</a>
+                {% elif month == 7  %}
+                <a href="#" class="font-weight-600 dropdown-toggle"> Julho</a>
+                {% elif month == 8 %}
+                <a href="#" class="font-weight-600 dropdown-toggle">Agosto</a>
+                {% elif month == 9 %}
+                <a href="#" class="font-weight-600 dropdown-toggle">Setembro</a>
+                {% elif month == 10 %}
+                <a href="#" class="font-weight-600 dropdown-toggle">Outubro</a>
+                {% elif month == 11 %}
+                <a href="#" class="font-weight-600 dropdown-toggle">Novembro</a>
+                {% else %}
+                <a href="#" class="font-weight-600 "> Dezembro</a>
+                {% endif %}                      
+              </div>
+            </div>
+            <div class="card-stats-items">
+              <div class="card-stats-item">
+                      {% if condominio.caixa > 0%}
+                      <div class="card-stats-item-count">R$: {{ condominio.caixa  }}</div>
+                      {% else %}
+                      <div class="card-stats-item-count">R$: 0,00</div>
+                      {% endif %}
+                      <div class="card-stats-item-label">Receitas</div>
+              </div>
+              <div class="card-stats-item">
+                      {% if condominio.receitas > 0 %}
+                      <div class="card-stats-item-count text-su">R$: {{ condominio.receitas }}</div>
+                      {% else %}
+                      <div class="card-stats-item-count">R$: 0,00</div>
+                      {% endif %}
+                      <div class="card-stats-item-label">Despesas</div>
+              </div>
+              <div class="card-stats-item">
+                      {% if condominio.despesas > 0 %}
+                      <div class="card-stats-item-count">R$:{{ condominio.despesas }}</div>
+                      {% else %}
+                      <div class="card-stats-item-count">R$: 0,00</div>
+                      {% endif %}
+                      <div class="card-stats-item-label">Cartão</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-icon shadow-primary ">
+            <i class="fas fa-wallet"></i>
+          </div>
+          <div class="card-wrap">
+            <div class="card-header">
+              <h4>Saldo Atual</h4>
+            </div> 
+            <div class="card-body">
+              R$:
+              {% if condominio.caixa > 0%}          
+                  <span class="text-success"> + {{ condominio.caixa }}</span>              
+              {% elif condominio.caixa < 0 %}             
+                  <span class="text-danger"> {{ condominio.caixa }}</span>              
+              {% else %}         
+                0,00              
+              {% endif %}
+              </div>                   
+          </div>
+        </div>
+      	</div>
+      	<div class="col-lg-4 col-md-4 col-sm-12">
+        	<div class="card card-statistic-2">
+                <div class="card-chart">
+                  <canvas id="receitas" height="80"></canvas>
+                </div>
+                <div class="card-icon shadow-primary ">
+                  <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="card-header">
+                    <h4>Receitas</h4>
+                  </div>
+                  <div class="card-body">
+                    R$ 0,00
+                  </div>
+                </div>
+            </div>
+       	</div>
+       	<div class="col-lg-4 col-md-4 col-sm-12">
+        	<div class="card card-statistic-2">
+                <div class="card-chart">
+                  <canvas id="despesas" height="80"></canvas>
+                </div>
+                <div class="card-icon shadow-primary">
+                  <i class="fas fa-shopping-basket"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="card-header">
+                    <h4>Despesas</h4>
+                  </div>
+                  <div class="card-body">
+                    R$ 0,00
+                  </div>
+                </div>
+            </div>
+       	</div>              
+    </div>
+</section>
+
+    <div class="section-body">
+        <div style="cursor: pointer;" class=" pe-auto float-right icon-top text-dark add"  data-toggle="tooltip" data-placement="top" title="Gerar Boletos"><i  data-toggle="modal" data-target="#exampleModal" class=" pe-auto  fas fa-plus"></i></div> 
+        <h2 class="section-title">Gerenciamento financeiro</h2>
+        <p class="section-lead">
+         Lista de boletos referente ao pagamento das prestações condominiais.
+        </p>
+       <div class="row">
+         <div class="col-12">         
+            <!-- Dark table -->
+            <div class="row mt-5">
+              <div class="col">
+                <div class="card bg-default shadow">
+                  <div class="card-header bg-transparent border-0">
+                    <h3 class="title-boleto text-white mb-0">Boletos Mensal / 
+                        <span class="text-success">
+                            {% if month == 1 %}
+                            Janeiro
+                            {% elif month == 2 %}
+                            Fevereiro
+                            {% elif month == 3 %}
+                            Março
+                            {% elif month == 4 %}
+                            Abril
+                            {% elif month == 5 %}
+                            Maio
+                            {% elif month == 6 %}
+                            Junho
+                            {% elif month == 7 %}
+                            Julho
+                            {% elif month == 8 %}
+                            Agosto
+                            {% elif month == 9 %}
+                            Setembro
+                            {% elif month == 10 %}
+                            Outubro
+                            {% elif month == 11 %}
+                            Novembro
+                            {% elif month == 12 %}
+                            Dezembro
+                            {% endif %}
+                        </span>
+                    </h3>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table align-items-center table-dark table-flush">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th scope="col">Unidade/Morador</th>
+                          <th scope="col">Dias faltantes</th>                          
+                          <th scope="col">Boleto Gerado</th>
+                          <th scope="col">Venciemnto</th>
+                          <th scope="col">Status</th>
+                          <th class="text-center" scope="col">Total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          {% for taxa in taxa_mensal %}
+                        <tr class="text-center text-white">
+                          <th scope="row">
+                            <div class="media align-items-center">
+                            {% if taxa.status == 'quitado' %}
+                             <a href="#" class="avatar rounded-circle mr-3">
+                                <span class="mb-0 text-sm" style="position: relative; top: 10px">{{ taxa.sacado.unidade }}</span>
+                              </a>
+                            {% else %}
+                              <a href="{% url 'contabilidade:pagamento_de_fatura' taxa.id %}" class="avatar  rounded-circle mr-3">
+                                <span class="mb-0 text-sm" style="position: relative; top: 10px">{{ taxa.sacado.unidade }}</span>
+                              </a>
+                            {% endif %}
+                              <div class="media-body">
+                                {% if taxa.status == 'quitado' %}
+                                <a href="#"><span class="mb-0 text-sm text-white">{{ taxa.sacado.nome |truncatewords:2  }}</span></a> 
+                                {% else %}
+                               <a href="{% url 'contabilidade:pagamento_de_fatura' taxa.id %}"><span class="mb-0 text-sm text-white">{{ taxa.sacado.nome |truncatewords:2  }}</span></a> 
+                               {% endif %}
+                              </div>
+                            </div>
+                          </th>
+                            {% if taxa.dias > 0 %}
+                            <td>{{ taxa.dias }} dias </td>
+                            {% elif taxa.dias < 0 %}
+                            <td>{{ taxa.dias }} dias </td>
+                            {% else %}
+                            <td>{{ taxa.dias }} dia </td>
+                            {% endif %}                         
+                            <td>
+                            <div class="avatar-group">
+                              <span class="mb-0 text-sm">{{ taxa.created |date:'d/m/Y' }}</span>
+                            </div>
+                            </td>
+                            <td>
+                            <span class="mb-0 text-sm">{{ taxa.vencimento |date:'d/m/Y' }}</span>
+                          </td>
+                          <td>
+                            <span class="badge badge-dot mr-4">
+                                {% if taxa.status == 'em dia' %}
+                                 <span class="text-primary">Em Aberto</span> 
+                                {% elif taxa.status == 'adiantado' %}
+                                <span class="text-success"> Adiantado</span>
+                                {% elif taxa.status == 'atrasado' %}
+                                <span class="text-warning"> Atrasado</span>
+                                {% elif taxa.status == 'acordo' %}
+                                <span class="text-info"> Acordo</span>
+                                {% elif taxa.status == 'inadimplente' %}
+                                <span class="text-danger">Inadimplente</span>
+                                {% else %}
+                                <span class="text-success">Pago</span>
+                                {% endif %}
+                            </span>
+                          </td>
+                          <td class="text-right">
+                            <span class="mb-0 text-sm">R$ {{ taxa.total }}</span>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                                       
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+             
+            </div>
+            </div>          
+            </div>
+        </div>
+    </div>     
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Renda - Objetivo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="" method="post">
+                    {% csrf_token %}
+                     <p>Para que você consiga juntar dinheiro suficiente para realizar grandes sonhos mantendo o seu estilo de vida.</p>
+                      <div class="form-group">
+                        <label>Renda</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-wallet"></i>
+                            </div>
+                          </div>
+                          <input type="text" class="form-control" placeholder="R$ 0,00" name="renda">
+                        </div>
+                      </div>                                       
+                    <div class="row">
+                        <div class="col-md-6">                            
+                        </div>
+                        <div class="col-md-6">
+                            <div class="modal-footer">       
+                                <button type="submit" class="btn btn-success">Enviar</button>
+                            </div>
+                        </div>
+                    </div>            
+                </form>            
+            </div>
+          </div>
+        </div>
+
+
+
+{% endblock %}  
+        
+

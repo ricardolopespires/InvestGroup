@@ -43,6 +43,7 @@ class Continent(models.Model):
 	region = models.CharField(max_length = 150, help_text='O nome do Continente')
 	subregion = models.CharField(max_length = 150, help_text='O nome do Continente')
 	paises = models.ManyToManyField('economia.Countrie', related_name= 'paises')
+	aberto = models.BooleanField(default = False)
 
 
 	def __str__(self):
@@ -60,9 +61,19 @@ class Currencie(models.Model):
 
 
 class Countrie(models.Model):
+
+	CHOICES_STATUS = (
+
+		('primeiro','Primeiro'),
+		('segundo','Segundo'),
+		('terceiro','Terceiro'),
+
+		)
+
 	id = models.CharField(max_length = 150, primary_key = True, unique = True)
 	name = models.CharField(max_length = 150, help_text='O nome do Pais')
 	official = models.CharField( max_length = 400, help_text = 'Nome Oficial do país')
+	status = models.CharField( max_length = 19, default = 'segundo', help_text = "Que tipo de país")
 	area = models.FloatField(default = 0, help_text = 'A area do teritorial do pais')
 	borders = models.CharField(max_length = 400, help_text = 'Pais vizinhos', blank = True, null = True)
 	capital  = models.CharField(max_length = 400, help_text = 'Capital do Pais ')
@@ -86,3 +97,29 @@ class Indicators(models.Model):
 	selic = models.FloatField(default = 0, help_text = 'taxa básica de juros da economia')
 	ipca = models.FloatField(default = 0, help_text = 'Índice Nacional de Preços ao Consumidor Amplo (IPCA)')
 	tr = models.FloatField(default = 0, help_text = 'Taxa Referencial')
+
+	def __str__(self):
+		return f'{self.id}'
+
+
+
+
+class Indice(models.Model):	
+	country = models.CharField(max_length = 150, )
+	continent = models.ForeignKey(Continent, related_name = 'secao_indices', on_delete = models.CASCADE)
+	symbol = models.CharField(max_length = 40, default = 'symbol' )
+	img = models.CharField(max_length = 400)
+	indice = models.CharField(max_length =150)
+	anterior = models.FloatField()
+	maximo = models.FloatField()
+	minima = models.FloatField()
+	variacao = models.FloatField()
+	percent = models.FloatField()
+	data = models.DateTimeField(auto_now_add = False)
+	marningcall = models.BooleanField(default = False)
+	
+	def __str__(self):
+		return f'{self.indice}'
+
+
+

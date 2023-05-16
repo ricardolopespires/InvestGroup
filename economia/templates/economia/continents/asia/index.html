@@ -3,6 +3,18 @@
 
 
 {% block dashboard %}
+<style type="text/css">
+  .add i
+  {
+    font-size: 40px;
+
+  }
+
+  .add i:hover
+  {
+    color: yellowgreen;
+  }
+</style>
 <link rel="stylesheet" type="text/css" href="{% static 'css/forex.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/card.css' %}">
 <div style="height: 110px!important;" class="section-header">
@@ -19,7 +31,8 @@
 <a href="{% url 'economia:create_countrie' %}">
     <div class=" float-right icon-top text-dark add"  data-toggle="tooltip" data-placement="top" title="Adicionar um novo pais"><i class="fas fa-plus"></i>
     </div>
-  </a>  
+  </a>
+  <br>  
   <h2 class="section-title">Informações do continente Asiatico</h2>
   <p class="section-lead">
     Informações Econômica da Asia para saber qual as tendências desses ativos é importante
@@ -41,7 +54,7 @@
             <br>
 
             <div class="buttons">
-              <button>Mais Informações</button>             
+             <a class="text-dark" style="margin: auto; display: block;" href="{% url 'economia:asia_detail' pais.id %}"><button>Mais Informações</button></a>         
             </div>
             <div class="social-share">
               {% for currency in pais.currencies.all %}

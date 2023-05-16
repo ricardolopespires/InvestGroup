@@ -7,18 +7,18 @@
 
 {% block management %}
 <style type="text/css">
-  .add i
+  .add i, .voltar i
 {
     font-size: 40px;
 
 }
 
-.add i:hover
+.add i:hover, 
 {
     color: yellowgreen;
 }
 </style>
-<link rel="stylesheet" href="{% static 'css/administration.css' %}">
+
 <section class="section">
 
     <div style="height: 110px!important;" class="section-header">
@@ -33,7 +33,7 @@
 </section>
  <div class="section-body ">
     <a href="{% url 'quiz:list_questions' quiz.id  %}">
-      <div class=" float-left icon-top text-dark add-despesas"  data-toggle="tooltip" data-placement="top" title="Voltar">
+      <div class=" float-left icon-top text-dark voltar"  data-toggle="tooltip" data-placement="top" title="Voltar">
         <i class="fas fa-reply-all"></i>
       </div>
     </a>
@@ -45,7 +45,7 @@
     </a>
     {% endif %}
     <br>
-  <h2 class="section-title">Informações do {{ question.label |truncatechars:40  }}</h2>
+  <h2 class="section-title">Informações do {{ question.label |truncatechars:70  }}</h2>
   <p class="section-lead">
      A análise da questão <strong class="text-success">{{ question.label   }}</strong> é realizada através de um questionário.
   </p>  
@@ -62,24 +62,29 @@
                     <div class="table-responsive">
                       <table class="table table-striped" id="table-1">
                         <thead>
-                          <tr>
+                          <tr class="">
                             <th>Nº</th>                  
                             <th>Title</th>                                                      
                             <th>Questões</th>
+                            <th>Pontuação</th>
                           </tr>
                         </thead>
                         <tbody>
                         {% for answer in answers %}                         
-                          <tr>
+                          <tr class="">
                             <td>{{ answer.order }}</td>
-                            <td ><a class="text-decoration-none" style="color: #6c757d;" href="#">{{ answer.label |truncatechars:99}}</a></td>                                  
-                                 
+                            <td >
+                              <a class="text-decoration-none" style="color: #6c757d;" href="#">
+                                {{ answer.label |slice:"70"}}
+                              </a>
+                            </td>
+                            <td>{{ answer.score }}</td>                                 
                             <td>
                                 <div class="buttons">
-                                  <a href="#" class="btn btn-icon btn-primary">
+                                  <a href="{% url 'quiz:answer_updated' answer.id %}" class="btn btn-icon btn-primary">
                                     <i class="far fa-edit"></i>
                                   </a>         
-                                  <a href="#" class="btn btn-icon btn-danger">
+                                  <a href="{% url 'quiz:answer_delete' answer.id %}" class="btn btn-icon btn-danger">
                                     <i class="fa fa-trash"></i>
                                   </a>         
                                 </div>

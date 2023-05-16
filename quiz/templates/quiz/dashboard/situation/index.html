@@ -78,7 +78,7 @@
         <img class="d-block mx-auto mb-4" src="{% static 'img/logo.png' alt = 'logo' %}" alt="" width="140" >
   </a>
   <div>
-    <h4 class="welcome">Bem Vindo! <span>{{ user }}</span></h4>
+    <h4 class="welcome">Bem Vindo! <span>{{ user|title }}</span></h4>
     <h1 style="display:none;" id="welcome">{{ user.id }}</h1>
   </div>
 </header>    
@@ -135,21 +135,21 @@
                     </div>
 
                     <!--  Answers Section-->
-
-                    <div id="answersSection" >
-                      <div class="progress-question">
-                        <div class="progress-bar"></div>
-                      </div>
+                    <div id="answersSection">
+                        <h3 id="total_correct">
+                          <span id="answer"></span> de 
+                          <span id="total"></span> Perguntas
+                        </h3>                        
                     </div>
                 </div>
                 <!--   Result Section  -->
                 <div id="result">
                     <div class="completed">                       
-                      <i class="fas fa-trophy"></i>
-                      <h6>Você concluiu o questionário</h6>
-                      <br>
-                      <h6 class="perfil">O seu Perfil de Investidor é <span id="points"></span></h6>                
-                      
+                        <i class="fas fa-trophy"></i>
+                        <h6>Você concluiu o questionário</h6>
+                        <h6 id="perfil" >A sua situação financeira está como uma pessoa 
+                          <span id="situacao"></span>
+                        </h6>                        
                 </div>
             </div>
         </div>          
@@ -203,8 +203,9 @@
     }
   </script>
 
-  <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/situacao.js' %}"></script>
     
 
   </body>
 </html>
+

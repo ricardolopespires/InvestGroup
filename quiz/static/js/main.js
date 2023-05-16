@@ -18,7 +18,7 @@ let questionText = document.querySelector("#questionText");
 let option1 = document.querySelector("#option1");
 let option2 = document.querySelector("#option2");
 let option3 = document.querySelector("#option3");
-let option4 = document.querySelector("#option4");
+
 
 //correct and next Button
 let total_correct = document.querySelector("#total_correct");
@@ -38,9 +38,10 @@ let index = 0;
 let total = 0;
 let timer = 0;
 let interval = 0;
-
+let usuario = " ";
+let codigo_id = " ";
 //total points
-let correct = 0;
+let pontuacao = 0;
 
 //store Answer Value
 let UserAns = undefined;
@@ -58,11 +59,27 @@ exit.addEventListener("click", () => {
 });
 
 
+
+
+
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
+
+
 //Creating Timer For Quiz Timer Section
 
 let countDown = () => {
     if (timer === 20) {
-        choice_que[MCQS[index].answer].classList.add("correct");
+        choice_que[MCQS[index].answer].classList.add("pontuacao");
         for (i = 0; i <= 3; i++) {
             choice_que[i].classList.add("disabled");
         }
@@ -85,12 +102,63 @@ function fazGet(url) {
 
 
 
+async function createData(dados){
+
+    console.log('Gerando as QuizTaker')
+
+    var csrf_token = readCookie('csrftoken');
+    let url = "user/answer/create/"
+    let response = await fetch(url,{
+
+
+        method:'POST',
+        headers:{
+            'Content-type':'application/json',
+            'X-CSRFToken':csrf_token
+
+        },
+        body:JSON.stringify(dados)
+
+    }).then(resp => resp.json())
+    .then(data =>{
+
+        console.log(data)
+    })
+}
+
+
+
+async function updateData(url, dados){
+
+    console.log('Atualização do perfil do usuario')
+
+    var csrf_token = readCookie('csrftoken');    
+    let response = await fetch(url,{
+
+
+        method:'POST',
+        headers:{
+            'Content-type':'application/json',
+            'X-CSRFToken':csrf_token
+
+        },
+        body:JSON.stringify(dados)
+
+    }).then(resp => resp.json())
+    .then(data =>{
+
+        console.log(data)
+    })
+}
+
 
 
 
 let loadData = () => {
-    let data = fazGet('http://localhost:8000/quiz/api/questions/list/');
+    let data = fazGet('http://localhost:8000/api/questions/list/');
     let MCQS = JSON.parse(data);
+
+   
 
     total = MCQS.questions.length
 
@@ -100,7 +168,10 @@ let loadData = () => {
     option1.innerText = MCQS.questions[index].choice1;
     option2.innerText = MCQS.questions[index].choice2;
     option3.innerText = MCQS.questions[index].choice3;
-    option4.innerText = MCQS.questions[index].choice4;
+
+    usuario = MCQS.questions[index].user
+
+   
 
     //    timer start
     timer = 0;
@@ -109,21 +180,57 @@ let loadData = () => {
 }
 
 
+
 option1.addEventListener("click", () => {
 
     if( index !== total -1){
 
 
-        index++;
-        correct++
+        index++;        
         loadData();
 
+        fetch('http://localhost:8000/api/questions/list/')
+        .then(resp => resp.json())
+        .then(data => {
+
+            let user = data.questions[index].user
+            let id = data.questions[index].question_id
+            let score = data.questions[index].A
+            let date_finished  = new Date();
+            let question = data.questions[index].question_id
+            let answer = data.questions[index].choice1_id
+
+            pontuacao = pontuacao + score
+            console.log(score)
+
+            let dados = {
+
+                "user":user,"id":id,"score":score,"completed": true,
+                "date_finished":date_finished,"question":question,"answer":answer
+
+                }
+
+            createData(dados);
+
+        })
+
+       
       
         } else {
         
-        quiz.style.display = "none";
-        result.style.display = "block";
-        points.innerHTML = `Você acertou ${correct} de ${total}`;
+        fetch('list/')
+        .then(resp => resp.json())
+        .then(data => {
+
+           console.log(data[0])
+        })
+
+        url = `situacao-update/${codigo_id}/`;
+
+        dados = {"id": `${codigo_id}`,"condicao": " ","description": " ","minimum": ,"maximum": ,"usuario": [ ]}   
+        updateData(url, dados)
+
+        points.innerHTML = `Você acertou ${pontuacao} de ${total}`;
         
         }
 
@@ -135,16 +242,47 @@ option2.addEventListener("click", () => {
     if( index !== total -1){
 
         index++;
-        correct++
+        
         loadData();
 
-        total_correct.innerHTML = `${correct} de ${total} Perguntas`;
+        fetch('http://localhost:8000/api/questions/list/')
+        .then(resp => resp.json())
+        .then(data => {
+
+            let user = data.questions[index].user
+            let id = data.questions[index].question_id
+            let score = data.questions[index].B
+            let date_finished  = new Date();
+            let question = data.questions[index].question_id
+            let answer = data.questions[index].choice1_id
+
+            pontuacao = pontuacao + score
+            console.log(score)
+
+            let dados = {
+
+                "user":user,"id":id,"score":score,"completed": true,
+                "date_finished":date_finished,"question":question,"answer":answer
+
+                }
+
+            createData(dados);
+
+        })
 
         } else {
         
-        quiz.style.display = "none";
-        result.style.display = "block";
-        points.innerHTML = `Você acertou ${correct} de ${total}`;
+        fetch('list/')
+        .then(resp => resp.json())
+        .then(data => {s
+
+            console.log(data[1].id)
+        })
+
+        url = `situacao-update/${codigo_id }/`;
+        dados ={'usuario':[usuario]}
+        updateData(url, dados)
+        points.innerHTML = `Você acertou ${pontuacao} de ${total}`;
         
         }
 
@@ -156,17 +294,53 @@ option3.addEventListener("click", () => {
     if( index !== total -1){
 
         index++;
-        correct++
+        
         loadData();
 
-        total_correct.innerHTML = `${correct} de ${total} Perguntas`;
+        fetch('http://localhost:8000/api/questions/list/')
+        .then(resp => resp.json())
+        .then(data => {
+
+            let user = data.questions[index].user
+            let id = data.questions[index].question_id
+            let score = data.questions[index].C
+            let date_finished  = new Date();
+            let question = data.questions[index].question_id
+            let answer = data.questions[index].choice1_id
+
+            console.log(score)
+
+            pontuacao = pontuacao + score
+
+            let dados = {
+
+                "user":user,"id":id,"score":score,"completed": true,
+                "date_finished":date_finished,"question":question,"answer":answer
+
+                }
+
+            createData(dados);
+
+        })
+
 
         } else {
         
         quiz.style.display = "none";
         result.style.display = "block";
 
-        points.innerHTML = `Você acertou ${correct} de ${total}`;
+        fetch('list/')
+        .then(resp => resp.json())
+        .then(data => {
+
+           console.log(data[2])
+        })
+
+        url = `situacao-update/${codigo_id}/`;
+        dados ={'usuario':[usuario]}
+        updateData(url, dados);
+
+        points.innerHTML = `Você acertou ${pontuacao} de ${total}`;
         
         }
 
@@ -175,39 +349,15 @@ option3.addEventListener("click", () => {
 //what happen when 'Continue' Button Will Click
 continueBtn.addEventListener("click", () => {
     quiz.style.display = "block";
-    guide.style.display = "none";
+    guide.style.display = "none";    
 
-
-    correct++
-
-    loadData();
-
-    
-
-    //    remove All Active Classes When Continue Button Will Click
-
-    
-
+    loadData();  
+ 
     
 });
 
 
-////what happen when 'Next' Button Will Click
-next_question.addEventListener("click", () => {
-    //    if index is less then MCQS.length
-    if (index !== total - 1) {
-        index++;
-               //question
-        
-        //result
-        total_correct.innerHTML = `${correct} de ${total} Perguntas`;
-        clearInterval(interval);
-        interval = setInterval(countDown, 1000);
-    } 
-    for (i = 0; i <= 3; i++) {
-        choice_que[i].classList.remove("disabled");
-    }
-})
+
 
 //what happen when 'Quit' Button Will Click
 quit.addEventListener("click", () => {

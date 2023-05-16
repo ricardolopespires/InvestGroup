@@ -44,6 +44,8 @@ class Question(models.Model):
     label = models.CharField(max_length = 100)
     order = models.IntegerField(default = 0)
     answers = models.IntegerField(default = 0)
+    createdAt =  models.DateTimeField(auto_now_add = True)
+    updatedAt =  models.DateTimeField(auto_now_add = True)
 
 
     def __str__(self):
@@ -85,11 +87,12 @@ class QuizTaker(models.Model):
 
 class UsersAnswer(models.Model):
 
-    id = models.CharField(max_length = 190, primary_key = True, unique = True)  
-    question = models.ForeignKey(Question, on_delete = models.CASCADE)
+    id = models.CharField(max_length = 190, primary_key = True, unique = True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE) 
+    question = models.ForeignKey(Question, on_delete = models.CASCADE,null = True)
     answer = models.ForeignKey(Answer, on_delete = models.CASCADE, null = True)
-    score = models.IntegerField( default = 0)
-    completed = models.BooleanField( default = False)
+    score = models.IntegerField( default = 0,null = True)
+    completed = models.BooleanField( default = False,null = True)
     date_finished = models.DateTimeField( null = True)
 
     def __str__(self):

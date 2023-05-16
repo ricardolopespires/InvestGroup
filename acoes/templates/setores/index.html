@@ -1,0 +1,75 @@
+{% extends 'dashboard/base.html'%}
+{% load static %}
+
+
+{% block dashboard %}
+<style type="text/css">
+.card-setor
+{ 
+    display: flex;
+    flex-direction: row;
+}
+
+</style>
+<link rel="stylesheet" type="text/css" href="{% static 'css/acoes.css' %}">
+<div style="height: 110px!important;" class="section-header">
+  <h5 style="margin-top: -28px; color:#cccccc;" class="position-absolute ml-2 mb-4">Setores</h5>
+  <br>
+  <h1 style="color: #8898aa; font-size: 40px;" class="mt-4 ml-2">Mercado</h1>
+  <div class="section-header-breadcrumb">     
+    <i style="font-size: 90px;" class="fas fa-sitemap"></i>
+
+    
+  </div>
+</div>
+<div class="section-body">
+    <br>
+  <h2 class="section-title">Rotação de setores e ciclos econômicos</h2>
+  <p class="section-lead">
+    Informações da economia que movimenta em ciclos que passam por fases de crescimento e de recessão.
+  </p>  
+    <div class="row">
+      {% for setor in setores %}
+      <div class="col-12 col-md-6 col-lg-6 mb-5"> 
+      
+          <div class="course">
+          <div class="row">
+              <div class="col-12 col-md-4 col-lg-4">
+                <a href="{% url 'acoes:setor_detail' setor.id %}"> 
+                <div class="course-preview">
+                  <i class="{{ setor.icon }} icon"></i>
+                </div>
+                </a>
+              </div>
+              <div class="col-12 col-md-8 col-lg-8"> 
+                <div class="course-info">
+                  <div class="progress-container">
+                    <div class="progress"></div>
+                    <span class="progress-text">
+                      6/9 Ciclo
+                    </span>
+                  </div>
+                  {% if setor.status == 'fundo' %}
+                  <h6 class="text-success">Fundo de Mercado</h6>
+                  {% elif setor.status == 'alta' %}
+                  <h6 class="text-info">Mercado Subindo</h6>
+                  {% elif setor.status == 'topo' %}
+                  <h6 class="text-warning">Topo de Mercado</h6>
+                  {% elif setor.status == 'baixa' %}
+                  <h6 class="text-danger">Mercado Caindo</h6>
+                  {% endif %}
+                  <h2>{{ setor.nome.upper |truncatechars:17 }}</h2>
+                  <p>O setor financeiro é responsável por tratar de todos os assuntos relacionados a finanças da empresa,</p>
+                  <div class="badges float-right">
+                    <span class="badge badge-outline-primary">Total {{ setor.empresas.count }}</span>                                      
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+      </div>
+      {% endfor %}  
+    </div>
+</div>
+{% endblock %}

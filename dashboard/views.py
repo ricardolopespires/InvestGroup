@@ -22,4 +22,3 @@ class Dashboard_Templates_View(LoginRequiredMixin, View):
 
 		
 
-	

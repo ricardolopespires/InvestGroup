@@ -2,7 +2,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Avg, Count, Sum ,F, Q
 from django.http import HttpResponseRedirect
-from .core import calendario_economico
 from django.views.generic import View
 from django.contrib import messages
 from django.shortcuts import render
@@ -73,14 +72,14 @@ class Create_Countrie(LoginRequiredMixin, View):
 
 				id = uuid4()
 				name = dados[0]['name']['common']			
-				official = translator.translate(dados[0]['name']['official'], dest = 'pt').text		
+				official = dados[0]['name']['official']	
 				area = dados[0]['area']
 				try:
 					borders = [x for x in dados[0]['borders']]
 				except:
 					borders = 'não adicionadas'
 				capital = dados[0]['capital'][0]
-				continents = translator.translate(dados[0]['subregion'] , dest = 'pt').text
+				continents = dados[0]['subregion'] 
 				population = dados[0]['population']
 				coatOfArms = dados[0]['coatOfArms']['png']
 				idioma = [x for x in dados[0]['languages'].keys()][0]			
@@ -90,14 +89,14 @@ class Create_Countrie(LoginRequiredMixin, View):
 
 
 
-				if Continent.objects.filter(subregion = translator.translate(dados[0]['subregion'], dest = 'pt').text).exists():
+				if Continent.objects.filter(subregion = dados[0]['subregion']).exists():
 					pass
 				else:
 					cont, created = Continent.objects.get_or_create(
 
-						id = uuid4(),
+						id = dados[0]['subregion'],
 						region = dados[0]['region'],
-						subregion = translator.translate(dados[0]['subregion'], dest = 'pt').text,
+						subregion = dados[0]['subregion']
 						
 						)
 
@@ -111,7 +110,7 @@ class Create_Countrie(LoginRequiredMixin, View):
 				
 
 
-				if Countrie.objects.filter(name = translator.translate(name.title(), dest = 'pt').text).exists():
+				if Countrie.objects.filter(name = name.title()).exists():
 					pass
 				else:			
 
@@ -163,15 +162,17 @@ class Create_Countrie(LoginRequiredMixin, View):
 					
 				
 
-				if continents == 'América do Sul':
+				if continents == 'South America':
 					return HttpResponseRedirect(reverse('economia:america_sul'))
-				elif continents == 'Ásia Oriental':
+				elif continents == 'Eastern Asia':
 					return HttpResponseRedirect(reverse('economia:asia'))
-				elif continents == 'América do Norte':
+				elif continents == 'North America':
 					return HttpResponseRedirect(reverse('economia:america_norte'))
-				elif continents == 'Sul da Europa':
+				elif continents == 'South Europe':
 					return HttpResponseRedirect(reverse('economia:europa'))
-				elif continents == 'Europa Ocidental':
+				elif continents == 'Northern Europe':
+					return HttpResponseRedirect(reverse('economia:europa'))
+				elif continents == 'Western Europe':
 					return HttpResponseRedirect(reverse('economia:europa'))
 				else:
 					return HttpResponseRedirect(reverse('economia:create_countrie'))
@@ -182,19 +183,14 @@ class Create_Countrie(LoginRequiredMixin, View):
 		
 
 
-
-
-
 		
-
+#--------------------------------------------- AMERICA DO SUL -----------------------------------------------------
 
 class  Continents_America_Sul_View(LoginRequiredMixin, View):
 
 
 	def get(self, request):
-
-
-		paises = Countrie.objects.filter(continents = '9c3bd8ad-4e33-4ba8-a1c8-dbf470c86535')
+		paises = Countrie.objects.filter(continents = 'South America')
 		print(paises)
 
 		return render(request, 'economia/continents/america_sul/index.html',{'paises':paises})
@@ -204,41 +200,81 @@ class  Continents_America_Sul_View(LoginRequiredMixin, View):
 class  Continents_America_Sul_Detail(LoginRequiredMixin, View):
 
 
-	def get(self, request, pais_id):
+	def get(self, request, paises_id):
 
 
-		pais = get_object_or_404(Countrie, id = pais_id)
+		pais = get_object_or_404(Countrie, id = paises_id)
 
 		return render(request, 'economia/continents/america_sul/detail.html',{'pais':pais})
  
 
- 
 
+
+
+
+
+
+#--------------------------------------------- ASIA ------------------------------------------------
 
 class  Continents_Asia_View(LoginRequiredMixin, View):
 
 
-	def get(self, request):
+	def get(self, request, ):
 
 
-		paises = Countrie.objects.filter(continents = '29a4d861-23bb-466c-ada5-f0d615ac1359')
+		paises = Countrie.objects.filter(continents = 'Eastern Asia')
 
 		return render(request, 'economia/continents/asia/index.html',{'paises':paises})
  
 
 
+
+class  Continents_Asia_Detail(LoginRequiredMixin, View):
+
+
+	def get(self, request, paises_id):
+
+
+		pais = get_object_or_404(Countrie, id = paises_id)
+
+		return render(request, 'economia/continents/asia/detail.html',{'pais':pais})
+ 
+
+
+
+
+
+
+
+
+
+#--------------------------------------------- AMERICA DO NORTE -----------------------------------------------------
 class  Continents_America_Norte_View(LoginRequiredMixin, View):
 
 
 	def get(self, request):
 
 
-		paises = Countrie.objects.filter(continents = '1f09fcb2-536f-4c03-b06e-2c18eaf38ba4')
+		paises = Countrie.objects.filter(continents = 'North America')
 
 		return render(request, 'economia/continents/america_norte/index.html',{'paises':paises})
  
 
 
+class  Continents_America_Norte_Detail(LoginRequiredMixin, View):
+
+
+	def get(self, request, paises_id):
+
+
+		pais = get_object_or_404(Countrie, id = paises_id)
+
+		return render(request, 'economia/continents/america_norte/detail.html',{'pais':pais})
+ 
+
+
+
+#--------------------------------------------- EUROPA ---------------------------------------------------------------
 
 class  Continents_Europa_View(LoginRequiredMixin, View):
 
@@ -247,9 +283,20 @@ class  Continents_Europa_View(LoginRequiredMixin, View):
 
 
 		paises = Countrie.objects.filter(
-			Q(continents = 'abbcd99c-fc5e-41f2-bdf6-e33a7fa18acd') | 
-			Q(continents = '4b3e9897-e69b-4474-b2bc-99021b58edff')|
+			Q(continents = 'Northern Europe') | 
+			Q(continents = 'Western Europe')|
 			Q(continents = 'e242fe60-7573-4993-8a6c-4b7e2ffa315f'))
 
 		return render(request, 'economia/continents/europa/index.html',{'paises':paises})
+ 
+
+class  Continents_Europa_Detail(LoginRequiredMixin, View):
+
+
+	def get(self, request, paises_id):
+
+
+		pais = get_object_or_404(Countrie, id = paises_id)
+
+		return render(request, 'economia/continents/europa/detail.html',{'pais':pais})
  

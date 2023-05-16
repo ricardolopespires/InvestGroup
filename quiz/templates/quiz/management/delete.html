@@ -20,7 +20,7 @@
   
 </section>
  <div class="section-body ">
-    <a href="{% url 'quiz:list_quiz'  subject.id %}">
+    <a href="{% url 'quiz:list_questions' quiz.id %}">
       <div class=" float-left icon-top text-dark add-despesas"  data-toggle="tooltip" data-placement="top" title="Voltar">
         <i class="fas fa-reply-all"></i>
       </div>
@@ -28,7 +28,7 @@
     <br>
   <h2 class="section-title">Deletar a Questão</h2>
   <p class="section-lead">
-     A ação exclui Do fomulário <strong class="text-danger">{{ subject.title }}</strong> vai apagar do banco de dados.
+     A ação exclui Do fomulário  <strong class="text-dark"> Nº {{ quiz.order }} </strong>- <strong class="text-primary">{{ quiz.name }}</strong> vai apagar do banco de dados.
   </p>
   <div class="row">
     <div class="col-12 col-md-12 col-sm-12">

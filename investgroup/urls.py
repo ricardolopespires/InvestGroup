@@ -28,21 +28,30 @@ urlpatterns = [
     path('',views.Index_View.as_view(), name = 'index'),
     path('',include('accounts.urls')),
 
-    #------------------------ Dashboard ------------------------------------------
+    #------------------------ Dashboard -----------------------------------------------------
 
     path('dashboard/',include('dashboard.urls', namespace =  'dashboard')),
+    path('',include('pessoal.urls', namespace = 'pessoal')),
     path('settings/',include('settings.urls', namespace = 'settings')),
     path('',include('economia.urls', namespace = 'economia')),
+    path('', include('acoes.urls', namespace = 'acoes')),
+    path('',include('analytics.urls', namespace = 'analytics')),
+    
 
 
-    #---------------------------- Management Administration ---------------------------
+    #---------------------------- Management Administration -----------------------------------
     path('management/', include('management.urls', namespace = 'management')),
     path('quiz/',include('quiz.urls', namespace = 'quiz')),
-    path('investor/',include('investor.urls', namespace = 'investor')),
+   
+    #---------------------------- Management Administration ------------------------------------
+    path('trading/',include('trading.urls', namespace = 'trading')),
 
 
+    #---------------------------- Apis Management and Administration ---------------------------
 
-    path('api/save_question_result/' , views.save_question_result),
+    path('',include('api.urls')),
+
+
     
 
 

@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'dashboard.apps.DashboardConfig',
     'economia.apps.EconomiaConfig',
     'acoes.apps.AcoesConfig',
+    'pessoal.apps.PessoalConfig',
+    'trading.apps.TradingConfig',
+    'analytics.apps.AnalyticsConfig',
     
     #---------------------------- third party application -----------------------------------------
     
@@ -56,15 +59,17 @@ INSTALLED_APPS = [
     'rest_framework',
     'nested_admin', 
     'rest_framework.authtoken',
+    'ckeditor',
+    'ckeditor_uploader',
 
     #---------------------------- Management Administration ------------------------------------------
     'management.apps.ManagementConfig',
     'quiz.apps.QuizConfig',
-    'investor.apps.InvestorConfig',
+
 
 
     #---------------------------- API application ----------------------------------------------------
-    
+    'api.apps.ApiConfig',
 
     #---------------------------- Settings Administration --------------------------------------------
     'settings.apps.SettingsConfig',
@@ -111,6 +116,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'InvestGroup.wsgi.application'
 
+CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

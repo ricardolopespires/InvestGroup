@@ -31,7 +31,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     city = models.CharField('Cidade', max_length = 190, blank = True)
     phone = PhoneField(blank=True, help_text='Contact phone number')
     is_active = models.BooleanField('Está ativo?', blank=True, default=True)
-    is_investidor = models.CharField(max_length = 150, blank = True)
     is_staff = models.BooleanField('É da equipe?', blank=True, default=False)
     situation = models.BooleanField('Situação financeira', blank=True, default=False)
     perfil = models.BooleanField('Perfil do Investidor', blank=True, default=False)
@@ -125,5 +124,68 @@ class Movimentacoes(models.Model):
 
     def __str__(self):
         return f'{self.operacao}'
+
+
+
+
+
+
+
+class Perfil(models.Model):
+
+    STATUS_CHOICES = (
+
+        ('conservador','Conservador'),
+        ('moderado','Moderado'),
+        ('dinâmico','Dinâmico'),
+        ('arrojado','Arrojado'),
+        ('agressivo','Agressivo'),
+        )
+
+    id = models.CharField(max_length = 190, primary_key = True, unique = True)
+    investor = models.CharField(max_length = 190, choices = STATUS_CHOICES, default = 'Conservador', blank = True, null = True)
+    description = models.TextField()
+    risk_profile = models.CharField(max_length = 150, null = True)
+    minimum = models.IntegerField()
+    maximum = models.IntegerField()
+    usuario = models.ManyToManyField('accounts.User', related_name = 'perfil_investidor', blank=True)
+
+
+    def __str__(self):
+        return f'{self.investor}'
+
+
+
+
+
+
+class Situacao(models.Model):
+
+    STATUS_CHOICES = (
+
+        ('investidor','Investidor'),
+        ('equilibrado','Equilibrado'),
+        ('endividado','Endividado'),
+        
+        )
+    
+    usuario = models.ManyToManyField('accounts.User', related_name = 'situacao_usuario', blank=True)
+    condicao = models.CharField(max_length = 190, choices = STATUS_CHOICES, default = 'Conservador')
+    description = models.TextField()    
+    minimum = models.IntegerField()
+    maximum = models.IntegerField()
+
+
+    def __str__(self):
+        return f'{self.condicao}'
+
+
+
+
+
+
+
+
+
 
 
