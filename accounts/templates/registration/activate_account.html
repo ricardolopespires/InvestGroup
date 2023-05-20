@@ -1,0 +1,12 @@
+{% load static %}
+{% autoescape off %}
+
+Olá, {{ user.username |title }}, obrigado por se juntar nós para 
+
+Clique no link abaixo para confirmar sua inscrição:
+
+{{ protocol }}://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+
+
+{% endautoescape %}

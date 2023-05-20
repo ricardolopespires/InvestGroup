@@ -5,83 +5,21 @@
 
 {% block content %}
 
-<style type="text/css">
 
-.dashboard-wrapper-logout
-{
-    width: 100%;
-    height: 500px;
-}
-
-.dashboard-content
-{
-
-    width: 100%;
-
-}
-
-.logout
-{
-    position: relative;
-    margin-top: 190px;
-}
-
-.logo-logout, .logout-text
-{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-.text-desconectado
-{
-    font-size: 40px;
-    position: relative;
-    margin-right: 19px;
-}
-
-.text-write, .text-login
-{
-    font-size: 17px;
-    position: relative;
-    margin-top: 17px;
-}
-
-.text-write
-{
-    position: relative;
-    margin-right: 10px;
-
-}
-
-.text-login
-{
-    
-    font-weight: 700;
-    
-}
-
-.text-login:hover
-{
-    color: green;
-    text-decoration: none;
-}
-</style>
-<div class="dashboard-wrapper dashboard-wrapper-logout">
-    <div class="container-fluid dashboard-content">
-        <div class="row logout ">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 logo-logout">
-                <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
+        <div class="dashboard-wrapper dashboard-wrapper-logout">
+            <div class="container-fluid dashboard-content">
+               
+                <div class="row row-logout ">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 logo-logout">
+                  <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
+                </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 logout-text">
+                            <h1 class='text-desconectado'>Desconectado....</h1>
+                         <p class = "text-write">Você foi desconectado com sucesso. Você pode fazer.</p>
+                          <a class= 'text-login' href="{% url "login" %}">login novamente.</a>
+                    </div>
+                </div>
             </div>
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 logout-text">
-                <h1 class='text-desconectado'>Desconectado....</h1>
-                <p class = "text-write">Você foi desconectado com sucesso. Você pode fazer.</p>
-                <a class= 'text-login' href="{% url 'login' %}">login novamente.</a>
-            </div>
-        </div>
-    </div>
-</div>
     
 
 

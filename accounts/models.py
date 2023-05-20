@@ -30,13 +30,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     status = models.CharField(max_length = 100, choices = STATUS_CHOICES, default = 'projeto')
     city = models.CharField('Cidade', max_length = 190, blank = True)
     phone = PhoneField(blank=True, help_text='Contact phone number')
-    is_active = models.BooleanField('Está ativo?', blank=True, default=True)
+    is_active = models.BooleanField('Está ativo?', blank=True, default=False)
     is_staff = models.BooleanField('É da equipe?', blank=True, default=False)
     situation = models.BooleanField('Situação financeira', blank=True, default=False)
     perfil = models.BooleanField('Perfil do Investidor', blank=True, default=False)
     date_joined = models.DateTimeField('Data de Entrada', auto_now_add=True)
     img = models.ImageField(upload_to = 'user')
-    
+    termos = models.BooleanField( default = False)
   
     objects = UserManager()
 

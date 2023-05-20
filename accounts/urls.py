@@ -12,6 +12,8 @@ urlpatterns =[
     path('logout/',auth_views.LogoutView.as_view(), name = 'logout'),
     path('login/', views.loggin, name = 'login'),  
     path('register/',views.Register_User_View.as_view(), name = 'register'),
+    path('password-reset/', views.Password_Reset_View.as_view(),name='password-reset'),
+    path('activate/<uidb64>/<token>/', views.User_Activate_Email.as_view(), name='activate'),
 
 
     path('perfil/list/',views.Perfil_Investor_View.as_view(), name = 'list'),
