@@ -1,7 +1,15 @@
 from import_export.admin import ImportExportModelAdmin
-from .models import Perfil, Situacao
+from .models import Perfil, Situacao, Planejamento
 from .models import User, Financeiro
 from django.contrib import admin
+
+
+
+@admin.register(Planejamento)
+class AdminUser(admin.ModelAdmin):
+	list_display = ['user','pms','pmr','pi','pnif']
+
+
 
 
 @admin.register(User)
