@@ -84,7 +84,7 @@ async function updateUsuario(usuario, dados){
 
 
     var csrf_token = readCookie('csrftoken');
-    let url = "usuario/update/"+usuario+"/"
+    let url = "http://localhost:8000/quiz/accounts/" + usuario + "/perfil/"
     let response = await fetch(url,{
 
         method:'POST',
@@ -107,7 +107,7 @@ async function updateUsuario(usuario, dados){
 async function loadUsuario(usuario){
 
      console.log('Verificando os dados do usuario '+ usuario)
-    let response = await fetch("usuario/detail/"+usuario+"/")
+    let response = await fetch("http://localhost:8000/quiz/accounts/"+ usuario + "/detail/")
     .then((response) => response.json())
     .then(dados =>{
 
@@ -124,7 +124,7 @@ async function updateSituacao(id, usuario){
 
     console.log('Gerando o perfil do  investidor')   
     var csrf_token = readCookie('csrftoken');
-    let url = "http://localhost:8000/quiz/situacao/usuario/update/"+id+"/"
+    let url = "http://localhost:8000/quiz/situacao/usuario/update/" + id + "/"
 
 
     let response = await fetch(url,{

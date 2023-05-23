@@ -17,6 +17,24 @@
 {
   color: yellowgreen;
 }
+
+.icon-add
+{
+      font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.icon-add:hover
+{
+  text-decoration: none;
+}
+
+.icon-add i
+{
+  font-size: 14px;
+}
+
+
 </style>
 <section class="section">
     <div class="row">            
@@ -139,7 +157,7 @@
 </section>
 
     <div class="section-body">
-        <div style="cursor: pointer;" class=" pe-auto float-right icon-top text-dark add"  data-toggle="tooltip" data-placement="top" title="Gerar Boletos"><i  data-toggle="modal" data-target="#exampleModal" class=" pe-auto  fas fa-plus"></i></div> 
+        <div style="cursor: pointer;" class=" pe-auto float-right icon-top text-dark add"  data-toggle="tooltip" data-placement="top" title="Receitas / Despesas"><i  data-toggle="modal" data-target="#exampleModal" class=" pe-auto  fas fa-plus"></i></div> 
         <h2 class="section-title">Gerenciamento financeiro</h2>
         <p class="section-lead">
          Lista de boletos referente ao pagamento das prestações condominiais.
@@ -270,39 +288,21 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Renda - Objetivo</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Receitas ou Despesas</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-                <form action="" method="post">
-                    {% csrf_token %}
-                     <p>Para que você consiga juntar dinheiro suficiente para realizar grandes sonhos mantendo o seu estilo de vida.</p>
-                      <div class="form-group">
-                        <label>Renda</label>
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-wallet"></i>
-                            </div>
-                          </div>
-                          <input type="text" class="form-control" placeholder="R$ 0,00" name="renda">
-                        </div>
-                      </div>                                       
-                    <div class="row">
-                        <div class="col-md-6">                            
-                        </div>
-                        <div class="col-md-6">
-                            <div class="modal-footer">       
-                                <button type="submit" class="btn btn-success">Enviar</button>
-                            </div>
-                        </div>
-                    </div>            
-                </form>            
-            </div>
+                <div class="flex-column d-flex align-items-start ">
+                <a class="icon-add text-dark" href=""><i class="fas fa-long-arrow-alt-up text-success"></i> Adicionar Receitas</a>
+                <a class="icon-add text-dark" href=""><i class="fas fa-long-arrow-alt-down text-danger"></i> Adicionar  Despesas</a>
+                </div>
+                
+              </div>
           </div>
         </div>
+      </div>
 
 
 

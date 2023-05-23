@@ -14,7 +14,7 @@ class AdminUser(admin.ModelAdmin):
 
 @admin.register(User)
 class AdminUser(admin.ModelAdmin):
-	list_display = ['username', 'is_staff','is_active','date_joined']
+	list_display = ['username', 'is_staff','is_active','date_joined','perfil','situation']
 
 
 

@@ -22,12 +22,12 @@ urlpatterns =[
 
 
     path('quiz/perfil/usuario/list/',views.perfilList),
-    path('quiz/perfil/usuario/detail/<int:pk>/',views.perfilDetail),
+    path('quiz/perfil/usuario/detail/<str:pk>/',views.perfilDetail),
     path('quiz/perfil/usuario/create/',views.perfilCreate),
-    path('quiz/perfil/usuario/update/<int:pk>/',views.perfilUpdate),
+    path('quiz/perfil/usuario/update/<str:pk>/',views.perfilUpdate),
     path('quiz/perfil/usuario/delete/<int:pk>/',views.perfilDelete),
 
-     #-------------------------------------- Api Situação Usuarios ---------------------------------------------------------
+    #-------------------------------------- Api Situação Usuarios ---------------------------------------------------------
 
     path('quiz/situacao/usuario/list/',views.situacaoList),
     path('quiz/situacao/usuario/detail/<int:pk>/',views.situacaoDetail),
@@ -36,5 +36,9 @@ urlpatterns =[
     path('quiz/situacao/usuario/delete/<int:pk>/',views.perfilDelete),
 
 
+    #-------------------------------------- Api Usuarios --------------------------------------------------------------------
+
+    path('quiz/accounts/<int:pk>/perfil/',views.User_Api_Update),
+    path('quiz/accounts/<int:pk>/detail/',views.User_Api_Detail),
     
 ]

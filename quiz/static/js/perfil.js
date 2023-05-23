@@ -49,7 +49,7 @@ let D = 0;
 let correct = 0;
 
 //store Answer Value
-let UserAns = undefined;
+var usuario = "";
 
 
 
@@ -86,7 +86,7 @@ async function updateUsuario(usuario, dados){
 
 
     var csrf_token = readCookie('csrftoken');
-    let url = "usuario/update/"+usuario+"/"
+    let url = "http://localhost:8000/quiz/accounts/" + usuario + "/perfil/"
     let response = await fetch(url,{
 
         method:'POST',
@@ -109,12 +109,14 @@ async function updateUsuario(usuario, dados){
 async function loadUsuario(usuario){
 
      console.log('Verificando os dados do usuario '+ usuario)
-    let response = await fetch("usuario/detail/"+usuario+"/")
+    let response = await fetch("http://localhost:8000/quiz/accounts/"+ usuario + "/detail/")
     .then((response) => response.json())
     .then(dados =>{
 
 
-        dados.perfil = true
+        dados['perfil'] = true
+
+        console.log(dados)
         updateUsuario(usuario, dados);
         
     })
@@ -127,7 +129,7 @@ async function updatePerfil(id, dados){
     console.log('Gerando o perfil do  investidor')   
 
     var csrf_token = readCookie('csrftoken');
-    let url = "update/"+id+"/"
+    let url = "http://localhost:8000/quiz/perfil/usuario/update/"+ id + "/"
     let response = await fetch(url,{
 
 
@@ -151,18 +153,18 @@ async function updatePerfil(id, dados){
 async function loadPerfil(usuario, correct){
 
 
-    let response = await fetch("list/")
+    let response = await fetch("http://localhost:8000/quiz/perfil/usuario/list/")
     .then((response) => response.json())
 
     .then((data) =>{
 
-            let arrojado = data[0];
-            let agressivo = data[1];
-            let conservador = data[2];
-            let moderado = data[3];
+            let moderado = data[0];
+            let dinamico = data[1];
+            let agressivo = data[2];
+            let conservador = data[3];
 
-            console.log(conservador)
 
+           
             if(correct >  conservador.minimum && correct <  conservador.maximum ){
 
                 pontuacao.innerHTML = "Conservador";
@@ -182,20 +184,21 @@ async function loadPerfil(usuario, correct){
 
                 //Enviando os dados para o banco de dados
                 moderado['usuario'] = [usuario];
+                console.log([usuario])
 
                 //Atualizando a perfil do usuário  
                 updatePerfil(moderado.id, moderado);
 
-            }else if(correct > arrojado.minimum && correct < arrojado.maximum){
+            }else if(correct > dinamico.minimum && correct < dinamico.maximum){
 
-                pontuacao.innerHTML = " Arrojado";
+                pontuacao.innerHTML = "Dinâmico";
                 pontuacao.style.color = "#ff9933";
 
                 //Enviando os dados para o banco de dados
-                arrojado['usuario'] = [usuario];
+                dinamico['usuario'] = [usuario];
 
                 //Atualizando a perfil do usuário  
-                updatePerfil(arrojado.id, arrojado);
+                updatePerfil(dinamico.id, dinamico);
 
             }else if(correct > agressivo.minimum && correct < agressivo.maximum){
 
@@ -262,7 +265,10 @@ async function loadData(){
 
 
         //usuario 
-        usuario = MCQS.questions[index].user       
+        usuario = MCQS.questions[index].usuario
+     
+
+
 
         //    timer start
         timer = 0;
@@ -315,19 +321,22 @@ option1.addEventListener('click', ()=>{
 
     } else {
         
-        loadPerfil(1,correct);
+        loadPerfil(usuario,correct);
         quiz.style.display = "none";
         result.style.display = "block";
 
         // Atualizando a conclusão do questionário
-        loadUsuario(usuario);
+        loadUsuario(usuarios);
+
 
         // Redireciona o usuário para dashbaord após cinco segundos
         setTimeout(function() {
             window.location.href = "http://localhost:8000/dashboard/manager/";
-        }, 5000); 
+        }, 5000);
+
         
-        
+
+  
         };
 })
 
@@ -339,22 +348,25 @@ option2.addEventListener('click', ()=>{
         correct = correct + B;
         index++;
         loadData();
+       
 
     } else {
         
-        loadPerfil(1, correct);
+        loadPerfil(usuario, correct);
         quiz.style.display = "none";
         result.style.display = "block";
 
         // Atualizando a conclusão do questionário
-        loadUsuario(usuario);
+        loadUsuario(usuarios);
 
         // Redireciona o usuário para dashbaord após cinco segundos
         setTimeout(function() {
             window.location.href = "http://localhost:8000/dashboard/manager/";
         }, 5000);
+
+
         
-        
+
         
         };
 })
@@ -370,19 +382,20 @@ option3.addEventListener('click', ()=>{
 
     } else {
 
-        loadPerfil(1, correct);
+        loadPerfil(usuario, correct);
         quiz.style.display = "none";
         result.style.display = "block";
 
         // Atualizando a conclusão do questionário
         loadUsuario(usuario);
 
-
         // Redireciona o usuário para dashbaord após cinco segundos
         setTimeout(function() {
             window.location.href = "http://localhost:8000/dashboard/manager/";
         }, 5000);
-        
+
+
+
 
         
         };
@@ -400,7 +413,7 @@ option4.addEventListener('click', ()=>{
 
     } else {
         
-        loadPerfil(1, correct);
+        loadPerfil(usuario, correct);
         quiz.style.display = "none";
         result.style.display = "block";
 
@@ -410,8 +423,11 @@ option4.addEventListener('click', ()=>{
 
         // Redireciona o usuário para dashbaord após cinco segundos
         setTimeout(function() {
-          window.location.href = "http://localhost:8000/dashboard/manager/";
-        }, 5000);  
+            window.location.href = "http://localhost:8000/dashboard/manager/";
+        }, 5000);
+
+
+      
         };
 })
 

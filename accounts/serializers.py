@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('__all__')
+        fields = ['id','situation','perfil']
 
 
 class PerfilUserSerialiser(serializers.ModelSerializer):
@@ -22,6 +22,10 @@ class PerfilUserSerialiser(serializers.ModelSerializer):
     class Meta:
         model = Perfil
         fields = ['id','investor','minimum','maximum','usuario']
+
+
+
+        
 
 
 

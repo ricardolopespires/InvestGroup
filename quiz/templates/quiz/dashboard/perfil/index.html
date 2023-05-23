@@ -21,6 +21,13 @@
   </head>
 
   <body class="bg-light">
+    <style type="text/css">
+    #user_id
+    {
+      opacity: 0;
+    }
+
+    </style>
 {% if messages %}
 <div style="top: 110px; position: relative; z-index: 999;" class="container">
   <div class="row">
@@ -78,7 +85,7 @@
         <img class="d-block mx-auto mb-4" src="{% static 'img/logo.png' alt = 'logo' %}" alt="" width="140" >
   </a>
   <div>
-    <h4 class="welcome">Bem Vindo! <span>{{ user }}</span></h4>
+    <h4 class="welcome">Bem Vindo! <span >{{ user }}</span> <span id="user_id">{{ request.user.id }}</span></h4>
   </div>
 </header>
 <br>
@@ -182,6 +189,15 @@
     <script type="text/javascript" src="{% static 'js/messages.js'  %}"></script>
     <script src="{% static 'js/perfil.js' %}"></script>
   
-  
+<script> 
+
+    setTimeout(function () {
+      document.getElementById("messages").style.display = "none";
+    }, 5000);
+    function hide(){
+    document.getElementById("messages").style.display = "none";
+    }
+</script>
+
   </body>
 </html>

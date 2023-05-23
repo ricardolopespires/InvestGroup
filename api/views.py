@@ -15,7 +15,7 @@ from uuid import uuid4
 # Create your views here.
 
 
-
+from accounts.serializers import PerfilUserSerialiser ,SituacaoUserSerialiser
 
 
 #-------------------------------------- API Quiz---------- --------------------------------------------
@@ -85,12 +85,12 @@ class Perfil_Api_List(LoginRequiredMixin, View):
             try:
                 questions = []
 
-                for question in Question.objects.filter(quiz_id = '9140f723-46ae-4473-81d1-387ce66926ba'):
+                for question in Question.objects.filter(quiz_id = 'e9783f37-ec27-4f6c-a4b6-38bd100a72d6'):
                     
 
                     a = {
 
-                        'user':user,
+                        'usuario':request.user.id,
                         'question': question.label,
                         'question_id':question.id,
                         'choice1':" ",
@@ -199,7 +199,7 @@ def situacaoUpdate(request, pk):
 
 
 
-#-------------------------------------- API User Situação ------------------------------------------------------
+#-------------------------------------- API User Perfil ------------------------------------------------------
 
 @api_view(['GET'])
 def perfilList(request):

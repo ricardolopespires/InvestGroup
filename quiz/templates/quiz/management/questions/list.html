@@ -71,8 +71,7 @@
                         <thead>
                           <tr class="text-center">
                             <th>Nº</th>                  
-                            <th>Title</th>
-                            <th>Assunto</th>                            
+                            <th>Title</th>                                                    
                             <th>Questões</th>
                             <th>Opções</th>
                           </tr>
@@ -81,13 +80,12 @@
                         {% for question in questions %}                         
                           <tr class="text-center">
                             <td>{{ question.order }}</td>
-                            <td ><a class="text-decoration-none" style="color: #6c757d;" href="{% url 'quiz:answer_list' question.id %}">{{ question.label | slice:"40"}}</a></td>                                  
-                            <td>{{ question.quiz }}</td>
+                            <td ><a class="text-decoration-none" style="color: #6c757d;" href="{% url 'quiz:answer_list' question.id %}">{{ question.label | slice:"75"}}</a></td>                
                             <td>
                               <div class="badges">
-                                {% if question.answers == 3 %}
+                                {% if question.answers >= 3 %}
                                 <span class="badge badge-success">Concluido</span>
-                                {% elif question.answers > 0 and question.answers < 3 %}
+                                {% elif question.answers > 0 and question.answers < 4 %}
                                 <span class="badge badge-info">Incompleta</span>
                                 {% else %}
                                 <span class="badge badge-danger">Não adicionadas</span>

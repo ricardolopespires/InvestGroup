@@ -37,7 +37,7 @@
         <i class="fas fa-reply-all"></i>
       </div>
     </a>
-    {% if question.answers  < 3 %}
+    {% if question.answers  < 4 %}
       <a href="{% url 'quiz:answer_created' question.id %}">
       <div class=" float-right icon-top text-dark add"  data-toggle="tooltip" data-placement="top" title="Adicionar nova Pergunta">
         <i class="fas fa-plus"></i>

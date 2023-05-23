@@ -172,7 +172,7 @@ class Updated_Quiz_View(LoginRequiredMixin, View):
 
         if request.method == 'POST':
 
-            name = request.POST.get('name')
+            name = request.POST.get('title')
             subjects = request.POST.get('subject')
 
             
@@ -181,12 +181,11 @@ class Updated_Quiz_View(LoginRequiredMixin, View):
 
             
             #fazendo a atualização
-            quiz.name = name
-            quiz.subject.add(subjects)
+            quiz.name = name           
             quiz.save()
 
             messages.success(request, 'Parabéns, A questão foi atualizada no banco de dados')
-            return HttpResponseRedirect(reverse('quiz:quiz_detail', args  = [ question_id]))
+            return HttpResponseRedirect(reverse('quiz:list_questions', args  = [ question_id]))
 
 
 

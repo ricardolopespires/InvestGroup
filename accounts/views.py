@@ -324,6 +324,9 @@ def perfilDelete(request, pk):
 
 
 
+
+
+
 @api_view(['GET'])
 def situacaoList(request):
     situacao = Situacao.objects.all().order_by('-id')
@@ -370,3 +373,22 @@ def situacaoDelete(request, pk):
     return Response({'message': 'O situacao foi excluído com sucesso!'}, status = status.HTTP_204_NO_CONTENT)
 
 
+
+#-------------------------------------- Api Accounts  ------------------------------------------------------
+
+@api_view(['POST'])
+def User_Api_Update(request, pk): 
+    usuario = User.objects.get(id = pk)    
+    serializer = UserSerializer(instance = usuario, data = request.data)    
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
+
+
+
+@api_view(['GET'])
+def User_Api_Detail(request, pk):
+    usuario = User.objects.get(id = pk)
+    serializer = UserSerializer(usuario, many = False)
+    return Response(serializer.data)
