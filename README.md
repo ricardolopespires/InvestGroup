@@ -25,12 +25,10 @@ InvestGroup é uma plataforma sistemas autônomatizada para utilizar as informa�
 
 ## Recursos
 
-* Interface para de gerencimento dos curso
-* Interface para gerencimanto dos alunos
-* Interface para gerenciamnto de professores
-* Visualizações dos detalhes do cursos
-* Visualizações das videos aulas
-
+* Interface para de gerencimento das finanças pessoais
+* Interface para gerencimanto dos cartões
+* Interface para gerenciamnto das ações
+* Visualizações dos detalhes do crypto
 
 ## Construído com
 
