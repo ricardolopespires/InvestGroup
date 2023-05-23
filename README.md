@@ -12,7 +12,7 @@ InvestGroup é uma plataforma sistemas autônomatizada para utilizar as informa�
     <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/ricardolopespires/Investgroup">
     <img alt="GitHub last commit (branch)" src="https://img.shields.io/github/last-commit/ricardolopespires/InvestGroup/main">
                 
-   <img align = right src="https://github.com/ricardolopespires/SmartCity/blob/main/static/assets/images/home.png" width = 490/>
+   <img align = right src="https://github.com/ricardolopespires/InvestGroup/blob/main/static/img/estatisca.png" width = 490/>
 </p>
 
 
