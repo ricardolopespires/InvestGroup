@@ -1,4 +1,4 @@
-{% extends 'dashboard/base.html' %}
+li{% extends 'dashboard/base.html' %}
 {% load static %}
 
 
@@ -169,7 +169,7 @@
               <div class="col">
                 <div class="card bg-default shadow">
                   <div class="card-header bg-transparent border-0">
-                    <h3 class="title-boleto text-white mb-0">Boletos Mensal / 
+                    <h4 class="title-boleto text-dark mb-0">Movimentação Mensal / 
                         <span class="text-success">
                             {% if month == 1 %}
                             Janeiro
@@ -197,83 +197,43 @@
                             Dezembro
                             {% endif %}
                         </span>
-                    </h3>
+                    </h4>
                   </div>
                   <div class="table-responsive">
-                    <table class="table align-items-center table-dark table-flush">
-                      <thead class="thead-dark">
-                        <tr>
-                          <th scope="col">Unidade/Morador</th>
-                          <th scope="col">Dias faltantes</th>                          
-                          <th scope="col">Boleto Gerado</th>
-                          <th scope="col">Venciemnto</th>
-                          <th scope="col">Status</th>
-                          <th class="text-center" scope="col">Total</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                          {% for taxa in taxa_mensal %}
-                        <tr class="text-center text-white">
-                          <th scope="row">
-                            <div class="media align-items-center">
-                            {% if taxa.status == 'quitado' %}
-                             <a href="#" class="avatar rounded-circle mr-3">
-                                <span class="mb-0 text-sm" style="position: relative; top: 10px">{{ taxa.sacado.unidade }}</span>
-                              </a>
-                            {% else %}
-                              <a href="{% url 'contabilidade:pagamento_de_fatura' taxa.id %}" class="avatar  rounded-circle mr-3">
-                                <span class="mb-0 text-sm" style="position: relative; top: 10px">{{ taxa.sacado.unidade }}</span>
-                              </a>
-                            {% endif %}
-                              <div class="media-body">
-                                {% if taxa.status == 'quitado' %}
-                                <a href="#"><span class="mb-0 text-sm text-white">{{ taxa.sacado.nome |truncatewords:2  }}</span></a> 
-                                {% else %}
-                               <a href="{% url 'contabilidade:pagamento_de_fatura' taxa.id %}"><span class="mb-0 text-sm text-white">{{ taxa.sacado.nome |truncatewords:2  }}</span></a> 
-                               {% endif %}
-                              </div>
-                            </div>
-                          </th>
-                            {% if taxa.dias > 0 %}
-                            <td>{{ taxa.dias }} dias </td>
-                            {% elif taxa.dias < 0 %}
-                            <td>{{ taxa.dias }} dias </td>
-                            {% else %}
-                            <td>{{ taxa.dias }} dia </td>
-                            {% endif %}                         
-                            <td>
-                            <div class="avatar-group">
-                              <span class="mb-0 text-sm">{{ taxa.created |date:'d/m/Y' }}</span>
-                            </div>
-                            </td>
-                            <td>
-                            <span class="mb-0 text-sm">{{ taxa.vencimento |date:'d/m/Y' }}</span>
-                          </td>
-                          <td>
-                            <span class="badge badge-dot mr-4">
-                                {% if taxa.status == 'em dia' %}
-                                 <span class="text-primary">Em Aberto</span> 
-                                {% elif taxa.status == 'adiantado' %}
-                                <span class="text-success"> Adiantado</span>
-                                {% elif taxa.status == 'atrasado' %}
-                                <span class="text-warning"> Atrasado</span>
-                                {% elif taxa.status == 'acordo' %}
-                                <span class="text-info"> Acordo</span>
-                                {% elif taxa.status == 'inadimplente' %}
-                                <span class="text-danger">Inadimplente</span>
-                                {% else %}
-                                <span class="text-success">Pago</span>
-                                {% endif %}
-                            </span>
-                          </td>
-                          <td class="text-right">
-                            <span class="mb-0 text-sm">R$ {{ taxa.total }}</span>
-                          </td>
-                        </tr>
-                        {% endfor %}
-                                       
-                      </tbody>
-                    </table>
+                     <table class="table table-striped">
+                      <tbody><tr>
+                        <th>codigo ID</th>
+                        <th>Categoria</th>
+                        <th>Status</th>
+                        <th>Data</th>
+                        <th>tipo</th>
+                        <th>Moeda</th>
+                        <th>Valor</th>
+                      </tr>
+                      {% for movimento in movimentos %}
+                      <tr>
+                        <td><a href="#">{{ movimento.id }}</a></td>
+                        <td class="font-weight-600">{{ movimento.categoria.nome }}</td>
+                        <td>
+                          {% if movimento.fixa ==  True %}
+                          <div class="badge badge-success">{{ movimento.status }}</div>
+                          {% else %}
+                          <div class="badge badge-danger">{{ movimento.status }}</div>
+                          {% endif %}
+                        </td>
+                        <td>{{ movimento.created |date }}</td>
+                        <td>
+                          {% if movimento.fixa ==  True %}
+                            Renda fixa
+                          {% else %}
+                            Renda variável 
+                          {% endif %}
+                        </td>
+                        <th>{{ movimento.moeda }}</th>
+                        <td>{{ movimento.valor}}</td>
+                      </tr>
+                      {% endfor%}                   
+                    </tbody></table>
                   </div>
                 </div>
               </div>

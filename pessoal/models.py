@@ -41,18 +41,26 @@ class Categoria(models.Model):
 class Movimentacao(models.Model):
 
 
-	
+	STATUS_CHOICES = (
+
+		('receitas','Receitas'),
+		('despesas','Despesas'),
+		)
 
 	id = models.CharField(max_length = 90, primary_key = True)
 	user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name = 'user', blank=True)
-	real = models.DecimalField(max_digits = 5, decimal_places = 2)
-	categoria = models.ForeignKey(Categoria,  related_name = 'categorie', on_delete = models.CASCADE)	
-	previsto = models.DecimalField(max_digits = 5, decimal_places = 2)
-	atual = models.DecimalField(max_digits = 5, decimal_places = 2)
-	diferenca = models.DecimalField(max_digits = 5, decimal_places = 2)
-	created = models.DateTimeField(auto_now_add=True,  blank=True)
-	updated = models.DateTimeField(auto_now=True,  blank=True)
-	variacao = models.IntegerField( validators = [MinValueValidator(0), MaxValueValidator(100)], default=0)
+	status = models.CharField(max_length = 19, choices = STATUS_CHOICES, default = 'receitas')
+	valor = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor Total do documento')
+	categoria = models.ForeignKey(Categoria,  related_name = 'categorie', on_delete = models.CASCADE)
+	moeda = models.CharField(max_length = 19, help_text = "A moeda para pelo serviço")
+	created = models.DateTimeField(auto_now_add = False,  blank=True)
+	updated = models.DateTimeField(auto_now = False,  blank=True)
+	descricao = RichTextField()
+	fixa = models.BooleanField(help_text ='A renda fixa', default = False)
+	repetir = models.BooleanField(help_text ='Renda variavel', default = False)
+	quantidade = models.IntegerField(default = 0, null = True, help_text = "quantidade")
+	tempo = models.IntegerField(default = 0, null = True, help_text = "O tempo que receberá")
+
 
 
 
@@ -67,8 +75,7 @@ class Movimentacao(models.Model):
 
 	def save(self, *args, **kwargs):
 
-		self.diferenca = self.atual - self.previsto
-		self.variacao = int((self.atual / self.previsto)*100)
+		
 
 		super().save(*args, **kwargs)
 
