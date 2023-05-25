@@ -250,7 +250,10 @@
               <li class="nav-item dropdown">
                 <a href="#" class="nav-link has-dropdown"><i class="fa fa-chart-pie"></i><span>Pessoal</span></a>
                   <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="{% url 'pessoal:manager' %}">Manager</a></li>                             
+                    <li><a class="nav-link" href="{% url 'pessoal:manager' %}">Manager</a></li>
+                    <li><a class="nav-link" href="{% url 'pessoal:reserva' %}">Reserva</a></li>
+                    <li><a class="nav-link" href="#">Análise</a></li>
+                    <li><a class="nav-link" href="#">Cartão</a></li>                                 
                   </ul>
               </li>
                <li class="menu-header mt-4">Investimentos</li> 
@@ -305,30 +308,30 @@
                       {% for message in messages %} 
                       {% if message.tags == 'error' %}    
                        <div  class="section-header border-error" id="messages">
-                        <h1 class="position-absolute ml-2 mb-4 error">Ops.....</h1>
+                        <h1 style="top: 25px;" class="position-absolute ml-2 text-danger">Ops.....</h1>
                         <br>
-                        <p class="mt-4 ml-2">{{ message }}.</p>
+                        <p class="mt-5 ml-2">{{ message }}.</p>
                         <div class="section-header-breadcrumb">       
                           <i style="font-size: 70px; " class="fas fa-window-close text-danger"></i>
                         </div>
                       </div>          
                       {% elif message.tags == 'success' %}
                       <div class="section-header border-success" id="messages">
-                        <h1 class="position-absolute ml-2 mb-4 success">Parabéns.....</h1>
+                        <h1 style="top: 25px;" class="position-absolute ml-2 text-success">Parabéns.....</h1>
                         <br>
-                        <p class="mt-4 ml-2">{{ message }}.</p>
+                        <p class="mt-5 ml-2">{{ message }}.</p>
                         <div class="section-header-breadcrumb">       
-                          <i style="font-size: 70px; " class="fas fa-check-square success"></i>
+                          <i style="font-size: 70px; " class="fas fa-check-square text-success"></i>
                         </div>
                       </div>                
                       {% elif message.tags == 'info' %}                 
                       <div class="section-header border-info" id="messages">
-                        <h1 class="position-absolute ml-2 mb-4 info">Informativo.....</h1>
+                        <h1 style="top: 25px;" class="position-absolute ml-2 text-info">Informativo.....</h1>
                         <br>
                         <br>
-                        <p class="mt-4 ml-2">{{ message }}.</p>
+                        <p class="mt-5 ml-2">{{ message }}.</p>
                         <div class="section-header-breadcrumb">       
-                          <i style="font-size: 70px; " class="fas fa-info-circle info"></i>
+                          <i style="font-size: 70px; " class="fas fa-info-circle text-info"></i>
                         </div>
                       </div>
                       {% endif %}
@@ -433,6 +436,16 @@
 
 <!-- Created By CodingNepal - www.codingnepalweb.com -->
 {% block scripts %}
+  <script> 
+
+    setTimeout(function () {
+      document.getElementById("messages").style.display = "none";
+    }, 4000);
+    function hide(){
+    document.getElementById("messages").style.display = "none";
+    }
+  </script>
+<!-- Created By CodingNepal - www.codingnepalweb.com -->
 
 
 

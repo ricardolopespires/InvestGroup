@@ -1,4 +1,22 @@
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var balance_chart = document.getElementById("receitas").getContext('2d');
 
 var balance_chart_bg_color = balance_chart.createLinearGradient(0, 0, 0, 70);

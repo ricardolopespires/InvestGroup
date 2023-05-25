@@ -1,4 +1,4 @@
-li{% extends 'dashboard/base.html' %}
+{% extends 'dashboard/base.html' %}
 {% load static %}
 
 
@@ -6,36 +6,13 @@ li{% extends 'dashboard/base.html' %}
 
 
 {% block dashboard %}
+
 <style type="text/css">
-  
-.add i
-{
-  font-size: 40px;
-}
-
-.add i:hover
-{
-  color: yellowgreen;
-}
-
-.icon-add
-{
-      font-size: 14px;
-    margin-bottom: 8px;
-}
-
-.icon-add:hover
-{
-  text-decoration: none;
-}
-
-.icon-add i
-{
-  font-size: 14px;
-}
-
-
-</style>
+  .add i
+  {
+    font-size: 40px;
+  }
+</style>    
 <section class="section">
     <div class="row">            
       	<div class="col-lg-4 col-md-4 col-sm-12">
@@ -72,24 +49,24 @@ li{% extends 'dashboard/base.html' %}
             </div>
             <div class="card-stats-items">
               <div class="card-stats-item">
-                      {% if condominio.caixa > 0%}
-                      <div class="card-stats-item-count">R$: {{ condominio.caixa  }}</div>
+                      {% if financeiro.receitas > 0%}
+                      <div class="card-stats-item-count">R$: {{ financeiro.receitas  }}</div>
                       {% else %}
                       <div class="card-stats-item-count">R$: 0,00</div>
                       {% endif %}
                       <div class="card-stats-item-label">Receitas</div>
               </div>
               <div class="card-stats-item">
-                      {% if condominio.receitas > 0 %}
-                      <div class="card-stats-item-count text-su">R$: {{ condominio.receitas }}</div>
+                      {% if financeiro.despesas > 0 %}
+                      <div class="card-stats-item-count text-su">R$: {{ financeiro.despesas }}</div>
                       {% else %}
                       <div class="card-stats-item-count">R$: 0,00</div>
                       {% endif %}
                       <div class="card-stats-item-label">Despesas</div>
               </div>
               <div class="card-stats-item">
-                      {% if condominio.despesas > 0 %}
-                      <div class="card-stats-item-count">R$:{{ condominio.despesas }}</div>
+                      {% if financeiro.cartao > 0 %}
+                      <div class="card-stats-item-count">R$:{{ financeiro.cartao }}</div>
                       {% else %}
                       <div class="card-stats-item-count">R$: 0,00</div>
                       {% endif %}
@@ -106,10 +83,10 @@ li{% extends 'dashboard/base.html' %}
             </div> 
             <div class="card-body">
               R$:
-              {% if condominio.caixa > 0%}          
-                  <span class="text-success"> + {{ condominio.caixa }}</span>              
-              {% elif condominio.caixa < 0 %}             
-                  <span class="text-danger"> {{ condominio.caixa }}</span>              
+              {% if financeiro.total > 0%}          
+                  <span class="text-success"> + {{ financeiro.total }}</span>              
+              {% elif financeiro.total < 0 %}             
+                  <span class="text-danger"> {{ financeiro.total }}</span>              
               {% else %}         
                 0,00              
               {% endif %}
@@ -130,7 +107,12 @@ li{% extends 'dashboard/base.html' %}
                     <h4>Receitas</h4>
                   </div>
                   <div class="card-body">
-                    R$ 0,00
+                    R$
+                    {% if financeiro.receitas > 0%}
+                    <span class="text-success"> + {{ financeiro.receitas }}</span>
+                    {% else %}
+                    0,00
+                    {% endif %}
                   </div>
                 </div>
             </div>
@@ -148,15 +130,19 @@ li{% extends 'dashboard/base.html' %}
                     <h4>Despesas</h4>
                   </div>
                   <div class="card-body">
-                    R$ 0,00
+                    R$
+                    {% if financeiro.despesas > 0%}
+                    <span class="text-danger"> - {{ financeiro.despesas }}</span>
+                    {% else %}
+                    0,00
+                    {% endif%}
                   </div>
                 </div>
             </div>
        	</div>              
     </div>
 </section>
-
-    <div class="section-body">
+<div class="section-body">
         <div style="cursor: pointer;" class=" pe-auto float-right icon-top text-dark add"  data-toggle="tooltip" data-placement="top" title="Receitas / Despesas"><i  data-toggle="modal" data-target="#exampleModal" class=" pe-auto  fas fa-plus"></i></div> 
         <h2 class="section-title">Gerenciamento financeiro</h2>
         <p class="section-lead">
@@ -200,7 +186,7 @@ li{% extends 'dashboard/base.html' %}
                     </h4>
                   </div>
                   <div class="table-responsive">
-                     <table class="table table-striped">
+                     <table class="table table-striped text-center">
                       <tbody><tr>
                         <th>codigo ID</th>
                         <th>Categoria</th>
@@ -215,10 +201,10 @@ li{% extends 'dashboard/base.html' %}
                         <td><a href="#">{{ movimento.id }}</a></td>
                         <td class="font-weight-600">{{ movimento.categoria.nome }}</td>
                         <td>
-                          {% if movimento.fixa ==  True %}
-                          <div class="badge badge-success">{{ movimento.status }}</div>
+                          {% if movimento.status ==  'receitas' %}
+                          <div class="badge badge-success">{{ movimento.status |title }}</div>
                           {% else %}
-                          <div class="badge badge-danger">{{ movimento.status }}</div>
+                          <div class="badge badge-danger">{{ movimento.status |title }}</div>
                           {% endif %}
                         </td>
                         <td>{{ movimento.created |date }}</td>
@@ -230,7 +216,7 @@ li{% extends 'dashboard/base.html' %}
                           {% endif %}
                         </td>
                         <th>{{ movimento.moeda }}</th>
-                        <td>{{ movimento.valor}}</td>
+                        <td>{{ movimento.valor }}</td>
                       </tr>
                       {% endfor%}                   
                     </tbody></table>
@@ -242,9 +228,9 @@ li{% extends 'dashboard/base.html' %}
             </div>          
             </div>
         </div>
-    </div>     
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>     
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -255,14 +241,19 @@ li{% extends 'dashboard/base.html' %}
               </div>
               <div class="modal-body">
                 <div class="flex-column d-flex align-items-start ">
-                <a class="icon-add text-dark" href="{% url 'pessoal:add_receitas' %}"><i class="fas fa-long-arrow-alt-up text-success"></i> Adicionar Receitas</a>
-                <a class="icon-add text-dark" href=""><i class="fas fa-long-arrow-alt-down text-danger"></i> Adicionar  Despesas</a>
-                </div>
-                
+                <a class="icon-add text-dark" href="{% url 'pessoal:add_receitas' %}">
+                  <i class="fas fa-long-arrow-alt-up text-success"></i>
+                  Adicionar Receitas
+                </a>
+                <a class="icon-add text-dark" href="{% url 'pessoal:add_despesas' %}">
+                  <i class="fas fa-long-arrow-alt-down text-danger"></i>
+                  Adicionar  Despesas
+                </a>
+                </div>                
               </div>
           </div>
-        </div>
-      </div>
+  </div>
+</div>
 
 
 

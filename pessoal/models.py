@@ -30,7 +30,7 @@ class Categoria(models.Model):
 		verbose_name_plural = 'Categorias'
 
 	def __str__(self):
-		return f'{self.id}'
+		return f'{self.nome }'
 
 
 
@@ -50,7 +50,7 @@ class Movimentacao(models.Model):
 	id = models.CharField(max_length = 90, primary_key = True)
 	user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name = 'user', blank=True)
 	status = models.CharField(max_length = 19, choices = STATUS_CHOICES, default = 'receitas')
-	valor = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor Total do documento')
+	valor = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor inicial do documento')
 	categoria = models.ForeignKey(Categoria,  related_name = 'categorie', on_delete = models.CASCADE)
 	moeda = models.CharField(max_length = 19, help_text = "A moeda para pelo serviço")
 	created = models.DateTimeField(auto_now_add = False,  blank=True)
@@ -58,6 +58,7 @@ class Movimentacao(models.Model):
 	descricao = RichTextField()
 	fixa = models.BooleanField(help_text ='A renda fixa', default = False)
 	repetir = models.BooleanField(help_text ='Renda variavel', default = False)
+	total = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor Total do documento')
 	quantidade = models.IntegerField(default = 0, null = True, help_text = "quantidade")
 	tempo = models.IntegerField(default = 0, null = True, help_text = "O tempo que receberá")
 
@@ -66,8 +67,8 @@ class Movimentacao(models.Model):
 
 	class Meta:
 		ordering =['-created']
-		verbose_name = 'Receita'
-		verbose_name_plural = 'Receitas'
+		verbose_name = 'Movimentação'
+		verbose_name_plural = 'Movimentações'
 
 	def __str__(self):
 		return f'{self.id}'
@@ -84,6 +85,30 @@ class Movimentacao(models.Model):
 
 
 
+class Financeiro(models.Model):
+
+
+	id = models.CharField(max_length = 90, primary_key = True)
+	user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name = 'financeiro_pessoal', blank=True)
+	created = models.DateTimeField(auto_now_add = True,  blank=True)
+	updated = models.DateTimeField(auto_now = True,  blank=True)		
+	receitas = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor das receitas')
+	despesas = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor das despesas')
+	cartao = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor das despesas')
+	investimento = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor dos cartões')
+	total = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor dos investimentos')
+
+
+	class Meta:
+		ordering =['-created']
+		verbose_name = 'Financeiro'
+		verbose_name_plural = 'Financeiros'
+
+	def __str__(self):
+		return f'{self.id}'
+
+
+	
 
 
 

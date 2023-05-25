@@ -16,7 +16,16 @@
 	display: none;
 }
 
-.add i .voltar i
+.voltar i
 {
   font-size: 40px;
 }
+
+
+.add i
+{
+  font-size: 40px;
+}
+
+
+let 
