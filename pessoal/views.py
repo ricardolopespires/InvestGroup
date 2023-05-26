@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, reverse
+from .models import Categoria, Movimentacao, Financeiro, Reserva
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Categoria, Movimentacao, Financeiro
 from django.db.models import Avg, Count, Sum ,F, Q
 from django.http import HttpResponseRedirect
 from django.views.generic import View
@@ -11,11 +11,11 @@ from django.urls import reverse
 from decimal import Decimal
 from datetime import date
 from uuid import uuid4
-
+import math
 
 
 data_atual = date.today()
-
+month = data_atual.month
 
 
 
@@ -34,6 +34,49 @@ class Usuario_View(LoginRequiredMixin, View):
 
 
 
+class Manager_Pessoal_Financeiro(LoginRequiredMixin, View):
+
+	def get(self, request):
+
+		try:
+			mensal = float(Movimentacao.objects.filter(
+				Q(user = request.user.id),
+				Q(created__month = data_atual.month),
+				Q(created__year = data_atual.year),
+				Q(status__startswith = 'receitas')
+				).aggregate(total = Sum('total'))['total'])
+		except:
+			mensal = 0
+
+		try:
+			anterior = float(Movimentacao.objects.filter(
+				Q(user = request.user.id),
+				Q(created__month = -1),
+				Q(created__year = data_atual.year)).aggregate(total = Sum('total'))['total'])
+		except :
+			anterior = 0		
+
+		try:
+			
+			percent = int((anterior / mensal) * 100)
+		except :
+			percent = 0
+		
+
+		#Valor da reserva de emergência
+		reserva = mensal * 12
+		#percent_reserva = int((anterior / reserva) * 100)
+
+		return render (request, 'pessoal/manager/index.html',{
+
+			'mensal':mensal,
+			'anterior':anterior,
+			'percent':percent,
+			'reserva':reserva,
+
+			})
+
+
 
 class List_Pessoal_Financeiro(LoginRequiredMixin, View):
 
@@ -46,7 +89,7 @@ class List_Pessoal_Financeiro(LoginRequiredMixin, View):
 
 		print(movimentos)
 		
-		return render(request, 'pessoal/list.html',{
+		return render(request, 'pessoal/manager/mensal/list.html',{
 
 			'month':month,
 			'movimentos':movimentos,
@@ -211,4 +254,29 @@ class Despesas_Mensal_View(LoginRequiredMixin, View):
 class Reserva_Pessoal_View(LoginRequiredMixin, View):
 
 	def get(self, request):
-		return render(request, 'pessoal/manager/reserva/index.html')
+		reserva = get_object_or_404(Reserva, user_id = request.user.id )
+
+		try:
+			mensal = float(Movimentacao.objects.filter(
+				Q(user = request.user.id),
+				Q(created__month = data_atual.month),
+				Q(created__year = data_atual.year),
+				Q(status__startswith = 'receitas')
+				).aggregate(total = Sum('total'))['total'])
+		except:
+			mensal = 0
+
+		#1º ver o o gasto mensal e equivalente a 0
+		#2º fazendo o calculo do Mínimo de Sobrevivência * 12 para reserva de emergência
+		if mensal != 0:
+			emergencia = mensal * 12
+			if reserva.referencia < emergencia:
+				reserva.referencia = emergencia
+				reserva.save()
+
+		return render(request, 'pessoal/manager/reserva/index.html',{
+
+			'reserva':reserva,
+			'month':month,
+
+			})

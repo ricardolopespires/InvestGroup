@@ -1,0 +1,251 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load pessoal_tags  %}
+
+
+
+
+
+{% block dashboard %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/manager.css' %}">   
+<div style="height: 110px!important;" class="section-header">
+    <h5 style="margin-top: -28px; color:#cccccc;" class="position-absolute ml-2 mb-4">Pessoal</h5>
+    <br>
+    <h1 style="color: #8898aa; font-size: 40px;" class="mt-4 ml-2">Finanças</h1>
+    <div class="section-header-breadcrumb">       
+        <i style="font-size: 70px; color: #000066;" class="fas fa-route"></i>
+    </div>
+</div>
+<section class="section">
+  <div class="row ">
+    <div class="col-xl-3 col-lg-6">
+      <div class="card l-bg-green-dark">
+        <div class="card-statistic-3 p-4">
+          <div class="card-icon card-icon-large"><i class="fas fa-ticket-alt"></i></div>
+            <div class="mb-4">
+              <h5 class="card-title mb-0">Mensal</h5>
+            </div>
+            <div class="row align-items-center mb-2 d-flex">
+              <div class="col-7">
+                <h5 class="d-flex align-items-center mb-0">
+                  R$
+                  {% if mensal > 0 %}
+                  <span class="ml-2">{{ mensal }}</span>
+                  {% else %}
+                  <span class="ml-2">0,00</span>
+                  {% endif %}
+                </h5>
+              </div>
+              <div class="col-5 text-right">
+                {% if anterior == 0 %}
+                <span class="percent">{{ percent }}%</span>
+                {% elif mensal < anterior %}
+                <span class="percent">- {{ percent }}% <i class="fa fa-arrow-down"></i></span>
+                {% elif anterior > mensal %}
+                <span class="percent">{{ percent }}% <i class="fa fa-arrow-up"></i></span>
+                {% endif %}
+              </div>
+            </div>
+            <div class="progress mt-1 " data-height="8" style="height: 8px;">
+              <div class="progress-bar l-bg-orange" role="progressbar" data-width="{{ percent }}%" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent }}%;">
+                
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+            <div class="card l-bg-cherry">
+                <div class="card-statistic-3 p-4">
+                    <div class="card-icon card-icon-large"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="mb-4">
+                        <h5 class="card-title mb-0">Reserva</h5>
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-7">
+                            <h5 class="d-flex align-items-center mb-0">
+                                R$
+                              {% if reserva > 0 %}
+                              <span class="ml-2">{{ reserva }}</span>
+                              {% else %}
+                                <span class="ml-2">0,00</span>
+                              {% endif %}                            
+                            </h5>
+                        </div>
+                        <div class="col-5 text-right">
+                          <span class="percent">0% <i class="fa fa-arrow-up"></i></span>
+                        </div>
+                    </div>
+                    <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                        <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+            <div class="card l-bg-blue-dark">
+                <div class="card-statistic-3 p-4">
+                    <div class="card-icon card-icon-large"><i class="fas fa-users"></i></div>
+                    <div class="mb-4">
+                        <h5 class="card-title mb-0">Estabilidade</h5>
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-7">
+                            <h4 class="d-flex align-items-center mb-0">
+                              R$ <span class="ml-2">0,00</span>
+                            </h4>
+                        </div>
+                        <div class="col-5 text-right">
+                          <span class="percent">0% <i class="fa fa-arrow-up"></i></span>
+                        </div>
+                    </div>
+                    <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                        <div class="progress-bar l-bg-green" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                    </div>
+                </div>
+            </div>
+    </div>       
+    <div class="col-xl-3 col-lg-6">
+            <div class="card l-bg-orange-dark">
+                <div class="card-statistic-3 p-4">
+                    <div class="card-icon card-icon-large"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="mb-4">
+                        <h5 class="card-title mb-0">Indepedência</h5>
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-7">
+                            <h5 class="d-flex align-items-center mb-0">
+                              R$<span class="ml-2">0,00</span>
+                            </h5>
+                        </div>
+                        <div class="col-5 text-right">
+                          <span class="percent">0% <i class="fa fa-arrow-up"></i></span>
+                        </div>
+                    </div>
+                    <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                        <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </div>
+</section>
+<div class="section-body">
+  <div style="cursor: pointer;" class=" pe-auto float-right icon-top text-dark add"  data-toggle="tooltip" data-placement="top" title="Receitas / Despesas">
+    <i  data-toggle="modal" data-target="#exampleModal" class=" pe-auto  fas fa-plus"></i>
+  </div> 
+  <h5 class="section-title">Gerenciamento financeiro</h2>
+  <p class="section-lead">
+   Lista de boletos referente ao pagamento das prestações condominiais.
+  </p>
+  <div class="row">
+    <div class="col-12">         
+      <!-- Dark table -->
+        <div class="row mt-5">
+          <div class="col">
+                <div class="card bg-default shadow">
+                  <div class="card-header bg-transparent border-0">
+                    <h4 class="title-boleto text-dark mb-0">Movimentação Mensal / 
+                        <span class="text-success">
+                            {% if month == 1 %}
+                            Janeiro
+                            {% elif month == 2 %}
+                            Fevereiro
+                            {% elif month == 3 %}
+                            Março
+                            {% elif month == 4 %}
+                            Abril
+                            {% elif month == 5 %}
+                            Maio
+                            {% elif month == 6 %}
+                            Junho
+                            {% elif month == 7 %}
+                            Julho
+                            {% elif month == 8 %}
+                            Agosto
+                            {% elif month == 9 %}
+                            Setembro
+                            {% elif month == 10 %}
+                            Outubro
+                            {% elif month == 11 %}
+                            Novembro
+                            {% elif month == 12 %}
+                            Dezembro
+                            {% endif %}
+                        </span>
+                    </h4>
+                  </div>
+                  <div class="table-responsive">
+                     <table class="table table-striped text-center">
+                      <tbody><tr>
+                        <th>codigo ID</th>
+                        <th>Categoria</th>
+                        <th>Status</th>
+                        <th>Data</th>
+                        <th>tipo</th>
+                        <th>Moeda</th>
+                        <th>Valor</th>
+                      </tr>
+                      {% for movimento in movimentos %}
+                      <tr>
+                        <td><a href="#">{{ movimento.id }}</a></td>
+                        <td class="font-weight-600">{{ movimento.categoria.nome }}</td>
+                        <td>
+                          {% if movimento.status ==  'receitas' %}
+                          <div class="badge badge-success">{{ movimento.status |title }}</div>
+                          {% else %}
+                          <div class="badge badge-danger">{{ movimento.status |title }}</div>
+                          {% endif %}
+                        </td>
+                        <td>{{ movimento.created |date }}</td>
+                        <td>
+                          {% if movimento.fixa ==  True %}
+                            Renda fixa
+                          {% else %}
+                            Renda variável 
+                          {% endif %}
+                        </td>
+                        <th>{{ movimento.moeda }}</th>
+                        <td>{{ movimento.valor }}</td>
+                      </tr>
+                      {% endfor%}                   
+                    </tbody></table>
+                  </div>
+                </div>
+          </div>
+        </div>
+    </div>          
+  </div>
+</div>
+</div>     
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Receitas ou Despesas</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="flex-column d-flex align-items-start ">
+                <a class="icon-add text-dark" href="{% url 'pessoal:add_receitas' %}">
+                  <i class="fas fa-long-arrow-alt-up text-success"></i>
+                  Adicionar Receitas
+                </a>
+                <a class="icon-add text-dark" href="{% url 'pessoal:add_despesas' %}">
+                  <i class="fas fa-long-arrow-alt-down text-danger"></i>
+                  Adicionar  Despesas
+                </a>
+                </div>                
+              </div>
+          </div>
+  </div>
+</div>
+
+
+
+{% endblock %}  
+        
+
