@@ -63,43 +63,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     
  
-
-
-class Planejamento(models.Model):
-    id = models.CharField(max_length  = 110, primary_key = True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name = 'usuário_planejamento', on_delete = models.CASCADE)   
-    pms = models.DecimalField( max_digits = 10, decimal_places = 2, default=0 , help_text = "Patrimônio Mínimo de Sobrevivência")
-    pmr = models.DecimalField( max_digits = 10, decimal_places = 2, default=0 , help_text = "Patrimônio Mínimo Recomendado para sua Segurança")
-    pi = models.DecimalField( max_digits = 10, decimal_places = 2, default=0 , help_text = "Patrimônio Ideal para sua idade e situação de Consumo")
-    pnif = models.DecimalField( max_digits = 10, decimal_places = 2, default=0 , help_text = "Patrimônio Necessário para a Independência Financeira")
-    estabilidade = models.BooleanField(default = False, help_text = "O tipo de empregabilidade")
-
-    class Meta:
-        verbose_name = 'Planejamento'
-        verbose_name_plural = 'Planejamentos'
-
-
-    def save(self, *args, **kwargs):
-
-        if self.estabilidade == True:
-            self.pmr = ( 12 * self.pms )
-        else:
-            self.pmr = ( 20 * self.pms )
-
-        self.pi = (( 12 * self.pms ) * idade(self.user.date_of_birth.year))
-        self.pnif = ((12 * self.pms) / Decimal(0.08))
-       
-
-
-        super().save(*args, **kwargs)
-
-
-
-
-
-
-
-
 class Financeiro(models.Model):
 
     id = models.CharField(max_length  = 110, primary_key = True)
@@ -187,6 +150,7 @@ class Perfil(models.Model):
     minimum = models.IntegerField()
     maximum = models.IntegerField()
     usuario = models.ManyToManyField('accounts.User', related_name = 'perfil_investidor', blank=True)
+    fixa = models.ManyToManyField('fixa.Categoria', related_name= 'renda_fixa')
 
 
     def __str__(self):
