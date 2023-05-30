@@ -52,15 +52,29 @@ class Renda(models.Model):
 		)
 
 
+	STATUS_RISCO = (
+
+
+		('excelente','Excelente'),
+		('bom','Bom'),
+		('medio','Medio'),
+		('pessimo','Pessimo'),
+	
+
+
+
+		)
 
 
 	id = models.CharField(primary_key =  True, max_length = 90)
+	logo = models.CharField(max_length = 700)
 	nome = models.ForeignKey(Categoria,  related_name = 'categorie', on_delete = models.CASCADE)
 	instituicao = models.CharField(max_length = 90, help_text = 'Nome da instituição financeira')	
-	status = models.CharField(max_length = 90, choices = STATUS_CHOICE, default = 'banco')	
+	status = models.CharField(max_length = 90, choices = STATUS_CHOICE, default = 'banco')
+	risco = models.CharField(max_length = 90, choices = STATUS_RISCO, default = 'medio')		
 	moeda = models.CharField(max_length = 19, help_text = "A moeda do investimento")
-	created = models.DateTimeField(auto_now_add = False,  blank=True)
-	updated = models.DateTimeField(auto_now = False,  blank=True)
+	created = models.DateTimeField(auto_now_add = True,  blank=True)
+	updated = models.DateTimeField(auto_now = True,  blank=True)
 	carencia = models.IntegerField(default = 0, null = True, help_text = "O tempo que receberá")
 	diaria = models.BooleanField(help_text ='Liquidez diária', default = False)
 	imposto = models.BooleanField(help_text ='Imposto de renda ', default = False)
@@ -70,6 +84,8 @@ class Renda(models.Model):
 	rentabilidade = models.BooleanField(help_text = "Rentabilidade baixa", default = False)
 	pre = models.BooleanField(help_text = "Taxa pré-fixada (fixada antes)", default = False)
 	pos = models.BooleanField(help_text = "Rendimento é definido depois", default = False)
+	basileia = models.FloatField(help_text="índice da saúde financeira de uma instituição financeira", default = 0)
+	mobilizacao = models.FloatField(help_text="índice em ativos imobilizados como imóveis e veículos")
 	minimo = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor Minimo de deposito')
 	percent = models.IntegerField(
                       validators=[MinValueValidator(0),
