@@ -1,0 +1,146 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+      
+{% block dashboard %}
+<style type="text/css">
+	
+.voltar i
+{
+  font-size: 40px;
+}
+
+
+.voltar i:hover
+{
+	color: yellowgreen;
+}
+</style>
+<div style="height: 110px!important;" class="section-header">
+    <h5 style="margin-top: -28px; color:#cccccc;" class="position-absolute ml-2 mb-4">Financeiro</h5>
+    <br>
+    <h1 style="color: #8898aa; font-size: 40px;" class="mt-4 ml-2">Cartão</h1>
+    <div class="section-header-breadcrumb">       
+        <i style="font-size: 70px; color: #000066;" class="fas  fa-server"></i>
+    </div>
+    </div>
+
+    <div class="section-body">
+    	<a href="{% url 'bancos:cartao' %}" style="cursor: pointer;" class="float-left icon-top text-dark voltar"  data-toggle="tooltip" data-placement="top" title="Novo Cartão">
+    		<i class="fas fa-reply-all"></i>
+  		</a>
+  		<br>
+        <h2 class="section-title">Adicionar Novo Cartão</h2>
+        <p class="section-lead">
+          Adicionar os dados do novo cartão, todos os dados devem ser correto na contabilidade.
+        </p>
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+            <form action="." method="POST"  enctype="multipart/form-data" >         
+	            <div class="card">
+	              <div class="card-header">
+	                <h4>Formulário de adição de dados</h4>
+	              </div>
+	              <div class="card-body">
+	                <div class="alert alert-danger">
+	                  <b>Nota!</b> Os dados devem ser verdadeiro.
+	                </div>                
+	                {% csrf_token %}
+	                <div class="row">					
+						<div class="col-md-6">
+							<div class="form-group">
+								<p>
+									<label for="id_numero">Numero:</label> 
+									<input class="form-control" type="text" name="numero" maxlength="150" id="id_numero">
+									<span class="helptext">Numero do cartão</span>
+								</p>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<p>
+									<label for="id_numero">Nome:</label> 
+									<input class="form-control" type="text" name="nome" maxlength="150" id="id_nome">
+									<span class="helptext">Nome que vai no cartão</span>
+								</p>
+							</div>
+						</div>					
+						<div class="col-md-4">
+							<div class="form-group">
+	                    		<p>
+	                    			<label for="id_institucao">Institução:</label>
+	                    			<input class="form-control" type="text" name="instituicao" id="id_institucao" placeholder="Banco do Brasil">
+	                    			<span class="helptext">O nome da institução</span>
+	                    		</p>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+	                    		<p>
+	                    			<label for="id_vencimento">Vencimento:</label>
+	                    			<input class="form-control" type="date" name="vencimento" required id="vencimento">
+	                    			<span class="helptext">Data do vencimento do cartão</span>
+	                    		</p>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+	                    		<p><label for="id_limite">Limite:</label>
+	                    		<input class="form-control" type="text" name="limite" required id="limite" placeholder="R$ 0,00">
+	                    		 <span class="helptext">Limite do Cartão</span>
+	                    		</p>
+							</div>
+						</div>					
+	                </div>
+	                <div class="form-group">
+	                    <label class="form-label">Bandeiras</label>
+	                    <div class="row gutters-sm">
+	                      	{% for bandeira in bandeiras %}
+	                        <div class="col-1 col-sm-1">
+	                          <label class="imagecheck mb-4">
+	                            <input name="bandeiras" type="checkbox" value="{{ bandeira.id }}" class="imagecheck-input"  />
+	                            <figure class="imagecheck-figure">
+	                              <img width="90" src="{{ bandeira.logo.url }}" alt="{{ bandeira.nome }}" class="imagecheck-image">
+	                            </figure>
+	                          </label>
+	                        </div>
+	                        {% endfor %}                
+	                      </div>
+	                    </div>           
+	                <div>           
+	                </div>         
+	                <div class="card-footer text-left ">
+	                <input class="btn btn-success mr-1" type="submit" value="Cadastrar">
+	                <button class="btn btn-danger" type="reset">Cancelar</button>                
+	                </div>
+	                </div>            
+	            </div>
+            </form>            
+        </div>         
+    </div> 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('input[type="text"]').each(function(){
+        var val = $(this).val().replace(',','.');
+        $(this).val(val);
+    });
+  });
+</script>
+
+<script type="text/javascript">
+
+  function calcular() {
+  var valor = parseFloat(document.getElementById('valor').value, 10);
+  var desconto = parseFloat(document.getElementById('desconto').value, 10);
+  var multa = parseFloat(document.getElementById('multa').value, 10);   
+
+   document.getElementById('result').value = valor - desconto + multa;
+  }
+</script>
+
+
+
+{% endblock %}

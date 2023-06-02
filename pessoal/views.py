@@ -280,3 +280,15 @@ class Reserva_Pessoal_View(LoginRequiredMixin, View):
 			'month':month,
 
 			})
+
+
+
+
+
+
+
+
+
+
+
+

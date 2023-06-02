@@ -36,6 +36,8 @@ urlpatterns = [
     path('',include('economia.urls', namespace = 'economia')),
     path('', include('acoes.urls', namespace = 'acoes')),
     path('',include('analytics.urls', namespace = 'analytics')),
+    path('',include('fixa.urls', namespace = 'fixa')),
+    path('',include('bancos.urls', namespace = 'banco')),
     
 
 

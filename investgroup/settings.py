@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'pessoal.apps.PessoalConfig',
     'trading.apps.TradingConfig',
     'analytics.apps.AnalyticsConfig',
+    'fixa.apps.FixaConfig',
+    'bancos.apps.BancosConfig',
     
     #---------------------------- third party application -----------------------------------------
     

@@ -1,0 +1,135 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}<title>Residencial Onix | Adicionar despesas </title>{% endblock %}
+      
+{% block dashboard %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/cartao.css' %}">
+
+<div style="height: 110px!important;" class="section-header">
+    <h5 style="margin-top: -28px; color:#cccccc;" class="position-absolute ml-2 mb-4">Pessoal</h5>
+    <br>
+    <h1 style="color: #8898aa; font-size: 40px;" class="mt-4 ml-2">Cartão</h1>
+    <div class="section-header-breadcrumb">       
+        <i style="font-size: 70px; color: #000066;" class="far fa-credit-card"></i>
+    </div>
+</div>
+<div class="section-body">
+  <a href="{% url 'bancos:cartao' %}" style="cursor: pointer;" class="float-left icon-top text-dark voltar"  data-toggle="tooltip" data-placement="top" title="Voltar">
+    <i class="fas fa-reply-all"></i>
+  </a>
+  <br>     
+    <h2 class="section-title">Cartão</h2>
+    <p class="section-lead">
+          Gerenciamento dos cartões de crédito é uma ferramenta é eficaz e crucial quando se trata das finanças pessoais.
+    </p>
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 mt-5">
+            <div class="card ">
+                <div class="card-header">
+                    <h4>Estatisticas do Cartão</h4>
+                    <div class="card-header-action">
+                      <span class="btn btn-primary">{{ cartao.instituicao }}</span>                      
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="icon"> <i class="far fa-credit-card"></i> </div>
+                        <div class="ms-2 ml-4 c-details">
+                            <h6 class="mb-0">Vencimento</h6> <span>{{ cartao.vencimento |date:"d-m-Y" }}</span>
+                        </div>
+                    </div>                   
+                    </div>
+                    <div class="mt-5">
+                        <h3 class="heading">Senior Product<br>Designer-Singapore</h3>
+                        <div class="mt-5">                        
+                            <div class="limite mt-3 d-flex justify-content-between">
+                                <span class="text1">R$ 32 Applied </span>
+                                <span class="text2">R$ {{ cartao.limite}} Limite</span> 
+                            </div>
+                        </div>
+                    </div>
+                    <br>           
+                    <div class="progress blue">
+                        <div class="progress-bar" style="width:60%; background:#1a4966;">
+                            <div class="progress-value">60%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                  <h4>Fatura</h4>
+                  <div class="card-header-action">
+                    <a href="#" class="btn btn-danger">View More <i class="fas fa-chevron-right"></i></a>
+                  </div>
+                </div>
+                <div class="card-body p-0">
+                  <div class="table-responsive table-invoice">
+                    <table class="table table-striped">
+                      <tr>
+                        <th>Invoice ID</th>
+                        <th>Customer</th>
+                        <th>Status</th>
+                        <th>Due Date</th>
+                        <th>Action</th>
+                      </tr>
+                      <tr>
+                        <td><a href="#">INV-87239</a></td>
+                        <td class="font-weight-600">Kusnadi</td>
+                        <td><div class="badge badge-warning">Unpaid</div></td>
+                        <td>July 19, 2018</td>
+                        <td>
+                          <a href="#" class="btn btn-primary">Detail</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="#">INV-48574</a></td>
+                        <td class="font-weight-600">Hasan Basri</td>
+                        <td><div class="badge badge-success">Paid</div></td>
+                        <td>July 21, 2018</td>
+                        <td>
+                          <a href="#" class="btn btn-primary">Detail</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="#">INV-76824</a></td>
+                        <td class="font-weight-600">Muhamad Nuruzzaki</td>
+                        <td><div class="badge badge-warning">Unpaid</div></td>
+                        <td>July 22, 2018</td>
+                        <td>
+                          <a href="#" class="btn btn-primary">Detail</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="#">INV-84990</a></td>
+                        <td class="font-weight-600">Agung Ardiansyah</td>
+                        <td><div class="badge badge-warning">Unpaid</div></td>
+                        <td>July 22, 2018</td>
+                        <td>
+                          <a href="#" class="btn btn-primary">Detail</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="#">INV-87320</a></td>
+                        <td class="font-weight-600">Ardian Rahardiansyah</td>
+                        <td><div class="badge badge-success">Paid</div></td>
+                        <td>July 28, 2018</td>
+                        <td>
+                          <a href="#" class="btn btn-primary">Detail</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+            </div>
+        </div>
+                 
+    </div>         
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+{% endblock %}

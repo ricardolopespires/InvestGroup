@@ -18,5 +18,7 @@ urlpatterns = [
 	path('finanças/pessoal/adicionar/despesas/',views.Despesas_Mensal_View.as_view(), name = 'add_despesas'),
 	path('finanças/pessoal/fundo/reserva/',views.Reserva_Pessoal_View.as_view(), name = 'reserva'),
 
+	
+
 
 ]

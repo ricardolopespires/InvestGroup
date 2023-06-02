@@ -74,9 +74,7 @@ class Movimentacao(models.Model):
 		return f'{self.id}'
 
 
-	def save(self, *args, **kwargs):
-
-		
+	def save(self, *args, **kwargs):		
 
 		super().save(*args, **kwargs)
 
@@ -93,7 +91,7 @@ class Financeiro(models.Model):
 	receitas = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor das receitas')
 	despesas = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor das despesas')
 	cartao = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor das despesas')
-	investimento = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor dos cartões')
+	investimento = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor dos investimento')
 	total = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor dos investimentos')
 
 
