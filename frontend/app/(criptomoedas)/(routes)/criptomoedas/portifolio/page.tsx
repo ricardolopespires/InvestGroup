@@ -1,17 +1,14 @@
 "use client"
 
-
-import { FaDoorOpen } from "react-icons/fa";
 import AxiosInstance from '@/services/AxiosInstance'
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-
+import { BiBitcoin } from "react-icons/bi";
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import Menu from "@/app/_components/menu";
 
 import React from 'react'
 
 const Page = ({children}) => {
-
-
 
   const jwt=localStorage.getItem('token')
   const user = JSON.parse(localStorage.getItem('user'))
@@ -29,12 +26,13 @@ const Page = ({children}) => {
   return (
     <div className='absolute inset-x-0 top-[140px] h-16 px-20'>
       <div className='flex flex-col '>
-      <div className="flex items-center space-x-4">
-      <div className="text-2xl text-yellow-500"><FaDoorOpen/></div>
-      <h1 className='text-2xl text-white'>Bem-vindo de volta, {user && user.full_name}!</h1>
+      <div className="flex items-center space-x-1">
+      <div className="text-3xl text-yellow-500"><BiBitcoin /></div>
+      <h1 className='text-2xl text-white'>Criptomoedas</h1>
       </div>
-      <p className='text-gray-500'>Estamos aqui para ajudar a administrar seu dinheiro!</p>
+      <p className='text-gray-500 '>Dados do Mercado de Criptomoedas.</p>
       </div>
+      <Menu/>
       {children}
     </div>
   )

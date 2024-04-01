@@ -1,11 +1,11 @@
 import { BiBitcoin } from "react-icons/bi";
-import Menu from "./components/menu";
+import Menu from "@/app/_components/menu";
 
 import React from 'react'
 
 const Page = ({children}) => {
   return (
-    <div className='absolute inset-x-0 top-[140px] h-16 px-40'>
+    <div className='absolute inset-x-0 top-[140px] h-16 px-20'>
       <div className='flex flex-col '>
       <div className="flex items-center space-x-1">
       <div className="text-3xl text-yellow-500"><BiBitcoin /></div>
