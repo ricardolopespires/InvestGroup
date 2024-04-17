@@ -1,4 +1,4 @@
-
+import { HiMiniArrowLeftOnRectangle } from "react-icons/hi2";
 import { FaSignInAlt } from "react-icons/fa";
 import NavbarRoutes from './navbar-routes'
 import Image from 'next/image'
@@ -20,9 +20,7 @@ const Navbar = () => {
     </div>
     <div className=" flex items-center space-x-4">
         <NavbarRoutes/>
-        <a href="/auth/Sign-In" className="text-2xl">
-        <FaSignInAlt />
-        </a>
+        <a href="/auth/Sign-In"><HiMiniArrowLeftOnRectangle className="mr-20 text-2xl hover:text-4xl"/></a>
     </div>     
     </section>
   )

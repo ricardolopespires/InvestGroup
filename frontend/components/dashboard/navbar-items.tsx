@@ -41,7 +41,7 @@ const NavbarItem = ({
         type='button'
         className={cn(
             'text-sm ',
-            isActive && " font-semibold  rounded-full text-white px-6 py-1  bg-gradient-to-r from-[#0B2353] to-[#0B4278]")}>  
+            isActive && " font-semibold  rounded-full text-white px-6 py-1  bg-gradient-to-r from-[#454C6F] to-[#2B334C]")}>  
             {label}                    
         </button>       
    

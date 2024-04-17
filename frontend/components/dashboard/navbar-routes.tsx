@@ -18,12 +18,12 @@ const guestRoutes = [
     {
         icons: Compass,
         label:"Criptomoedas",
-        href: "/criptomoedas"
+        href: "/criptomoedas/overview"
     },
     {
         icons: Compass,
         label:"Finanças Pessoais",
-        href: "/personal"
+        href: "/personal/overview"
     },
 ]
 
@@ -32,9 +32,7 @@ const guestRoutes = [
 const NavbarRoutes = () => {
 
     const pathname = usePathname();  
-    const routes = guestRoutes;
-
-    
+    const routes = guestRoutes;   
   
   return (
     <div className='flex w-full items-center space-x-4 ml-9'>

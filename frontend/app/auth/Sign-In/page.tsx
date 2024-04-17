@@ -34,9 +34,12 @@ const page = () => {
         if (formdata) {
              const res = await AxiosInstance.post('/api/v1/auth/login/', formdata)
              const response= res.data
+             console.log(response)
              const user={
                 'full_name':response.full_name,
-                'email':response.email
+                'email':response.email,
+                'situation':response.situation,
+                'perfil':response.perfil
              }
                
 
@@ -67,9 +70,9 @@ const page = () => {
                 <div className="flex items-center w-full space-x-2 ">                
                 <span className='text-lg'>Login</span>
                 </div>
-                <p className='font-light text-sm bg-orange-600 text-white p-4 rounded'>
+                <p className='font-light text-sm bg-red-600 text-white p-4 rounded'>
                     Entre com as informações para fazer seu login no
-                    <span className='font-semibold'> EducaOne</span>
+                    <span className='font-semibold'> InvestGroup</span>
                 </p>
             </div>
             <form action="" onSubmit={handleSubmit} className="space-y-6 w-full">
