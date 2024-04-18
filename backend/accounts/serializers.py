@@ -1,7 +1,7 @@
 
 import json
 from dataclasses import field
-from .models import User
+from .models import User, Perfil, Situacao
 from rest_framework import serializers
 from string import ascii_lowercase, ascii_uppercase
 from django.contrib.auth import authenticate
@@ -13,6 +13,40 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from .utils import send_normal_email
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+
+
+
+
+class UserlistSerializer(serializers.Serializer):
+    id = serializers.IntegerField() 
+    email = serializers.CharField(max_length=100)
+    first_name = serializers.CharField(max_length=100)
+    last_name = serializers.CharField(max_length=100)
+    is_staff = serializers.BooleanField(default=False)
+    is_superuser = serializers.BooleanField(default=False)
+    is_verified=serializers.BooleanField(default=False)
+    is_active = serializers.BooleanField(default=True)
+    date_joined = serializers.DateTimeField()
+    last_login = serializers.DateTimeField()
+    situation = serializers.BooleanField( default=False)
+    perfil = serializers.BooleanField( default=False)
+
+
+class UserQuizSerializers(serializers.ModelSerializer):
+    email = serializers.CharField(max_length=100)
+    situation = serializers.BooleanField( default=False)
+    perfil = serializers.BooleanField( default=False)
+
+    class Meta:
+        model=User
+        fields = ['email', 'situation', 'perfil']
+
+    def update(self, instance, validated_data): 
+        instance.email = validated_data.get('email', instance.email)         
+        instance.situation = validated_data.get('situation', instance.situation) 
+        instance.perfil = validated_data.get('perfil', instance.perfil)         
+        instance.save() 
+        return instance 
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -47,9 +81,10 @@ class LoginSerializer(serializers.ModelSerializer):
     access_token=serializers.CharField(max_length=255, read_only=True)
     refresh_token=serializers.CharField(max_length=255, read_only=True)
 
+
     class Meta:
         model = User
-        fields = ['email', 'password', 'full_name', 'access_token', 'refresh_token']
+        fields = ['email', 'password', 'full_name', 'access_token', 'refresh_token',]
 
     
 
@@ -65,7 +100,7 @@ class LoginSerializer(serializers.ModelSerializer):
         tokens=user.tokens()
         return {
             'email':user.email,
-            'full_name':user.get_full_name,
+            'full_name':user.get_full_name,        
             "access_token":str(tokens.get('access')),
             "refresh_token":str(tokens.get('refresh'))
         }
@@ -151,6 +186,24 @@ class LogoutUserSerializer(serializers.Serializer):
 
     
 
-    
+class PerfilUserSerializer(serializers.Serializer):
+     
+    id = serializers.CharField(max_length = 190, ) 
+    investor = serializers.CharField(max_length = 190, ) 
+    minimum = serializers.IntegerField()
+    maximum = serializers.IntegerField()
+    usuario = UserlistSerializer(read_only=True, many=True)
+
+    class Meta:
+        model=User
+        fields = ['id','minimum', 'maximum','usuario']
+
+    def update(self, instance, validated_data):            
+        instance.minimum = validated_data.get('minimum', instance.minimum) 
+        instance.maximum = validated_data.get('maximum', instance.maximum)  
+        instance.usuario = validated_data.get('usuario', instance.usuario)         
+        instance.save() 
+        return instance 
+   
     
 

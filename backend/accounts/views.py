@@ -4,14 +4,21 @@ from django.shortcuts import render
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from accounts.models import OneTimePassword
-from accounts.serializers import PasswordResetRequestSerializer,LogoutUserSerializer, UserRegisterSerializer, LoginSerializer, SetNewPasswordSerializer
+from .serializers import PasswordResetRequestSerializer
+from .serializers import LogoutUserSerializer
+from .serializers import  UserRegisterSerializer
+from .serializers import LoginSerializer
+from .serializers import SetNewPasswordSerializer
+from .serializers import UserQuizSerializers
+from .serializers import PerfilUserSerializer
 from rest_framework import status
 from .utils import send_generated_otp_to_email
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import smart_str, DjangoUnicodeDecodeError
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from rest_framework.permissions import IsAuthenticated
-from .models import User
+from rest_framework.decorators import api_view 
+from .models import User, Perfil
 # Create your views here.
 
 
@@ -113,4 +120,57 @@ class LogoutApiView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+
+class QuizView(GenericAPIView):
+
+    serializer_class= UserQuizSerializers
+
+    def put(self, request):
+        serializer=self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+
+@api_view(['GET', 'PUT']) 
+def quiz_detail(request, pk): 
+    try: 
+        user = User.objects.get(email=pk) 
+    except User.DoesNotExist: 
+        return Response(status=status.HTTP_404_NOT_FOUND) 
+ 
+    if request.method == 'GET': 
+        user_serializer = UserQuizSerializers(user) 
+        return Response(user_serializer.data) 
+ 
+    elif request.method == 'PUT': 
+        user_serializer = UserQuizSerializers(user, data=request.data) 
+        if user_serializer.is_valid(): 
+            user_serializer.save() 
+            return Response(user_serializer.data) 
+        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+ 
+
+
+
+@api_view(['GET', 'PUT']) 
+def perfil_detail(request, pk): 
+    try: 
+        perfil = Perfil.objects.get(id=pk) 
+    except Perfil.DoesNotExist: 
+        return Response(status=status.HTTP_404_NOT_FOUND) 
+ 
+    if request.method == 'GET': 
+        perfil_serializer = PerfilUserSerializer(perfil) 
+        return Response(perfil_serializer.data) 
+ 
+    elif request.method == 'PUT': 
+        perfil_serializer = PerfilUserSerializer(perfil, data=request.data) 
+        if perfil_serializer.is_valid(): 
+            perfil_serializer.save() 
+            return Response(perfil_serializer.data) 
+        return Response(perfil_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
  

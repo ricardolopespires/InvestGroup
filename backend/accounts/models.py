@@ -21,6 +21,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
+    situation = models.BooleanField('Situação financeira', blank=True, default=False)
+    perfil = models.BooleanField('Perfil do Investidor', blank=True, default=False)
     auth_provider=models.CharField(max_length=50, blank=False, null=False, default=AUTH_PROVIDERS.get('email'))
 
     USERNAME_FIELD = "email"
@@ -52,3 +54,76 @@ class OneTimePassword(models.Model):
 
     def __str__(self):
         return f"{self.user.first_name} - otp code"
+    
+
+
+class Perfil(models.Model):
+
+    STATUS_CHOICES = (
+
+        ('conservador','Conservador'),
+        ('moderado','Moderado'),
+        ('dinâmico','Dinâmico'),
+        ('arrojado','Arrojado'),
+        ('agressivo','Agressivo'),
+        )
+
+    id = models.BigAutoField(primary_key=True, editable=False) 
+    investor = models.CharField(max_length = 190, choices = STATUS_CHOICES, default = 'Conservador', blank = True, null = True)
+    description = models.TextField()
+    risk_profile = models.CharField(max_length = 150, null = True)
+    minimum = models.IntegerField()
+    maximum = models.IntegerField()
+    usuario = models.ManyToManyField('accounts.User', related_name = 'perfil_investidor', blank=True)
+   
+
+
+    def __str__(self):
+        return f'{self.investor}'
+
+
+
+class Portfolio (models.Model):
+    name = models.CharField(max_length= 400)
+    description = models.TextField()
+    risk = models.IntegerField(default = 0)
+
+
+
+
+class Situacao(models.Model):
+
+    STATUS_CHOICES = (
+
+        ('investidor','Investidor'),
+        ('equilibrado','Equilibrado'),
+        ('endividado','Endividado'),
+        
+        )
+    
+    usuario = models.ManyToManyField('accounts.User', related_name = 'situacao_usuario', blank=True)
+    condicao = models.CharField(max_length = 190, choices = STATUS_CHOICES, default = 'Conservador')
+    goals = models.TextField( help_text="Objetivos Financeiros")
+    situation = models.TextField( help_text="Situação Financeira Atua")
+    risk = models.TextField( help_text="Tolerância ao Risco")
+    horizon = models.TextField( help_text="Horizonte de Investimento")
+    portfolio = models.ManyToManyField("accounts.Portfolio", help_text="Diversificação do Portfólio", blank=True)
+    strategy  = models.TextField( help_text="Estratégia Financeira", blank=True )
+    minimum = models.IntegerField()
+    maximum = models.IntegerField()
+
+
+    def __str__(self):
+        return f'{self.condicao}'
+
+
+
+
+
+
+
+
+
+
+
+
