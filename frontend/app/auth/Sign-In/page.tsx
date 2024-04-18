@@ -36,10 +36,9 @@ const page = () => {
              const response= res.data
              console.log(response)
              const user={
+                'user_id':response.user_id,
                 'full_name':response.full_name,
-                'email':response.email,
-                'situation':response.situation,
-                'perfil':response.perfil
+                'email':response.email,               
              }
                
 

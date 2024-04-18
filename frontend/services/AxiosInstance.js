@@ -15,13 +15,12 @@ const AxiosInstance = axios.create({
      headers: {Authorization: localStorage.getItem('token') ? `Bearer ${accessToken}` : ""},
   });
 
- AxiosInstance.interceptors.request.use(async req =>{
-   console.log(accessToken)
+ AxiosInstance.interceptors.request.use(async req =>{ 
     if (accessToken) {
         //  accessToken=localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : null
          req.headers.Authorization = localStorage.getItem('token') ? `Bearer ${accessToken}` : ""
          const user = jwtDecode(accessToken)
-         console.log(user)
+        
         const isExpired=dayjs.unix(user.exp).diff(dayjs()) < 1
         if(!isExpired) return req
         const resp =await axios.post(`${baseURL}/api/v1/auth/token/refresh/`, {

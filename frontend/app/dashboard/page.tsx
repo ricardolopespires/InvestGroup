@@ -1,36 +1,64 @@
 "use client"
 
-import { AiOutlineRise, AiOutlineFall } from "react-icons/ai";
-import { FaDoorOpen, FaUserTie } from "react-icons/fa";
+import { AiOutlineRise } from "react-icons/ai";
+import { FaDoorOpen } from "react-icons/fa";
 import AxiosInstance from '@/services/AxiosInstance'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Balance from "./_componentes/Balance"
-
+import Perfil from "./_componentes/perfil";
 import React from 'react'
 
 const Page = ({children}) => {
 
-
+  const [quiz, setQuiz] = useState([]);
 
   const jwt=localStorage.getItem('token')
   const user = JSON.parse(localStorage.getItem('user'))
   const router = useRouter();
 
- 
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const res = await AxiosInstance.get(`http://localhost:8000/api/v1/auth/quiz/${user.email}`);           
+        return res.data;
+      } catch (error) {
+        console.error('Erro ao obter dados:', error);
+        return [];
+      }
+    };
+
+    getUserData()
+      .then(Data => {
+        setQuiz(Data);
+      })
+      .catch(error => {
+        console.error('Erro ao obter condomínios:', error);
+      });
+  }, []);
 
 
-   useEffect(() => {
+  useEffect(() => {
      if (jwt === null && !user) {
+
          router.push('/auth/Sign-In')
+
      }else{
-      if (user.perfil === false){
+      if (quiz.perfil === false){
+
         router.push('/quiz/perfil')
+
+      }else if (quiz.situation === false){
+
+        router.push('/quiz/situation')
       }
      }
      
    }, [jwt, user])
 
+
+  
+  
 
   return (
     <div className='absolute inset-x-0 top-[140px] h-16 px-20'>
@@ -54,10 +82,7 @@ const Page = ({children}) => {
                 </div>
                 </div>
             </div>
-            <div className="flex space-x-2 items-center h-10">
-              <FaUserTie className="text-2xl"/>
-              <span className="text-orange-500">Moderado</span>
-            </div>
+            <Perfil/>
           </div>
             <div className="flex space-x-4 relative top-[60px]" >
               <div className="w-[70%] h-[400px] bg-white rounded-xl shadow-xl">

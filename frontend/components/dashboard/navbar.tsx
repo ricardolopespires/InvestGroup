@@ -1,5 +1,5 @@
 
-import { FaSignInAlt, FaRegUserCircle } from "react-icons/fa";
+import { FaSignInAlt, FaRegUserCircle, FaRegBell  } from "react-icons/fa";
 import Logout from "@/app/auth/Logout/page";
 import NavbarRoutes from './navbar-routes'
 import Image from 'next/image'
@@ -21,7 +21,8 @@ const Navbar = () => {
           </a>
           <NavbarRoutes/>
      </div>
-     <div className="flex items-center space-x-4 text-2xl ">      
+     <div className="flex items-center space-x-9 text-2xl "> 
+     <FaRegBell />     
      <a href="/auth/profile" className="text-green-500"><FaRegUserCircle /></a>
      <Logout/>
      
