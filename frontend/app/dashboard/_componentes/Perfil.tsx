@@ -12,7 +12,8 @@ const Perfil = () => {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const res = await AxiosInstance.get(`http://localhost:8000/api/v1/auth/user/${user.email}`);      
+        const res = await AxiosInstance.get(`http://localhost:8000/api/v1/auth/user/${user.email}`);
+        console.log(res.data)      
         setUsername(res.data);
       } catch (error) {
         console.error('Erro ao obter dados do usuário:', error);
