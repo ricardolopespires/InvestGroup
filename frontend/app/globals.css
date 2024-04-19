@@ -2,3 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+.moderado
+{
+    color:#ffff00;    
+}

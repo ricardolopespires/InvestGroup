@@ -11,13 +11,13 @@ admin.site.register(OneTimePassword)
 @admin.register(Perfil)
 class AdminPerfil(ImportExportModelAdmin):
 
-	list_display = ['investor','risk_profile','minimum','maximum']
+	list_display = ['id','investor','risk_profile','minimum','maximum','color']
 
 
 
 @admin.register(Situacao)
 class AdminSituacao(ImportExportModelAdmin):
 
-	list_display = ['condicao','minimum','maximum']
+	list_display = ['id','condicao','minimum','maximum']
 
 

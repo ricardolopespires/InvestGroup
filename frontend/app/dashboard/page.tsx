@@ -20,7 +20,8 @@ const Page = ({children}) => {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const res = await AxiosInstance.get(`http://localhost:8000/api/v1/auth/quiz/${user.email}`);           
+        const res = await AxiosInstance.get(`http://localhost:8000/api/v1/auth/user/${user.email}`);
+                 
         return res.data;
       } catch (error) {
         console.error('Erro ao obter dados:', error);

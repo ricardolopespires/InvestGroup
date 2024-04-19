@@ -14,6 +14,10 @@ const page = () => {
   const [total,setTotal]= useState(0);
   const [click, setClick] = useState(0)
   const [quiz, setQuiz] = useState([]);
+  const [formData, setFormData] = useState({
+    id: "",
+    usuario:"",
+  });
 
 
 
@@ -22,7 +26,7 @@ const page = () => {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const res = await AxiosInstance.get(`http://localhost:8000/api/v1/auth/quiz/${user.email}`);           
+        const res = await AxiosInstance.get(`/api/v1/auth/user/${user.email}`);           
         return res.data;
       } catch (error) {
         console.error('Erro ao obter dados:', error);
@@ -42,7 +46,7 @@ const page = () => {
   useEffect(() => {
         const getUserData = async () => {
             try {
-                const res = await AxiosInstance.get("http://localhost:8000/api/v1/quiz/details/4445");       
+                const res = await AxiosInstance.get("/api/v1/quiz/details/4445");       
                 
                 return res.data;
             } catch (error) {
@@ -73,12 +77,45 @@ const page = () => {
         setClick(click + 1)      
       };
 
-      if(click === 15){
-        console.log(quiz["situation"] = true)
-        AxiosInstance.put(`http://localhost:8000/api/v1/auth/quiz/${user.email}`,quiz)
-        router.push("/dashboard")
+     
+  useEffect(() => {
+    if (click === 15) {
+      const perfilIdMap = {
+        1: { min: 0, max: 15 },
+        2: { min: 15, max: 30 },
+        3: { min: 30, max: 45 },
+       
+      };
+  
+      const formData = {
+        usuario: [quiz.id]
+      };
+  
+      let perfilId;
+      for (const id in perfilIdMap) {
+        const intervalo = perfilIdMap[id];
+        if (total > intervalo.min && total <= intervalo.max) {
+          perfilId = id;
+          break;
         }
-      
+      }
+  
+      if (perfilId) {
+        formData["id"] = perfilId;
+        quiz["situation"] = true
+        
+        /*Adicionando o perfil do investido na Api */
+        AxiosInstance.put(`/api/v1/auth/situation/${perfilId}/username/`, formData);
+        /*Marcando como concluido o questinario */
+        AxiosInstance.put(`/api/v1/auth/user/${user.email}`,quiz)
+        /*retornando para dashboard */
+        router.push("/dashboard")
+      }
+    }
+  }, [click, total, quiz]);
+
+
+
   return (
     <div className='flex w-full h-screen px-40'>
     <div className='flex flex-col relative top-[40px] w-full space-y-7'>

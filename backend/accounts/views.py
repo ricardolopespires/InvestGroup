@@ -9,8 +9,11 @@ from .serializers import LogoutUserSerializer
 from .serializers import  UserRegisterSerializer
 from .serializers import LoginSerializer
 from .serializers import SetNewPasswordSerializer
-from .serializers import UserQuizSerializers
+from .serializers import UserSerializers
 from .serializers import PerfilUserSerializer
+from .serializers import Perfil_Add_User_Serializer
+from .serializers import SituacaoUserSerializer
+from .serializers import Situacao_Add_User_Serializer
 from rest_framework import status
 from .utils import send_generated_otp_to_email
 from django.utils.http import urlsafe_base64_decode
@@ -18,7 +21,7 @@ from django.utils.encoding import smart_str, DjangoUnicodeDecodeError
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view 
-from .models import User, Perfil
+from .models import User, Perfil, Situacao
 # Create your views here.
 
 
@@ -125,7 +128,7 @@ class LogoutApiView(GenericAPIView):
 
 class QuizView(GenericAPIView):
 
-    serializer_class= UserQuizSerializers
+    serializer_class= UserSerializers
 
     def put(self, request):
         serializer=self.serializer_class(data=request.data)
@@ -136,18 +139,18 @@ class QuizView(GenericAPIView):
 
 
 @api_view(['GET', 'PUT']) 
-def quiz_detail(request, pk): 
+def user_detail(request, pk): 
     try: 
         user = User.objects.get(email=pk) 
     except User.DoesNotExist: 
         return Response(status=status.HTTP_404_NOT_FOUND) 
  
     if request.method == 'GET': 
-        user_serializer = UserQuizSerializers(user) 
+        user_serializer = UserSerializers(user) 
         return Response(user_serializer.data) 
  
     elif request.method == 'PUT': 
-        user_serializer = UserQuizSerializers(user, data=request.data) 
+        user_serializer = UserSerializers(user, data=request.data) 
         if user_serializer.is_valid(): 
             user_serializer.save() 
             return Response(user_serializer.data) 
@@ -159,7 +162,7 @@ def quiz_detail(request, pk):
 @api_view(['GET', 'PUT']) 
 def perfil_detail(request, pk): 
     try: 
-        perfil = Perfil.objects.get(id=pk) 
+        perfil = Perfil.objects.get(usuario=pk) 
     except Perfil.DoesNotExist: 
         return Response(status=status.HTTP_404_NOT_FOUND) 
  
@@ -167,10 +170,47 @@ def perfil_detail(request, pk):
         perfil_serializer = PerfilUserSerializer(perfil) 
         return Response(perfil_serializer.data) 
  
+
+ 
+
+@api_view(['GET', 'PUT']) 
+def perfil_username(request, pk): 
+    try: 
+        perfil = Perfil.objects.get(id=pk) 
+    except Perfil.DoesNotExist: 
+        return Response(status=status.HTTP_404_NOT_FOUND) 
+ 
+    if request.method == 'GET': 
+        perfil_serializer = Perfil_Add_User_Serializer(perfil) 
+        return Response(perfil_serializer.data) 
+ 
     elif request.method == 'PUT': 
-        perfil_serializer = PerfilUserSerializer(perfil, data=request.data) 
+        perfil_serializer = Perfil_Add_User_Serializer(perfil, data=request.data) 
+        print(perfil_serializer)
         if perfil_serializer.is_valid(): 
             perfil_serializer.save() 
             return Response(perfil_serializer.data) 
         return Response(perfil_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+ 
+
+
+
+@api_view(['GET', 'PUT']) 
+def situacao_username(request, pk): 
+    try: 
+        situacao = Situacao.objects.get(id=pk) 
+    except situacao.DoesNotExist: 
+        return Response(status=status.HTTP_404_NOT_FOUND) 
+ 
+    if request.method == 'GET': 
+        situacao_serializer = Situacao_Add_User_Serializer(situacao) 
+        return Response(situacao_serializer.data) 
+ 
+    elif request.method == 'PUT': 
+        situacao_serializer = Situacao_Add_User_Serializer(situacao, data=request.data) 
+        print(situacao_serializer)
+        if situacao_serializer.is_valid(): 
+            situacao_serializer.save() 
+            return Response(situacao_serializer.data) 
+        return Response(situacao_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
  

@@ -32,14 +32,15 @@ class UserlistSerializer(serializers.Serializer):
     perfil = serializers.BooleanField( default=False)
 
 
-class UserQuizSerializers(serializers.ModelSerializer):
+class UserSerializers(serializers.ModelSerializer):
+    id = serializers.IntegerField() 
     email = serializers.CharField(max_length=100)
     situation = serializers.BooleanField( default=False)
     perfil = serializers.BooleanField( default=False)
 
     class Meta:
         model=User
-        fields = ['email', 'situation', 'perfil']
+        fields = ['id','email', 'situation', 'perfil']
 
     def update(self, instance, validated_data): 
         instance.email = validated_data.get('email', instance.email)         
@@ -192,18 +193,55 @@ class PerfilUserSerializer(serializers.Serializer):
     investor = serializers.CharField(max_length = 190, ) 
     minimum = serializers.IntegerField()
     maximum = serializers.IntegerField()
-    usuario = UserlistSerializer(read_only=True, many=True)
+    usuario = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+    color  = serializers.CharField(max_length = 40, ) 
 
     class Meta:
         model=User
-        fields = ['id','minimum', 'maximum','usuario']
+        fields = ['id','minimum', 'maximum','usuario', 'color']
 
-    def update(self, instance, validated_data):            
-        instance.minimum = validated_data.get('minimum', instance.minimum) 
-        instance.maximum = validated_data.get('maximum', instance.maximum)  
-        instance.usuario = validated_data.get('usuario', instance.usuario)         
-        instance.save() 
-        return instance 
+
    
     
+class Perfil_Add_User_Serializer(serializers.Serializer):
+    id = serializers.CharField(max_length=190)
+    usuario = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
 
+    def update(self, instance, validated_data):
+        instance.id = validated_data.get('id', instance.id)
+        instance.save()
+
+        usuarios = validated_data.get('usuario', [])
+        instance.usuario.add(*usuarios)
+
+        return instance
+    
+
+
+class SituacaoUserSerializer(serializers.Serializer):
+     
+    id = serializers.CharField(max_length = 190, ) 
+    condicao = serializers.CharField(max_length = 190, ) 
+    minimum = serializers.IntegerField()
+    maximum = serializers.IntegerField()
+    usuario = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+  
+
+    class Meta:
+        model=User
+        fields = ['id','condicao','usuario', ]
+
+
+class Situacao_Add_User_Serializer(serializers.Serializer):
+    id = serializers.CharField(max_length=190)
+    usuario = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
+
+    def update(self, instance, validated_data):
+        instance.id = validated_data.get('id', instance.id)
+        instance.save()
+
+        usuarios = validated_data.get('usuario', [])
+        instance.usuario.add(*usuarios)
+
+        return instance
+    

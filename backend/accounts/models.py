@@ -61,11 +61,11 @@ class Perfil(models.Model):
 
     STATUS_CHOICES = (
 
-        ('conservador','Conservador'),
-        ('moderado','Moderado'),
-        ('dinâmico','Dinâmico'),
-        ('arrojado','Arrojado'),
-        ('agressivo','Agressivo'),
+        ('Conservador','Conservador'),
+        ('Moderado','Moderado'),
+        ('Dinâmico','Dinâmico'),
+        ('Arrojado','Arrojado'),
+        ('Agressivo','Agressivo'),
         )
 
     id = models.BigAutoField(primary_key=True, editable=False) 
@@ -75,6 +75,7 @@ class Perfil(models.Model):
     minimum = models.IntegerField()
     maximum = models.IntegerField()
     usuario = models.ManyToManyField('accounts.User', related_name = 'perfil_investidor', blank=True)
+    color = models.CharField(max_length = 40)
    
 
 
