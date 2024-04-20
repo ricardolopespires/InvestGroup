@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Balance from "./_componentes/Balance"
 import Perfil from "./_componentes/perfil";
+import Patriminio from "./_componentes/Patriminio";
+import Portifolio from "./_componentes/Portifolio";
 import React from 'react'
 
 const Page = ({children}) => {
@@ -62,7 +64,7 @@ const Page = ({children}) => {
   
 
   return (
-    <div className='absolute inset-x-0 top-[140px] h-16 px-20'>
+    <div className='absolute inset-x-0 top-[140px] h-screen px-20'>
       <div className='flex flex-col '>
       <div className="flex items-center space-x-4">
       <div className="text-2xl text-yellow-500"><FaDoorOpen/></div>
@@ -86,11 +88,11 @@ const Page = ({children}) => {
             <Perfil/>
           </div>
             <div className="flex space-x-4 relative top-[60px]" >
-              <div className="w-[70%] h-[400px] bg-white rounded-xl shadow-xl">
-
+              <div className="w-[60%] ">
+              <Patriminio/>
               </div>
-              <div className="w-[30%] h-[400px] bg-white rounded-xl shadow-xl">
-
+              <div className="w-[40%] ">
+               <Portifolio/>
               </div>
             </div>
           

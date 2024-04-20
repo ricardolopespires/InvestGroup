@@ -44,6 +44,11 @@ const personalRoutes = [
         label:"Analytics",
         href: "/personal/analytics"
     },
+    {
+        icons:"",
+        label:"Independência",
+        href: "/personal/independence"
+    },
   ]
 
   

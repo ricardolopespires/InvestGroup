@@ -44,7 +44,7 @@ const MenuItem = ({
             isActive && " font-semibold rounded-full text-white space-x-2 py-1 ")}>  
             {label}                    
         </button> 
-        <div className={cn('', isActive && "border w-[90%] top-5 relative")}/> 
+        <div className={cn('', isActive && "border w-[90%] h-[4px] top-[22px] left-[-5px] relative bg-yellow-500 border-yellow-400 z-1")}/> 
    </div>     
    
   )
