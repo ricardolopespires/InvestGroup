@@ -9,6 +9,7 @@ import Balance from "./_componentes/Balance"
 import Perfil from "./_componentes/perfil";
 import Patriminio from "./_componentes/Patriminio";
 import Portifolio from "./_componentes/Portifolio";
+import Transaction from "./_componentes/tables/Transaction";
 import React from 'react'
 
 const Page = ({children}) => {
@@ -72,8 +73,8 @@ const Page = ({children}) => {
       </div>
       <p className='text-gray-500'>Estamos aqui para ajudar a administrar seu dinheiro!</p>
       </div>
-      <div className='absolute inset-x-0 top-[90px] h-full px-20'>
-        <div className='flex flex-col '>
+      <div className='absolute inset-x-0 h-screen px-20 top-[90px]'>
+        <div className='flex flex-col space-y-[60px]'>
           <div className="flex items-center justify-between w-full h-10 text-white">
             <div className="flex flex-col ">
               <Balance/>
@@ -87,18 +88,14 @@ const Page = ({children}) => {
             </div>
             <Perfil/>
           </div>
-            <div className="flex space-x-4 relative top-[60px]" >
-              <div className="w-[60%] ">
-              <Patriminio/>
-              </div>
-              <div className="w-[40%] ">
-               <Portifolio/>
-              </div>
+            <div className="flex space-x-4 relative top-[40px]" >           
+              <Patriminio/>     
+              <Portifolio/>           
             </div>
-          
-
+            <Transaction/>
           </div>
         </div>
+       
       {children}
     </div>
   )

@@ -1,10 +1,18 @@
-import { FaWallet, FaChild,FaCreditCard, FaDollarSign, FaBarcode, FaHandHoldingUsd,FaRegCreditCard, FaCashRegister, FaCar, FaPlaystation     } from "react-icons/fa";
+"use client"
+
+import { FaWallet, FaSync, FaChild,FaCreditCard, FaDollarSign, FaBarcode, FaHandHoldingUsd,FaRegCreditCard, FaCashRegister, FaCar, FaPlaystation     } from "react-icons/fa";
 
 import Menu from "@/app/_components/menu";
-
-import React from 'react'
+import Created from "./_components/modals/Created";
+import Transactions from "./_components/tables/Transactions";
+import React, { useState } from 'react'
 
 const page = () => {
+
+
+  const [showModal, setShowModal] = useState(false);
+
+
   return (
     <div className='absolute inset-x-0 top-[140px] h-full px-20'>
     <div className='flex flex-col '>
@@ -13,45 +21,16 @@ const page = () => {
     <h1 className='text-2xl text-white'>Finanças pessoais</h1>
     </div>
     <p className='text-gray-500 '>Tomar decisões financeiras começa com  a administração do seu próprio dinheiro.</p>
-    </div>
-    <Menu/>
-    <div className="bg-white rounded-xl px-4 py-4 shadow-2xl h-[490px] mt-10">
-            <div>
-              <h1 className="font-semibold py-6 px-2">Histórico de transações</h1>
-              <div className="block w-full overflow-x-auto ">
-                    <table className="items-center w-full bg-transparent border-collapse">
-                      <thead>
-                        <tr>
-                          <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left  border-gary-700">Nome</th>
-                          <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left  border-gary-700">Tipo</th>
-                          <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left  border-gary-700">Data</th>
-                          <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left  border-gary-700">Valor</th>
-                          <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left  border-gary-700">Status</th>                         
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
-                          <img src="https://demos.creative-tim.com/notus-js/assets/img/bootstrap.jpg" className="h-12 w-12 bg-white rounded-full border" alt="..."/>
-                          <span className="ml-3 font-bold "> Argon Design System </span></th>
-                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm font-semibold whitespace-nowrap p-4">Inscrição</td>
-                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <div className="flex flex-col">
-                            <span className="text-md font-semibold">Oct 20,2022</span>
-                            <span className="ml-2">10:40 PM</span>
-                          </div>
-                        </td>
-                          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">$2,500 USD</td>
-                            <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"><div className="flex items-center">
-                            <span className="bg-orange-500 py-1 px-6 rounded-full text-white">pendente</span>
-                              </div>
-                            </td>                          
-                          </tr>   
-                      </tbody>    
-                    </table>
-                  </div>
-            </div>
-          </div>
+    </div>   
+      <div className=" flex items-center justify-between">
+      <Menu/>
+      <button onClick={() => setShowModal(true)} className="flex items-center space-x-2 border hover:border-yellow-500 text-white mr-5 hover:bg-yellow-500 text-sm font-semibold rounded-xl px-6 py-2">
+          <FaSync />
+          <span>Nova transação</span>
+        </button>
+      </div>
+    <Transactions/>  
+    <Created isVisible={showModal}  onClose={() => setShowModal(false)}/>
     </div>
   )
 }

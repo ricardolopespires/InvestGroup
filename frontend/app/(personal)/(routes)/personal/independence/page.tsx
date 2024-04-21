@@ -43,7 +43,7 @@ const page = () => {
           </div>
           <div className="bg-white rounded-2xl shadow-xl">
                 <div className="card-statistic-3 p-4">
-                <div className=" text-[110px] opacity-[0.1] w-full z-40 ml-[280px] absolute top-1"><FaUsers className="" /></div>
+                <div className=" text-[110px] opacity-[0.1] w-full z-40 ml-[280px] absolute top-1 text-orange-500"><FaUsers className="" /></div>
                     <div className="mb-4">
                         <h5 className="card-title mb-0">Customers</h5>
                     </div>
@@ -83,7 +83,7 @@ const page = () => {
                         <div className="progress-bar l-bg-orange" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" ></div>
                     </div>
                 </div>
-                <div className=" text-[110px] opacity-[0.1] w-full z-40 ml-[280px] absolute top-1"><FaUsers className="" /></div>
+                <div className=" text-[110px] opacity-[0.1] w-full z-40 ml-[280px] absolute top-1 text-yellow-600 "><FaUsers className="" /></div>
           </div>
           <div className="bg-white rounded-2xl shadow-xl">
                 <div className="card-statistic-3 p-4">

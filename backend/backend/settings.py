@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'finance.apps.FinanceConfig',
     'quiz.apps.QuizConfig',
+    'personal.apps.PersonalConfig',
 
 ]
 
