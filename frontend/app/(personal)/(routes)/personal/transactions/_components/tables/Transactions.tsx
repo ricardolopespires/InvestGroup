@@ -1,45 +1,38 @@
-import { FaSync,   } from "react-icons/fa";
 
-import React, { useState, useEffect } from "react";
+import { format } from 'date-fns';
+import React, { useState, useEffect, useContext } from "react";
 import AxiosInstance from '@/services/AxiosInstance'
-import { toast } from "react-toastify"
+import { UserContext } from "@/contexts/UserContext";
+
+
 
 const Transactions = () => {
 
-    const[data, setData] = useState([]);
-    const [username, setUsername] = useState([]);
-    const user = JSON.parse(localStorage.getItem('user'));    
-    
-    useEffect(() => {
-      const getUserData = async () => {
-        try {
-          const res = await AxiosInstance.get(`http://localhost:8000/api/v1/auth/user/${user.email}`);
-          console.log(res.data)      
-          setUsername(res.data);
-        } catch (error) {
-          console.error('Erro ao obter dados do usuário:', error);
-        }
-      };
-  
-      getUserData();
-    }, [user.email]);
+
+
+    const[data, setData] = useState([]);  
+    const user =  useContext(UserContext);
+    const user_id = user.username.id  
+
 
     useEffect(() => {
         const getUserData = async () => {
           try {
-            const res = await AxiosInstance.get(`http://localhost:8000/api/v1/personal/list/despesas/${username.id}`);
-            console.log(res.data)      
-            setData(res.data);
+            if(user_id === undefined){
+
+            }else{
+              const res = await AxiosInstance.get(`http://localhost:8000/api/v1/personal/list/despesas/${user_id}`);
+              setData(res.data);
+            }
           } catch (error) {
             console.error('Erro ao obter dados do usuário:', error);
           }
         };
     
         getUserData();
-      }, [username.id]);
+      }, [user]);
 
-     console.log(data)
-
+  
   return (
     <div className="bg-white rounded-xl px-4 py-4 shadow-2xl  mt-10">
     <div>
@@ -59,6 +52,10 @@ const Transactions = () => {
           </thead>
           <tbody>
             { data.map((item, i) =>{
+
+            const formattedDate = format(new Date(item.created), "MMM dd',' yyyy ");
+            const formattedHoras = format(new Date(item.created), "hh:mm:ss a");           
+
             return(
             <tr key={i}>
               <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
@@ -66,14 +63,19 @@ const Transactions = () => {
                 <span className="ml-3 font-bold "> {item.categoria} </span></th>
               <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm font-semibold whitespace-nowrap p-4">Inscrição</td>
               <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    <div className="flex flex-col">
-                        <span className="text-md font-semibold">Oct 20,2022</span>                          
-                    </div>
+                <div className="flex flex-col">
+                  <span className="text-md font-semibold">{formattedDate}</span>
+                  <span className="text-xs font-light">{formattedHoras}</span>                      
+                </div>
               </td>
-              <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">$2,500 USD</td>
-              <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"><div className="flex items-center">
-                          <span className="bg-orange-500 py-1 px-6 rounded-full text-white">pendente</span>
-                            </div>
+              <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">R$ {item.total}</td>
+              <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                <div className="flex items-center">
+                {item.status === "Despesas" ?
+                (<span className="bg-red-500 py-1 px-6 rounded-full text-white">{item.status}</span>):
+                (<span className="bg-green-500 py-1 px-6 rounded-full text-white">{item.status}</span>)
+                }
+                 </div>
               </td>                          
             </tr>  )})} 
           </tbody>    

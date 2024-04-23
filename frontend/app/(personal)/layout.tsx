@@ -17,8 +17,7 @@ const layout = ({children}) => {
    useEffect(() => {
      if (jwt === null && !user) {
          router.push('/auth/Sign-In')
-     }
-     
+     }     
    }, [jwt, user])
 
 

@@ -1,4 +1,4 @@
-from .models import Categoria, Movimentacao, Financeiro, Planejamento, Reserva
+from .models import Categoria, Movimentacao, Periodo, Planejamento, Reserva
 from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
 
@@ -7,7 +7,7 @@ from django.contrib import admin
 
 @admin.register(Categoria)
 class CalendarioAdmin(ImportExportModelAdmin):
-	list_display = ['id','nome']
+	list_display = ['id','nome','tipo','punctuation']
 
 
 @admin.register(Movimentacao)
@@ -15,9 +15,9 @@ class MovimentacaoAdmin(ImportExportModelAdmin):
 	list_display = ['id','status','categoria','total']
 
 
-@admin.register(Financeiro)
+@admin.register(Periodo)
 class MovimentacaoAdmin(ImportExportModelAdmin):
-	list_display = ['id','receitas','despesas','cartao','investimento', 'total']
+	list_display = ['id','user_id','expenses','revenues','percent', 'total']
 
 
 

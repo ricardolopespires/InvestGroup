@@ -17,19 +17,11 @@ from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
 
 
-class UserlistSerializer(serializers.Serializer):
-    id = serializers.IntegerField() 
-    email = serializers.CharField(max_length=100)
-    first_name = serializers.CharField(max_length=100)
-    last_name = serializers.CharField(max_length=100)
-    is_staff = serializers.BooleanField(default=False)
-    is_superuser = serializers.BooleanField(default=False)
-    is_verified=serializers.BooleanField(default=False)
-    is_active = serializers.BooleanField(default=True)
-    date_joined = serializers.DateTimeField()
-    last_login = serializers.DateTimeField()
-    situation = serializers.BooleanField( default=False)
-    perfil = serializers.BooleanField( default=False)
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'is_verified','is_active']
 
 
 class UserSerializers(serializers.ModelSerializer):
@@ -75,7 +67,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             )
         return user
 
-class LoginSerializer(serializers.ModelSerializer):
+class LoginSerializer(serializers.ModelSerializer):  
     email = serializers.EmailField(max_length=155, min_length=6)
     password=serializers.CharField(max_length=68, write_only=True)
     full_name=serializers.CharField(max_length=255, read_only=True)
@@ -100,6 +92,7 @@ class LoginSerializer(serializers.ModelSerializer):
             raise AuthenticationFailed("Email is not verified")
         tokens=user.tokens()
         return {
+            'user_id':user.id,
             'email':user.email,
             'full_name':user.get_full_name,        
             "access_token":str(tokens.get('access')),

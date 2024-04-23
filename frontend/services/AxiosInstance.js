@@ -26,7 +26,7 @@ const AxiosInstance = axios.create({
         const resp =await axios.post(`${baseURL}/api/v1/auth/token/refresh/`, {
         refresh:refresh_token
         })
-         console.log('new_accesstoken: ',resp.data.access)
+         /*console.log('new_accesstoken: ',resp.data.access)*/
          localStorage.setItem('token', JSON.stringify(resp.data.access))
          req.headers.Authorization = `Bearer ${resp.data.access}`
          return req

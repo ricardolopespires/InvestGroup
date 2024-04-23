@@ -13,6 +13,7 @@ from .serializers import UserSerializers
 from .serializers import PerfilUserSerializer
 from .serializers import Perfil_Add_User_Serializer
 from .serializers import SituacaoUserSerializer
+from .serializers import UserSerializer
 from .serializers import Situacao_Add_User_Serializer
 from rest_framework import status
 from .utils import send_generated_otp_to_email
@@ -22,7 +23,19 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view 
 from .models import User, Perfil, Situacao
+from rest_framework.views import APIView
 # Create your views here.
+
+
+
+
+class UserListView(APIView):    
+    permission_classes = [IsAuthenticated]   
+
+    def get(self, request, pk):
+        queryset = User.objects.filter(email = pk)
+        serializer = UserSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class RegisterView(GenericAPIView):

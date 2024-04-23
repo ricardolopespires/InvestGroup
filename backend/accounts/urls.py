@@ -11,9 +11,11 @@ from .views import user_detail
 from .views import perfil_detail
 from .views import perfil_username
 from .views import situacao_username
+from .views import UserListView
 from rest_framework_simplejwt.views import (TokenRefreshView,)
 
 urlpatterns = [
+    path('list/<str:pk>/',UserListView.as_view(), name ="list"),
     path('register/', RegisterView.as_view(), name='register'),
     path('verify-email/', VerifyUserEmail.as_view(), name='verify'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
