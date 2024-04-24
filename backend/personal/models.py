@@ -124,8 +124,10 @@ class Periodo(models.Model):
 	def save(self, *args, **kwargs):		
 
 		if(self.last > 0):
-			self.percent = (self.expenses / self.last) * 100		
+			self.percent = (self.expenses / self.last) * 100
+		if(self.expenses > 0):
 			self.limit = (self.expenses / self.revenues) * 90
+			
 		self.spending = (self.revenues * Decimal(0.90))- self.expenses
 
 		self.total = self.revenues - self.expenses
@@ -160,12 +162,29 @@ class Planejamento(models.Model):
 
 
 
+class Plano(models.Model):
+	user = models.ForeignKey(User, related_name = 'user_plano', on_delete = models.CASCADE)
+	icon = models.CharField(max_length=400)
+	nome = models.CharField(max_length = 70, )
+	created = models.DateTimeField(auto_now_add = True,  blank=True)
+	updated = models.DateTimeField(auto_now = True,  blank=True)
+	economia = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor mensal economizado ')
+	quantia = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'A quantia total adquirida')
+	percent =  models.IntegerField( validators = [MinValueValidator(0), MaxValueValidator(100)], default=0)
+	meta = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'O valor Total da meta')
+	class Meta:
+		verbose_name = 'Plano'
+		verbose_name_plural = 'Planos'
+
+	
+	def __str__(self):
+		return f'{self.nome}'
+	
 
 
-
-
+	
 class Reserva(models.Model):
-
+	
 
 	STATUS_CHOICES = (
 

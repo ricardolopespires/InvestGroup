@@ -1,73 +1,84 @@
-import AxiosInstance from '@/services/AxiosInstance'
-import { despesas } from "@/data/despesas"
-import React, { useState, useContext, useEffect } from 'react'
+"use client"
+
+import AxiosInstance from '@/services/AxiosInstance';
+import { despesas } from "@/data/despesas";
+import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from "@/contexts/UserContext";
 import { toast } from 'react-toastify';
 
-
 const Created = ({ isVisible, onClose, children }) => {
   const user = useContext(UserContext);
-  const user_id = user.username.id
+  const user_id = user?.username?.id;
 
-  if (!isVisible) return null
+  if (!isVisible) return null;
 
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
+  const [formData, setFormData] = useState({
+    user_id: user_id || "",
+    status: "",
+    categoria_id: "",
+    descricao: "",
+    total: ""
+  });
 
   useEffect(() => {
     const getUserData = async () => {
       try {
-        if(user_id === undefined){
-
-        }else{
-          const res = await AxiosInstance.get(`/api/v1/personal/list/periodos/${user_id}`);
-          console.log(res.data)
-          setData(res.data);
-        }
+        if (user_id === undefined) return;
+        
+        const res = await AxiosInstance.get(`/api/v1/personal/list/periodos/${user_id}`);
+        setData(res.data);
       } catch (error) {
         console.error('Erro ao obter dados do usuário:', error);
       }
     };
 
     getUserData();
-  }, [user]);
+  }, [user_id]);
 
   const handlerClose = (e) => {
     if (e.target.id === "wrapper") onClose();
-  }
-
-  
-  const [formData, setFormData] = useState( {
-    user_id : user_id,
-    status : "",
-    categoria_id : "",
-    descricao : "",
-    total: ""
-})
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
-  console.log(data)
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData) 
     
-    await AxiosInstance.post(`api/v1/personal/created/despesas/`, formData);
-
-    if( formData.status === "Despesas"){      
-      setData(data[0]["expenses"] =  parseFloat(data[0].expenses) + parseFloat(formData.total));      
-    }else {
-      setData(data[0]["revenues"] =  parseFloat(data[0].revenues) + parseFloat(formData.total));
+    if (!formData.status || !formData.categoria_id || !formData.total || !formData.descricao) {
+      toast.error('Por favor, preencha todos os campos!');
+      return;
     }
 
-    await AxiosInstance.put(`/api/v1/personal/list/periodos/${user_id}`, data);
-    
-    toast.success('Despesa Adicionada no Sistema!');
-    onClose(true);
+    if(parseFloat(data[0].revenues) === 0 && formData.status === "Despesas"){
+
+      toast.error('Saldo insuficiente para a despesa');
+      onClose(true);
+        
+    }else{
+      await AxiosInstance.post(`api/v1/personal/created/despesas/`, formData);
+
+      const newData = { ...data[0] };
+      if (formData.status === "Despesas") {
+        newData.expenses = (parseFloat(newData.expenses) + parseFloat(formData.total)).toFixed(2);
+      } else {
+        newData.revenues = (parseFloat(newData.revenues) + parseFloat(formData.total)).toFixed(2);
+      }
+  
+      await AxiosInstance.put(`/api/v1/personal/periodos/${user_id}/`, newData);
+  
+      toast.success('Despesa Adicionada no Sistema!');
+      onClose(true);
+    }
+      
+
+   
   };
 
   return (
@@ -85,12 +96,12 @@ const Created = ({ isVisible, onClose, children }) => {
             <span>Você precisa digitar os dados da receita ou despesa....</span>
           </p>
           <div>
-            <form action="" className='px-5 ' onSubmit={handleSubmit}>
+            <form action="" className='px-5' onSubmit={handleSubmit}>
               <div className='flex  space-x-2 py-7'>
                 <div className="flex flex-col w-full">
-                  <label className="text-sm font-semibold" htmlFor="">TIpo</label>
+                  <label className="text-sm font-semibold" htmlFor="">Tipo</label>
                   <select name="status" id="id_status" className='border p-2 text-sm' value={formData.status} onChange={handleChange}>
-                  <option value="">Selecione</option>
+                    <option value="">Selecione</option>
                     <option value="Receitas">Receitas</option>
                     <option value="Despesas">Despesas</option>
                   </select>
@@ -124,7 +135,7 @@ const Created = ({ isVisible, onClose, children }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Created;

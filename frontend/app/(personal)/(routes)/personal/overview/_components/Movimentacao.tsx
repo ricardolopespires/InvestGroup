@@ -84,7 +84,7 @@ const Movimentacao = () => {
                     <span className="text-3xl font-semibold">R$ {item.spending}</span>
                     <div className="flex items-center space-x-1 text-xs w-full">
                       <span className=" flex bg-gray-200 w-[100%] h-[10px] rounded-full ">
-                        <span className={`bg-blue-900  h-[10px] rounded-full `} style={{ width: `${item.percent}%` }}></span>
+                        <span className={`bg-blue-900  h-[10px] rounded-full `} style={{ width: `${item.limit}%` }}></span>
                       </span>      
                     </div>
                   </div>                

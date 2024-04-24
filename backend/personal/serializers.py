@@ -64,7 +64,7 @@ class PeriodoListSerializer(serializers.Serializer):
 
 
 
-class Lista_Despesas_Serializer(serializers.Serializer):
+class Periodo_Despesas_Serializer(serializers.Serializer):
     user_id = serializers.CharField(max_length=150)
     revenues = serializers.DecimalField(decimal_places = 2, max_digits = 10, default = 0, )
     expenses = serializers.DecimalField(decimal_places = 2, max_digits = 10, default=0)
@@ -75,8 +75,13 @@ class Lista_Despesas_Serializer(serializers.Serializer):
     total = serializers.DecimalField(decimal_places = 2, max_digits = 10, default = 0, )
 
     def update (self, instance, validated_data):
-        instance.id = validated_data.get('id', instance.id)
-        instance.categoria = validated_data.get('categoria', instance.categoria)
-        
+        instance.revenues = validated_data.get('revenues', instance.revenues)
+        instance.expenses = validated_data.get('expenses', instance.expenses)
+        instance.last = validated_data.get('last', instance.last)
+        instance.percent = validated_data.get('percent', instance.percent)
+        instance.limit = validated_data.get('limit', instance.limit)
+        instance.spending = validated_data.get('spending', instance.spending)
+        instance.total = validated_data.get('total', instance.total)
+
         instance.save()
         return instance 

@@ -8,6 +8,7 @@ from .models import Periodo
 from .serializers import MovimentacaoCreatedSerializer
 from .serializers import MovimentacaoListSerializer
 from .serializers import PeriodoListSerializer
+from .serializers import Periodo_Despesas_Serializer
 from django.shortcuts import render
 
 # Create your views here.
@@ -47,7 +48,7 @@ def movimentacao_created(request):
     
 
 
-@api_view(['GET', 'POST',  'PUT', 'DELETE']) 
+@api_view(['GET', 'POST']) 
 def periodo_list(request, pk): 
     if request.method == 'GET': 
         periodos = Periodo.objects.filter(user_id = pk) 
@@ -62,45 +63,26 @@ def periodo_list(request, pk):
             return Response(periodo_serializer.data, status=status.HTTP_201_CREATED) 
         return Response(periodo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+
+
+@api_view(['GET', 'PUT', 'DELETE']) 
+def periodo_detail(request, pk): 
+    try: 
+        periodo = Periodo.objects.get(user_id=pk) 
+    except periodo.DoesNotExist: 
+        return Response(status=status.HTTP_404_NOT_FOUND) 
+ 
+    if request.method == 'GET': 
+        periodo_serializer = Periodo_Despesas_Serializer(periodo) 
+        return Response(periodo_serializer.data) 
+ 
     elif request.method == 'PUT': 
-        
-        periodo_serializer = PeriodoListSerializer(periodo, data=request.data) 
+        periodo_serializer = Periodo_Despesas_Serializer(periodo, data=request.data) 
         if periodo_serializer.is_valid(): 
             periodo_serializer.save() 
             return Response(periodo_serializer.data) 
         return Response(periodo_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
-
+ 
     elif request.method == 'DELETE': 
-        Periodo.delete()
+        periodo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)  
- 
- 
-
-
-
-
-
-
-@csrf_exempt 
-def detail(request, pk): 
-    try: 
-        despesa = Despesas.objects.get(id=pk) 
-    except Despesas.DoesNotExist: 
-        return HttpResponse(status=status.HTTP_404_NOT_FOUND) 
- 
-    if request.method == 'GET': 
-        despesa_serializer = Lista_Despesas_Serializer(despesa) 
-        return JSONResponse(despesa_serializer.data) 
- 
-    elif request.method == 'PUT': 
-        despesa_data = JSONParser().parse(request) 
-        despesa_serializer = Lista_Despesas_Serializer(despesa, data=despesa_data) 
-        if despesa_serializer.is_valid(): 
-            despesa_serializer.save() 
-            return JSONResponse(despesa_serializer.data) 
-        return JSONResponse(despesa_serializer.errors, \
-            status=status.HTTP_400_BAD_REQUEST) 
- 
-    elif request.method == 'DELETE': 
-        despesa.delete() 
-        return HttpResponse(status=status.HTTP_204_NO_CONTENT) 
