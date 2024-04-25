@@ -4,7 +4,7 @@ import AxiosInstance from '@/services/AxiosInstance'
 import { BiBitcoin } from "react-icons/bi";
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import Menu from "@/app/_components/menu";
+import Menu from "@/components/dashboard/Menu/menu";
 
 import React from 'react'
 

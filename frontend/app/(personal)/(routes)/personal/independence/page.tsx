@@ -1,7 +1,7 @@
 import { FaWallet,  FaChild,FaCreditCard, FaDollarSign, FaBarcode, FaUsers , FaHandHoldingUsd,FaRegCreditCard, FaCashRegister, FaCar, FaPlaystation     } from "react-icons/fa";
 import { AiFillAlert } from "react-icons/ai";
 import { GoArrowUp } from "react-icons/go";
-import Menu from "@/app/_components/menu";
+import Menu from "@/components/dashboard/Menu/menu";
 
 
 import React from 'react'

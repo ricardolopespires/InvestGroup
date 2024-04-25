@@ -80,6 +80,16 @@ const criptosRoutes = [
         href: "/criptomoedas/analytics"
     },
   ]
+
+  const economicRoutes = [
+    
+    {
+        icons: Compass,
+        label:"Overview",
+        href: "/economic/overview"
+    },
+
+  ]
   
 
   
@@ -89,8 +99,9 @@ const MenuRoutes = () => {
 
     const isPersonalPage = pathname?.includes("/personal");
     const isCriptosPage = pathname?.includes("/criptomoedas");
+    const isEconomicPage = pathname?.includes("/economic");
 
-    const routes = isPersonalPage ? personalRoutes : isCriptosPage ? criptosRoutes : guestRoutes;
+    const routes = isPersonalPage ? personalRoutes : isCriptosPage ? criptosRoutes :isEconomicPage ? economicRoutes: guestRoutes;
 
     
      

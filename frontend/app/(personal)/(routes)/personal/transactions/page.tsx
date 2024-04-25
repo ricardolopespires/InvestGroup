@@ -2,7 +2,7 @@
 
 import { FaWallet, FaSync, FaChild,FaCreditCard, FaDollarSign, FaBarcode, FaHandHoldingUsd,FaRegCreditCard, FaCashRegister, FaCar, FaPlaystation     } from "react-icons/fa";
 
-import Menu from "@/app/_components/menu";
+import Menu from "@/components/dashboard/Menu/menu";
 import Created from "./_components/modals/Created";
 import Transactions from "./_components/tables/Transactions";
 import React, { useState } from 'react'

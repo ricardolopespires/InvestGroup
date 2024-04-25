@@ -72,7 +72,7 @@ const Created = ({ isVisible, onClose, children }) => {
           <div>
             <form action="" className='px-5  flex flex-col full space-y-10' onSubmit={handleSubmit}>
               <div className='absolute py-5'>
-                <button className='border p-2 rounded' onClick={()=> setEmoji(!emoji)}>{emoji}</button>
+                <button className='border p-2 rounded' onClick={()=> setEmoji(!emoji)}>{emojiIcon}</button>
                 <div>
                  <EmojiPicker open={emoji}
                  onEmojiClick={(e) =>{

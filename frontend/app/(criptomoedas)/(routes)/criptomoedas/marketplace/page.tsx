@@ -1,7 +1,7 @@
 "use client"
 
 import { BiBitcoin } from "react-icons/bi";
-import Menu from "@/app/_components/menu";
+import Menu from "@/components/dashboard/Menu/menu";
 import {
   createBrowserRouter,
   RouterProvider,

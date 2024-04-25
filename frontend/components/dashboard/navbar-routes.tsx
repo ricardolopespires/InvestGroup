@@ -25,6 +25,11 @@ const guestRoutes = [
         label:"Finanças Pessoais",
         href: "/personal/overview"
     },
+    {
+        icons: Compass,
+        label:"Economia",
+        href: "/economic/overview"
+    },
 ]
 
 

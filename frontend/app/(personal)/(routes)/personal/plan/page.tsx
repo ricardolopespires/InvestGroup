@@ -1,10 +1,10 @@
 "use client"
 
 import { FaWallet, FaChild,FaCreditCard, FaDollarSign, FaBarcode, FaHandHoldingUsd,FaRegCreditCard, FaCashRegister, FaCar, FaPlaystation     } from "react-icons/fa";
-import Menu from "@/app/_components/menu";
+import Menu from "@/components/dashboard/Menu/menu";
 import React, { useState } from 'react'
 import Created from "./_components/modals/Created";
-import Lista from "./_components/List";
+import Lista from "./_components/planos/List";
 
 
 const page = () => {
@@ -26,7 +26,6 @@ const page = () => {
       </button>
     </div>
     <Lista/>
-
     <Created isVisible={showModal}  onClose={() => setShowModal(false)}/>
     </div>
   )

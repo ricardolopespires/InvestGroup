@@ -5,7 +5,7 @@ import { FaWallet, FaChild,FaCreditCard, FaDollarSign, FaBarcode, FaHandHoldingU
 import AxiosInstance from '@/services/AxiosInstance'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import Menu from "@/app/_components/menu";
+import Menu from "@/components/dashboard/Menu/menu";
 
 import React from 'react'
 

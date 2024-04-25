@@ -9,7 +9,7 @@ import Charts from "@/app/(criptomoedas)/_components/Charts";
 import { BiBitcoin } from "react-icons/bi";
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import Menu from "@/app/_components/menu";
+import Menu from "@/components/dashboard/Menu/menu";
 import React from 'react'
 import Image from "next/image";
 const Page = ({children}) => {

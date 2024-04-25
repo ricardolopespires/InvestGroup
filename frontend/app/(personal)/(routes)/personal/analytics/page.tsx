@@ -1,6 +1,6 @@
 import { FaWallet, FaChild,FaCreditCard, FaDollarSign, FaBarcode, FaHandHoldingUsd,FaRegCreditCard, FaCashRegister, FaCar, FaPlaystation     } from "react-icons/fa";
 
-import Menu from "@/app/_components/menu";
+import Menu from "@/components/dashboard/Menu/menu";
 
 import React from 'react'
 

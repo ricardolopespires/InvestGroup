@@ -4,7 +4,8 @@ import { FaWallet, FaBarcode,FaHandHoldingUsd,FaRegCreditCard, FaCar, FaPlaystat
 import Transactions from "../transactions/_components/tables/Transactions";
 import Movimentacao from "./_components/Movimentacao";
 import Balanco from "./_components/Balanco";
-import Menu from "@/app/_components/menu";
+import Menu from "@/components/dashboard/Menu/menu";
+import Lista from "../plan/_components/planos/List";
 import React from 'react'
 
 const Page = ({children}) => {
