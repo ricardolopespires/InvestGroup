@@ -88,6 +88,11 @@ const criptosRoutes = [
         label:"Overview",
         href: "/economic/overview"
     },
+    {
+        icons: Compass,
+        label:"Favoritos",
+        href: "/economic/favorite"
+    },
 
   ]
   

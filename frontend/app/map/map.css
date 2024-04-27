@@ -1,0 +1,17 @@
+.map-container {
+  margin-top: 6rem;
+}
+.map-container .home {
+  gap: 1rem;
+  cursor: pointer;
+  color: var(--clr-dark-blue);
+}
+.map-container .home:hover {
+  text-decoration: underline;
+}
+.map-container .home svg {
+  font-size: 1.8rem;
+}
+.map-container .openmap {
+  height: 100vh;
+}
