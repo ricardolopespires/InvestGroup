@@ -22,4 +22,6 @@ urlpatterns = [
     path('api/v1/finance/', include("finance.urls")),
     path('api/v1/quiz/', include("quiz.urls")),
     path('api/v1/personal/',include("personal.urls")),
+    path('api/v1/economia/',include("economia.urls")),
+    path('api/v1/management/',include("management.urls")),
 ]

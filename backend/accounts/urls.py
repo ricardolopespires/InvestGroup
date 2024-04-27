@@ -8,9 +8,7 @@ from .views import (
         PasswordResetConfirm, 
         PasswordResetRequestView,SetNewPasswordView, LogoutApiView)
 from .views import user_detail
-from .views import perfil_detail
-from .views import perfil_username
-from .views import situacao_username
+
 from .views import UserListView
 from rest_framework_simplejwt.views import (TokenRefreshView,)
 
@@ -26,7 +24,5 @@ urlpatterns = [
     path('set-new-password/', SetNewPasswordView.as_view(), name='set-new-password'),
     path('logout/', LogoutApiView.as_view(), name='logout'),
     path('user/<str:pk>', user_detail, name='users'),
-    path('perfil/<pk>',perfil_detail, name='perfil' ),
-    path('perfil/<pk>/username/',perfil_username, name='perfil' ),
-    path('situation/<pk>/username/',situacao_username, name='situation' ),
+
     ]

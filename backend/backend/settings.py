@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'finance.apps.FinanceConfig',
     'quiz.apps.QuizConfig',
     'personal.apps.PersonalConfig',
+    'economia.apps.EconomiaConfig',
+    'management.apps.ManagementConfig',
 
 ]
 

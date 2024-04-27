@@ -1,4 +1,5 @@
 from .models import Categoria, Movimentacao, Periodo, Planejamento, Reserva, Plano
+from .models import Quantia
 from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
 
@@ -22,7 +23,13 @@ class MovimentacaoAdmin(ImportExportModelAdmin):
 
 @admin.register(Plano)
 class MovimentacaoAdmin(ImportExportModelAdmin):
-	list_display = ['user','nome','quantia','economia','percent','meta']
+	list_display = ['id','user','nome','quantia','economia','percent','meta']
+
+
+@admin.register(Quantia)
+class MovimentacaoAdmin(ImportExportModelAdmin):
+	list_display = ['id','plano','quantia','percent','meta']
+
 
 
 

@@ -2,6 +2,7 @@ import { FaWallet,  FaChild,FaCreditCard, FaDollarSign, FaBarcode, FaUsers , FaH
 import { AiFillAlert } from "react-icons/ai";
 import { GoArrowUp } from "react-icons/go";
 import Menu from "@/components/dashboard/Menu/menu";
+import Independence from "../_components/tables/Independence";
 
 
 import React from 'react'
@@ -19,7 +20,7 @@ const page = () => {
     <Menu/>
       <div className="relative top-10">
         <div className="grid grid-cols-4 gap-4 ">      
-          <div className="bg-white rounded-2xl shadow-xl">
+            <div className="bg-white rounded-2xl shadow-xl">
             <div className="card-statistic-3 p-4">
             <div className=" text-[110px] opacity-[0.1] w-full z-40 ml-[280px] absolute top-1 text-red-500"><AiFillAlert /></div>
               <div className="mb-4">
@@ -40,52 +41,52 @@ const page = () => {
                   <div className="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
             </div>
-          </div>
-          <div className="bg-white rounded-2xl shadow-xl">
-                <div className="card-statistic-3 p-4">
-                <div className=" text-[110px] opacity-[0.1] w-full z-40 ml-[280px] absolute top-1 text-orange-500"><FaUsers className="" /></div>
-                    <div className="mb-4">
-                        <h5 className="card-title mb-0">Customers</h5>
-                    </div>
-                    <div className="row align-items-center mb-2 d-flex">
-                        <div className="col-8">
-                            <h2 className="d-flex align-items-center mb-0">
-                                15.07k
-                            </h2>
+            </div>
+            <div className="bg-white rounded-2xl shadow-xl">
+                    <div className="card-statistic-3 p-4">
+                    <div className=" text-[110px] opacity-[0.1] w-full z-40 ml-[280px] absolute top-1 text-orange-500"><FaUsers className="" /></div>
+                        <div className="mb-4">
+                            <h5 className="card-title mb-0">Customers</h5>
                         </div>
-                        <div className="flex items-center justify-end">
-                            <span>9.23% </span>
-                            <GoArrowUp  className="font-semibold text-green-500"/>
+                        <div className="row align-items-center mb-2 d-flex">
+                            <div className="col-8">
+                                <h2 className="d-flex align-items-center mb-0">
+                                    15.07k
+                                </h2>
+                            </div>
+                            <div className="flex items-center justify-end">
+                                <span>9.23% </span>
+                                <GoArrowUp  className="font-semibold text-green-500"/>
+                            </div>
                         </div>
-                    </div>
-                    <div className="progress mt-1 h-[8px] " data-height="8" >
-                        <div className="progress-bar l-bg-green" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" s></div>
-                    </div>
-                </div>
-          </div>
-          <div className="bg-white rounded-2xl shadow-xl w-full ">
-                <div className="card-statistic-3 p-4 w-full relative z-0">                   
-                    <div className="mb-4">
-                        <h5 className="card-title mb-0">Ticket Resolved</h5>
-                    </div>
-                    <div className="row align-items-center mb-2 d-flex">
-                        <div className="col-8">
-                            <h2 className="d-flex align-items-center mb-0">
-                                578
-                            </h2>
-                        </div>
-                        <div className="flex items-center justify-end">
-                            <span>10% </span>
-                            <GoArrowUp  className="font-semibold text-green-500"/>
+                        <div className="progress mt-1 h-[8px] " data-height="8" >
+                            <div className="progress-bar l-bg-green" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" s></div>
                         </div>
                     </div>
-                    <div className="progress mt-1 h-[8px]" data-height="8">
-                        <div className="progress-bar l-bg-orange" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" ></div>
+            </div>
+            <div className="bg-white rounded-2xl shadow-xl w-full ">
+                    <div className="card-statistic-3 p-4 w-full relative z-0">                   
+                        <div className="mb-4">
+                            <h5 className="card-title mb-0">Ticket Resolved</h5>
+                        </div>
+                        <div className="row align-items-center mb-2 d-flex">
+                            <div className="col-8">
+                                <h2 className="d-flex align-items-center mb-0">
+                                    578
+                                </h2>
+                            </div>
+                            <div className="flex items-center justify-end">
+                                <span>10% </span>
+                                <GoArrowUp  className="font-semibold text-green-500"/>
+                            </div>
+                        </div>
+                        <div className="progress mt-1 h-[8px]" data-height="8">
+                            <div className="progress-bar l-bg-orange" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" ></div>
+                        </div>
                     </div>
-                </div>
-                <div className=" text-[110px] opacity-[0.1] w-full z-40 ml-[280px] absolute top-1 text-yellow-600 "><FaUsers className="" /></div>
-          </div>
-          <div className="bg-white rounded-2xl shadow-xl">
+                    <div className=" text-[110px] opacity-[0.1] w-full z-40 ml-[280px] absolute top-1 text-yellow-600 "><FaUsers className="" /></div>
+            </div>
+            <div className="bg-white rounded-2xl shadow-xl">
                 <div className="card-statistic-3 p-4">
                     <div className="absolute text-[110px] opacity-[0.1] z-40 ml-[280px] absolute top-1 text-green-500"><i><FaDollarSign /></i></div>
                     <div className="mb-4">
@@ -107,6 +108,9 @@ const page = () => {
                     </div>
                 </div>
             </div>
+        </div>
+        <div>
+        <Independence/>
         </div>
       </div>
     </div>

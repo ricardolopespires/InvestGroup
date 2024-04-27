@@ -181,6 +181,48 @@ class Plano(models.Model):
 		return f'{self.nome}'
 	
 
+	def save(self, *args, **kwargs):
+
+		if self.quantia >= 0:
+			self.percent = (self.quantia / self.meta  ) * 100
+		elif self.meta <= 1000:
+			self.economia = ( self.meta / 12)
+		elif self.meta <= 10000:
+			self.economia = ( self.meta / 24)
+		elif self.meta <= 50000:
+			self.economia = ( self.meta / 60)
+		elif self.meta <= 100000:
+			self.economia = ( self.meta / 240)
+		elif self.meta <= 500000:
+			self.economia = (self.meta /360)
+			
+		
+
+		super().save(*args, **kwargs)
+	
+
+class Quantia(models.Model):
+	plano = models.ForeignKey(Plano, related_name="quanti_plano", on_delete = models.CASCADE)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now = True)
+	meta = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'A quantia total adquirida')
+	percent =  models.IntegerField( validators = [MinValueValidator(0), MaxValueValidator(100)], default=0)
+	quantia = models.DecimalField(decimal_places = 2, max_digits = 10, default = 0, help_text = 'A quantia total adquirida')
+
+	class Meta:
+		verbose_name = 'Quantia'
+		verbose_name_plural = 'Quantias'
+
+	
+	def __str__(self):
+		return f'{self.plano}'
+	
+
+	def save(self, *args, **kwargs):
+
+		if self.quantia > 0:
+			self.percent = (self.quantia / self.meta  ) * 100			
+		super().save(*args, **kwargs)
 
 	
 class Reserva(models.Model):
