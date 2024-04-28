@@ -81,7 +81,7 @@ const QuizPage = () => {
         quiz["perfil"] = true
         
         /*Adicionando o perfil do investido na Api */
-        AxiosInstance.put(`/api/v1/auth/perfil/${perfilId}/username/`, formData);
+        AxiosInstance.put(`/api/v1/management/perfil/${perfilId}/username/`, formData);
         /*Marcando como concluido o questinario */
         AxiosInstance.put(`/api/v1/auth/user/${user.email}`,quiz)
         /*retornando para dashboard */

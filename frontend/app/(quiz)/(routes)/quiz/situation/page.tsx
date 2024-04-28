@@ -105,7 +105,7 @@ const page = () => {
         quiz["situation"] = true
         
         /*Adicionando o perfil do investido na Api */
-        AxiosInstance.put(`/api/v1/auth/situation/${perfilId}/username/`, formData);
+        AxiosInstance.put(`/api/v1/management/situation/${perfilId}/username/`, formData);
         /*Marcando como concluido o questinario */
         AxiosInstance.put(`/api/v1/auth/user/${user.email}`,quiz)
         /*retornando para dashboard */
