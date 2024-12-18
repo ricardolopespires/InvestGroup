@@ -1,9 +1,9 @@
-from django.core.mail import EmailMessage
-import random
-from django.conf import settings
-from .models import User, OneTimePassword
 from django.contrib.sites.shortcuts import get_current_site
-
+from django.core.mail import EmailMessage
+from .models import User, OneTimePassword
+from django.conf import settings
+import random
+import pyotp
 
 
 def send_generated_otp_to_email(email, request): 
@@ -26,5 +26,3 @@ def send_normal_email(data):
         from_email=settings.EMAIL_HOST_USER,
         to=[data['to_email']]
     )
-    email.send()
-    

@@ -3,65 +3,106 @@
 @tailwind utilities;
 
 
-.card {
-    background-color: #fff;
-    border-radius: 10px;
-    border: none;
-    position: relative;
-    margin-bottom: 30px;
-    box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,0.1), 0 0.9375rem 1.40625rem rgba(90,97,105,0.1), 0 0.25rem 0.53125rem rgba(90,97,105,0.12), 0 0.125rem 0.1875rem rgba(90,97,105,0.1);
-}
-.l-bg-cherry {
-    background: linear-gradient(to right, #493240, #f09) !important;
-    color: #fff;
+
+@layer utilities {
+
+    .link{
+        @apply relative text-base font-medium w-fit after:block after:content-[''] after:absolute after:h-[3px]
+        after:bg-blue-600 after:w-full  after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-200
+        after:origin-left;
+    }
 }
 
-.l-bg-blue-dark {
-    background: linear-gradient(to right, #373b44, #4286f4) !important;
-    color: #fff;
+
+
+@layer base {
+  :root {
+        --background: 0 0% 100%;
+        --foreground: 0 0% 3.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 0 0% 3.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 0 0% 3.9%;
+        --primary: 0 0% 9%;
+        --primary-foreground: 0 0% 98%;
+        --secondary: 0 0% 96.1%;
+        --secondary-foreground: 0 0% 9%;
+        --muted: 0 0% 96.1%;
+        --muted-foreground: 0 0% 45.1%;
+        --accent: 0 0% 96.1%;
+        --accent-foreground: 0 0% 9%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 0 0% 89.8%;
+        --input: 0 0% 89.8%;
+        --ring: 0 0% 3.9%;
+        --chart-1: 12 76% 61%;
+        --chart-2: 173 58% 39%;
+        --chart-3: 197 37% 24%;
+        --chart-4: 43 74% 66%;
+        --chart-5: 27 87% 67%;
+        --radius: 0.5rem
+    }
+
+
+  /* In globals.css */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
 }
 
-.l-bg-green-dark {
-    background: linear-gradient(to right, #0a504a, #38ef7d) !important;
-    color: #fff;
+.no-scrollbar::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
 }
 
-.l-bg-orange-dark {
-    background: linear-gradient(to right, #a86008, #ffba56) !important;
-    color: #fff;
+  .dark {
+        --background: 0 0% 3.9%;
+        --foreground: 0 0% 98%;
+        --card: 0 0% 3.9%;
+        --card-foreground: 0 0% 98%;
+        --popover: 0 0% 3.9%;
+        --popover-foreground: 0 0% 98%;
+        --primary: 0 0% 98%;
+        --primary-foreground: 0 0% 9%;
+        --secondary: 0 0% 14.9%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 0 0% 14.9%;
+        --muted-foreground: 0 0% 63.9%;
+        --accent: 0 0% 14.9%;
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 0 0% 14.9%;
+        --input: 0 0% 14.9%;
+        --ring: 0 0% 83.1%;
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%
+    }
 }
 
-.card .card-statistic-3 .card-icon-large .fas, .card .card-statistic-3 .card-icon-large .far, .card .card-statistic-3 .card-icon-large .fab, .card .card-statistic-3 .card-icon-large .fal {
-    font-size: 110px;
-}
 
-.card .card-statistic-3 .card-icon {
-    text-align: center;
-    line-height: 50px;
-    margin-left: 15px;
-    color: #000;
-    position: absolute;
-    right: -5px;
-    top: 20px;
-    opacity: 0.1;
-}
 
-.l-bg-cyan {
-    background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
-    color: #fff;
-}
-
-.l-bg-green {
-    background: linear-gradient(135deg, #23bdb8 0%, #43e794 100%) !important;
-    color: #fff;
-}
-
-.l-bg-orange {
-    background: linear-gradient(to right, #f9900e, #ffba56) !important;
-    color: #fff;
-}
-
-.l-bg-cyan {
-    background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
-    color: #fff;
+@layer base {
+  * {
+    @apply border-border;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+    .main-page{
+      @apply absolute inset-x-0 top-[70px] h-screen px-10
+    }
+    /* Home */
+    .home {
+      @apply no-scrollbar flex w-full flex-row max-xl:max-h-screen max-xl:overflow-y-scroll;
+    }  
+    .home-content {
+      @apply no-scrollbar flex w-full flex-1 flex-col gap-8 px-5 sm:px-8 py-7 lg:py-12 xl:max-h-screen xl:overflow-y-scroll;
+    }  
+    .home-header {
+      @apply flex flex-col justify-between gap-8;
+    } 
 }

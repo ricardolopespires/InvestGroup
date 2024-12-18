@@ -1,7 +1,7 @@
 
 import json
 from dataclasses import field
-from .models import User
+from .models import User, TwoFactor
 from rest_framework import serializers
 from string import ascii_lowercase, ascii_uppercase
 from django.contrib.auth import authenticate
@@ -9,6 +9,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import smart_str, force_str, smart_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.contrib.auth.password_validation import validate_password
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from .utils import send_normal_email
@@ -21,23 +22,56 @@ from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'is_verified','is_active']
+        fields = ['id', 'email', 'first_name', 'last_name', 'address', 'date_of_birth','state','city','phone' ,'img' ]
+
+    def update(self, instance, validated_data): 
+        instance.id = validated_data.get('id', instance.id)
+        instance.email = validated_data.get('email', instance.email)         
+        instance.first_name = validated_data.get('first_name', instance.first_name) 
+        instance.last_name = validated_data.get('last_name', instance.last_name) 
+        instance.address = validated_data.get('address', instance.address)
+        instance.date_of_birth = validated_data.get('date_of_birth', instance.date_of_birth)
+        instance.state = validated_data.get('state', instance.state)
+        instance.city = validated_data.get('city', instance.city)
+        instance.phone = validated_data.get('phone', instance.phone)
+        instance.img = validated_data.get('img', instance.img)             
+        instance.save() 
+        return instance 
 
 
-class UserSerializers(serializers.ModelSerializer):
-    id = serializers.IntegerField() 
-    email = serializers.CharField(max_length=100)
-    situation = serializers.BooleanField( default=False)
-    perfil = serializers.BooleanField( default=False)
+class UserCardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name' ]
+
+
+class UserUploadImage(serializers.ModelSerializer):   
 
     class Meta:
         model=User
-        fields = ['id','email', 'situation', 'perfil']
+        fields = ['img', ]
 
+    def update(self, instance, validated_data):               
+        instance.img = validated_data.get('img', instance.img)           
+        instance.save() 
+        return instance 
+    
+
+class UserStatusSerializer(serializers.Serializer):
+    id = serializers.IntegerField() 
+    email = serializers.CharField(max_length=100)
+    is_active = serializers.BooleanField(default=False)
+    situation = serializers.BooleanField( default=False)
+    perfil = serializers.BooleanField( default=False)
+    two_factor = serializers.BooleanField( default=False)
+
+  
     def update(self, instance, validated_data): 
-        instance.email = validated_data.get('email', instance.email)         
+        instance.email = validated_data.get('email', instance.email)
+        instance.is_active = validated_data.get('is_active', instance.is_active)         
         instance.situation = validated_data.get('situation', instance.situation) 
-        instance.perfil = validated_data.get('perfil', instance.perfil)         
+        instance.perfil = validated_data.get('perfil', instance.perfil)
+        instance.two_factor = validated_data.get('two_factor', instance.two_factor)
         instance.save() 
         return instance 
 
@@ -77,11 +111,12 @@ class LoginSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'full_name', 'access_token', 'refresh_token',]
+        fields = ['email', 'password', 'full_name', 'access_token', 'refresh_token']
 
     
 
     def validate(self, attrs):
+
         email = attrs.get('email')
         password = attrs.get('password')
         request=self.context.get('request')
@@ -158,6 +193,33 @@ class SetNewPasswordSerializer(serializers.Serializer):
             return AuthenticationFailed("link is invalid or has expired")
 
 
+class ChangePasswordSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=True)
+    old_password = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = User
+        fields = ('old_password', 'password', 'password2')
+
+    def validate(self, attrs):
+        if attrs['password'] != attrs['password2']:
+            raise serializers.ValidationError({"password": "Password fields didn't match."})
+
+        return attrs
+
+    def validate_old_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError({"old_password": "Old password is not correct"})
+        return value
+
+    def update(self, instance, validated_data):
+
+        instance.set_password(validated_data['password'])
+        instance.save()
+
+        return instance
     
 class LogoutUserSerializer(serializers.Serializer):
     refresh_token=serializers.CharField()
@@ -178,4 +240,24 @@ class LogoutUserSerializer(serializers.Serializer):
         except TokenError:
             return self.fail('bad_token')
 
+   
+
+
+
+class TwofactorSerializer(serializers.Serializer):
+
+    user_id = serializers.IntegerField()
+    qr_code = serializers.CharField(allow_blank=True, allow_null=True)
+    key = serializers.CharField()
+    is_active = serializers.BooleanField(default=True)
+
+    def create(self, validated_data): 
+        return TwoFactor.objects.create(**validated_data) 
+ 
+    def update(self, instance, validated_data): 
+        instance.qr_code = validated_data.get('qr_code', instance.qr_code) 
+        instance.key = validated_data.get('key', instance.key) 
+        instance.is_active = validated_data.get('is_active', instance.is_active)         
+        instance.save() 
+        return instance 
    
