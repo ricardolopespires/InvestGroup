@@ -6,7 +6,7 @@
 
 **Investgroup** é uma plataforma inovadora de gestão de investimentos que utiliza inteligência artificial e algoritmos de análise de dados para otimizar o desempenho financeiro dos investidores. O sistema foi desenvolvido para fornecer uma abordagem eficiente e automatizada para o acompanhamento e controle de portfólios de investimentos, oferecendo sugestões personalizadas e estratégias baseadas em dados atualizados do mercado.
 
-![SmartCity Banner](https://github.com/ricardolopespires/SmartCity/blob/main/home.png)
+![SmartCity Banner](https://github.com/ricardolopespires/InvestGroup/blob/main/estatistica.png)
 
 <p align="left">
   <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/ricardolopespires/SmartCity">
