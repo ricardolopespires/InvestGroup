@@ -3,11 +3,14 @@
 ---
 
 # **Investgroup: Sistema Inteligente de Gestão de Investimentos**
-
+<div>
+  <img align="right" alt="Coding" width="400" src="https://github.com/ricardolopespires/InvestGroup/blob/main/estatistica.png"/>
+ <p>
 **Investgroup** é uma plataforma inovadora de gestão de investimentos que utiliza inteligência artificial e algoritmos de análise de dados para otimizar o desempenho financeiro dos investidores. O sistema foi desenvolvido para fornecer uma abordagem eficiente e automatizada para o acompanhamento e controle de portfólios de investimentos, oferecendo sugestões personalizadas e estratégias baseadas em dados atualizados do mercado.
+ </p>
 
-![SmartCity Banner](https://github.com/ricardolopespires/InvestGroup/blob/main/estatistica.png)
-
+</div>
+<div>
 <p align="left">
   <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/ricardolopespires/SmartCity">
   <img alt="Mozilla HTTP Observatory Grade" src="https://img.shields.io/mozilla-observatory/grade/github.com?publish">
@@ -18,7 +21,7 @@
   <img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/ricardolopespires/SmartCity"/> 
   <img alt="PyPI - Django Version" src="https://img.shields.io/pypi/djversions/djangorestframework" />
 </p>
-
+</div>
 ---
 
 ## **Recursos**
