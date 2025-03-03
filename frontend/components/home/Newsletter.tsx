@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { postSubscribed } from '@/lib/atcions/actions.newsletter'
+import { postSubscribed } from '@/lib/actions/actions.newsletter'
 import { toast } from 'react-toastify'
 
 // Definindo o esquema de validação com Zod

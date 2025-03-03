@@ -32,7 +32,7 @@ type FormValues = z.infer<typeof formaSchema>;
 
 import Responsive from '@/components/home/Responsive'
 import { toast } from "react-toastify";
-import { createMassage } from "@/lib/atcions/actions.contact";
+import { createMassage } from "@/lib/actions/actions.contact";
 
 
 const page = () => {

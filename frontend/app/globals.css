@@ -106,3 +106,22 @@
       @apply flex flex-col justify-between gap-8;
     } 
 }
+
+.bg-linear-primary {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: "#fff";
+}
+
+
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+    
+}

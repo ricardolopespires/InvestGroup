@@ -22,7 +22,7 @@ from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'first_name', 'last_name', 'address', 'date_of_birth','state','city','phone' ,'img' ]
+        fields = ['id', 'email', 'first_name', 'last_name', 'address', 'date_of_birth','state','city','phone' ,'img','situation','perfil','two_factor' ]
 
     def update(self, instance, validated_data): 
         instance.id = validated_data.get('id', instance.id)

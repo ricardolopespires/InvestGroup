@@ -1,0 +1,182 @@
+{
+    "formulario_perfil_investidor": {
+      "titulo": "Avaliação do Perfil do Investidor",
+      "instrucoes": "Responda às perguntas abaixo escolhendo a opção que melhor reflete sua opinião ou situação. Cada resposta possui uma pontuação que será usada para determinar seu perfil de investidor.",
+      "perguntas": [
+        {
+          "id": 1,
+          "pergunta": "Qual é o seu principal objetivo ao investir?",
+          "respostas": [
+            {"texto": "Preservar o capital e evitar perdas", "pontuacao": 1},
+            {"texto": "Gerar renda extra com baixo risco", "pontuacao": 2},
+            {"texto": "Equilibrar crescimento e segurança", "pontuacao": 3},
+            {"texto": "Maximizar o retorno a longo prazo", "pontuacao": 4},
+            {"texto": "Buscar altos ganhos, mesmo com alto risco", "pontuacao": 5}
+          ]
+        },
+        {
+          "id": 2,
+          "pergunta": "Qual é o seu horizonte de tempo para investimentos?",
+          "respostas": [
+            {"texto": "Menos de 1 ano", "pontuacao": 1},
+            {"texto": "1 a 3 anos", "pontuacao": 2},
+            {"texto": "3 a 5 anos", "pontuacao": 3},
+            {"texto": "5 a 10 anos", "pontuacao": 4},
+            {"texto": "Mais de 10 anos", "pontuacao": 5}
+          ]
+        },
+        {
+          "id": 3,
+          "pergunta": "Como você reagiria se seus investimentos perdessem 20% do valor em um ano?",
+          "respostas": [
+            {"texto": "Venderia tudo imediatamente", "pontuacao": 1},
+            {"texto": "Ficaria muito preocupado e consideraria vender", "pontuacao": 2},
+            {"texto": "Aguardaria para ver o que acontece", "pontuacao": 3},
+            {"texto": "Manteria os investimentos, mas não adicionaria mais", "pontuacao": 4},
+            {"texto": "Aproveitaria para investir mais", "pontuacao": 5}
+          ]
+        },
+        {
+          "id": 4,
+          "pergunta": "Qual é a sua experiência com investimentos?",
+          "respostas": [
+            {"texto": "Nenhuma experiência", "pontuacao": 1},
+            {"texto": "Pouca experiência (ex.: poupança)", "pontuacao": 2},
+            {"texto": "Experiência moderada (ex.: fundos)", "pontuacao": 3},
+            {"texto": "Experiência significativa (ex.: ações)", "pontuacao": 4},
+            {"texto": "Muita experiência (ex.: derivativos, mercado internacional)", "pontuacao": 5}
+          ]
+        },
+        {
+          "id": 5,
+          "pergunta": "Qual porcentagem da sua renda você depende dos investimentos?",
+          "respostas": [
+            {"texto": "Mais de 75%", "pontuacao": 1},
+            {"texto": "50% a 75%", "pontuacao": 2},
+            {"texto": "25% a 50%", "pontuacao": 3},
+            {"texto": "Menos de 25%", "pontuacao": 4},
+            {"texto": "Não dependo dos investimentos", "pontuacao": 5}
+          ]
+        },
+        {
+          "id": 6,
+          "pergunta": "Você prefere investimentos com retornos garantidos ou variáveis?",
+          "respostas": [
+            {"texto": "Apenas retornos garantidos", "pontuacao": 1},
+            {"texto": "Maioria garantida, um pouco variável", "pontuacao": 2},
+            {"texto": "Metade garantido, metade variável", "pontuacao": 3},
+            {"texto": "Maioria variável, um pouco garantido", "pontuacao": 4},
+            {"texto": "Apenas retornos variáveis", "pontuacao": 5}
+          ]
+        },
+        {
+          "id": 7,
+          "pergunta": "Qual é a sua idade?",
+          "respostas": [
+            {"texto": "Mais de 65 anos", "pontuacao": 1},
+            {"texto": "55 a 65 anos", "pontuacao": 2},
+            {"texto": "40 a 54 anos", "pontuacao": 3},
+            {"texto": "25 a 39 anos", "pontuacao": 4},
+            {"texto": "Menos de 25 anos", "pontuacao": 5}
+          ]
+        },
+        {
+          "id": 8,
+          "pergunta": "Como você classifica sua tolerância a riscos?",
+          "respostas": [
+            {"texto": "Muito baixa", "pontuacao": 1},
+            {"texto": "Baixa", "pontuacao": 2},
+            {"texto": "Média", "pontuacao": 3},
+            {"texto": "Alta", "pontuacao": 4},
+            {"texto": "Muito alta", "pontuacao": 5}
+          ]
+        },
+        {
+          "id": 9,
+          "pergunta": "Qual é o seu patrimônio líquido atual?",
+          "respostas": [
+            {"texto": "Menos de R$ 50.000", "pontuacao": 1},
+            {"texto": "R$ 50.000 a R$ 200.000", "pontuacao": 2},
+            {"texto": "R$ 200.000 a R$ 500.000", "pontuacao": 3},
+            {"texto": "R$ 500.000 a R$ 1.000.000", "pontuacao": 4},
+            {"texto": "Mais de R$ 1.000.000", "pontuacao": 5}
+          ]
+        },
+        {
+          "id": 10,
+          "pergunta": "Você tem uma reserva de emergência?",
+          "respostas": [
+            {"texto": "Não tenho", "pontuacao": 1},
+            {"texto": "Menos de 3 meses de despesas", "pontuacao": 2},
+            {"texto": "3 a 6 meses de despesas", "pontuacao": 3},
+            {"texto": "6 a 12 meses de despesas", "pontuacao": 4},
+            {"texto": "Mais de 12 meses de despesas", "pontuacao": 5}
+          ]
+        },
+        {
+          "id": 11,
+          "pergunta": "Qual é o seu nível de conhecimento sobre o mercado financeiro?",
+          "respostas": [
+            {"texto": "Nenhum", "pontuacao": 1},
+            {"texto": "Básico", "pontuacao": 2},
+            {"texto": "Intermediário", "pontuacao": 3},
+            {"texto": "Avançado", "pontuacao": 4},
+            {"texto": "Especialista", "pontuacao": 5}
+          ]
+        },
+        {
+          "id": 12,
+          "pergunta": "Você já investiu em ativos de alto risco (ex.: criptomoedas, ações especulativas)?",
+          "respostas": [
+            {"texto": "Nunca", "pontuacao": 1},
+            {"texto": "Raramente", "pontuacao": 2},
+            {"texto": "Algumas vezes", "pontuacao": 3},
+            {"texto": "Frequentemente", "pontuacao": 4},
+            {"texto": "Sempre", "pontuacao": 5}
+          ]
+        },
+        {
+          "id": 13,
+          "pergunta": "Qual é a sua expectativa de retorno anual?",
+          "respostas": [
+            {"texto": "Apenas a inflação", "pontuacao": 1},
+            {"texto": "Inflação + 2% a 4%", "pontuacao": 2},
+            {"texto": "Inflação + 4% a 6%", "pontuacao": 3},
+            {"texto": "Inflação + 6% a 10%", "pontuacao": 4},
+            {"texto": "Mais de inflação + 10%", "pontuacao": 5}
+          ]
+        },
+        {
+          "id": 14,
+          "pergunta": "Como você se sente ao tomar decisões financeiras importantes?",
+          "respostas": [
+            {"texto": "Muito desconfortável", "pontuacao": 1},
+            {"texto": "Pouco confortável", "pontuacao": 2},
+            {"texto": "Neutro", "pontuacao": 3},
+            {"texto": "Confortável", "pontuacao": 4},
+            {"texto": "Muito confortável", "pontuacao": 5}
+          ]
+        },
+        {
+          "id": 15,
+          "pergunta": "Qual é a sua prioridade ao investir?",
+          "respostas": [
+            {"texto": "Segurança total do capital", "pontuacao": 1},
+            {"texto": "Renda estável com pouco risco", "pontuacao": 2},
+            {"texto": "Crescimento moderado com algum risco", "pontuacao": 3},
+            {"texto": "Crescimento significativo com risco moderado", "pontuacao": 4},
+            {"texto": "Máximo crescimento, aceitando alto risco", "pontuacao": 5}
+          ]
+        }
+      ],
+      "calculo_perfil": {
+        "instrucao": "Some os pontos de todas as respostas. O total varia de 15 a 75.",
+        "faixas": {
+          "15-30": "Conservador",
+          "31-45": "Moderado Conservador",
+          "46-60": "Moderado Agressivo",
+          "61-75": "Agressivo"
+        }
+      }
+    }
+  }

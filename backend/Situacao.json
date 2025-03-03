@@ -1,0 +1,181 @@
+{
+  "formulario_situacao_financeira": {
+    "titulo": "Avaliação da Situação Financeira do Investidor",
+    "instrucoes": "Responda cada pergunta escolhendo uma das opções. A pontuação total (máximo 60) indicará sua situação financeira: 0-20 (crítica), 21-40 (moderada), 41-60 (sólida).",
+    "perguntas": [
+      {
+        "id": 16,
+        "pergunta": "Qual é a sua renda mensal líquida (após impostos)?",
+        "respostas": [
+          {"texto": "Menos de R$ 2.000", "pontuacao": 0},
+          {"texto": "Entre R$ 2.000 e R$ 5.000", "pontuacao": 1},
+          {"texto": "Entre R$ 5.001 e R$ 10.000", "pontuacao": 2},
+          {"texto": "Entre R$ 10.001 e R$ 20.000", "pontuacao": 3},
+          {"texto": "Mais de R$ 20.000", "pontuacao": 4}
+        ]
+      },
+      {
+        "id": 17,
+        "pergunta": "Quantos dependentes financeiros você possui?",
+        "respostas": [
+          {"texto": "Mais de 4", "pontuacao": 0},
+          {"texto": "3 ou 4", "pontuacao": 1},
+          {"texto": "2", "pontuacao": 2},
+          {"texto": "1", "pontuacao": 3},
+          {"texto": "Nenhum", "pontuacao": 4}
+        ]
+      },
+      {
+        "id": 18,
+        "pergunta": "Qual percentual da sua renda mensal é comprometido com despesas fixas?",
+        "respostas": [
+          {"texto": "Mais de 80%", "pontuacao": 0},
+          {"texto": "61% a 80%", "pontuacao": 1},
+          {"texto": "41% a 60%", "pontuacao": 2},
+          {"texto": "21% a 40%", "pontuacao": 3},
+          {"texto": "Menos de 20%", "pontuacao": 4}
+        ]
+      },
+      {
+        "id": 19,
+        "pergunta": "Você possui uma reserva de emergência?",
+        "respostas": [
+          {"texto": "Não possuo", "pontuacao": 0},
+          {"texto": "Menos de 3 meses de despesas", "pontuacao": 1},
+          {"texto": "3 a 6 meses de despesas", "pontuacao": 2},
+          {"texto": "6 a 12 meses de despesas", "pontuacao": 3},
+          {"texto": "Mais de 12 meses de despesas", "pontuacao": 4}
+        ]
+      },
+      {
+        "id": 20,
+        "pergunta": "Qual é o valor total das suas dívidas em relação à sua renda anual?",
+        "respostas": [
+          {"texto": "Mais de 100%", "pontuacao": 0},
+          {"texto": "51% a 100%", "pontuacao": 1},
+          {"texto": "26% a 50%", "pontuacao": 2},
+          {"texto": "1% a 25%", "pontuacao": 3},
+          {"texto": "Nenhuma dívida", "pontuacao": 4}
+        ]
+      },
+      {
+        "id": 21,
+        "pergunta": "Você possui investimentos atualmente?",
+        "respostas": [
+          {"texto": "Nenhum", "pontuacao": 0},
+          {"texto": "Apenas poupança", "pontuacao": 1},
+          {"texto": "Poupança e renda fixa", "pontuacao": 2},
+          {"texto": "Renda fixa e variável", "pontuacao": 3},
+          {"texto": "Diversificado (ações, fundos, imóveis, etc.)", "pontuacao": 4}
+        ]
+      },
+      {
+        "id": 22,
+        "pergunta": "Qual é o valor total dos seus investimentos em relação à sua renda anual?",
+        "respostas": [
+          {"texto": "Nenhum ou insignificante", "pontuacao": 0},
+          {"texto": "Menos de 50%", "pontuacao": 1},
+          {"texto": "50% a 100%", "pontuacao": 2},
+          {"texto": "101% a 200%", "pontuacao": 3},
+          {"texto": "Mais de 200%", "pontuacao": 4}
+        ]
+      },
+      {
+        "id": 23,
+        "pergunta": "Como você descreveria sua tolerância ao risco financeiro?",
+        "respostas": [
+          {"texto": "Muito baixa (evito riscos)", "pontuacao": 0},
+          {"texto": "Baixa", "pontuacao": 1},
+          {"texto": "Moderada", "pontuacao": 2},
+          {"texto": "Alta", "pontuacao": 3},
+          {"texto": "Muito alta (busco riscos)", "pontuacao": 4}
+        ]
+      },
+      {
+        "id": 24,
+        "pergunta": "Você possui seguro de vida ou saúde?",
+        "respostas": [
+          {"texto": "Nenhum", "pontuacao": 0},
+          {"texto": "Apenas saúde básico", "pontuacao": 1},
+          {"texto": "Saúde completo", "pontuacao": 2},
+          {"texto": "Saúde e vida básicos", "pontuacao": 3},
+          {"texto": "Saúde e vida completos", "pontuacao": 4}
+        ]
+      },
+      {
+        "id": 25,
+        "pergunta": "Qual é a sua idade?",
+        "respostas": [
+          {"texto": "Mais de 70 anos", "pontuacao": 0},
+          {"texto": "56 a 70 anos", "pontuacao": 1},
+          {"texto": "41 a 55 anos", "pontuacao": 2},
+          {"texto": "26 a 40 anos", "pontuacao": 3},
+          {"texto": "Menos de 25 anos", "pontuacao": 4}
+        ]
+      },
+      {
+        "id": 26,
+        "pergunta": "Você possui fontes de renda passiva (aluguéis, dividendos, etc.)?",
+        "respostas": [
+          {"texto": "Nenhuma", "pontuacao": 0},
+          {"texto": "Menos de 10% da renda total", "pontuacao": 1},
+          {"texto": "10% a 25% da renda total", "pontuacao": 2},
+          {"texto": "26% a 50% da renda total", "pontuacao": 3},
+          {"texto": "Mais de 50% da renda total", "pontuacao": 4}
+        ]
+      },
+      {
+        "id": 27,
+        "pergunta": "Qual é o seu nível de conhecimento sobre investimentos?",
+        "respostas": [
+          {"texto": "Nenhum", "pontuacao": 0},
+          {"texto": "Básico", "pontuacao": 1},
+          {"texto": "Intermediário", "pontuacao": 2},
+          {"texto": "Avançado", "pontuacao": 3},
+          {"texto": "Especialista", "pontuacao": 4}
+        ]
+      },
+      {
+        "id": 28,
+        "pergunta": "Você tem um plano de aposentadoria estruturado?",
+        "respostas": [
+          {"texto": "Nenhum", "pontuacao": 0},
+          {"texto": "Apenas previdência social", "pontuacao": 1},
+          {"texto": "Previdência social e privada básica", "pontuacao": 2},
+          {"texto": "Previdência privada moderada", "pontuacao": 3},
+          {"texto": "Plano robusto e diversificado", "pontuacao": 4}
+        ]
+      },
+      {
+        "id": 29,
+        "pergunta": "Como você lida com imprevistos financeiros?",
+        "respostas": [
+          {"texto": "Não consigo lidar", "pontuacao": 0},
+          {"texto": "Uso crédito ou empréstimo", "pontuacao": 1},
+          {"texto": "Uso reserva mínima", "pontuacao": 2},
+          {"texto": "Uso reserva confortável", "pontuacao": 3},
+          {"texto": "Não impacto meu planejamento", "pontuacao": 4}
+        ]
+      },
+      {
+        "id": 30,
+        "pergunta": "Qual é o seu objetivo principal com investimentos?",
+        "respostas": [
+          {"texto": "Sobrevivência imediata", "pontuacao": 0},
+          {"texto": "Quitar dívidas", "pontuacao": 1},
+          {"texto": "Construir reserva de emergência", "pontuacao": 2},
+          {"texto": "Crescimento moderado", "pontuacao": 3},
+          {"texto": "Riqueza a longo prazo", "pontuacao": 4}
+        ]
+      }
+    ],
+    "calculo_situacao": {
+      "instrucao": "Some os pontos de todas as respostas. O total varia de 0 a 60.",
+      "faixas": {
+        "0-20": "Crítica",
+        "21-40": "Moderada",
+        "41-60": "Sólida"
+      }
+    }
+  }
+}

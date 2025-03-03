@@ -37,15 +37,15 @@ const NavBar = ({openNav}:Props) => {
         </div>
         {/* Buttons */}
         <div className="flex items-center space-x-4">
-          <a href="/Sign-In">
-            <HiMiniArrowLeftOnRectangle className="mr-20 text-[200%]" />
+          <a href="/auth/Sign-In" className="bg-blue-900 text-white px-9 py-2 rounded-lg">
+            Entrar
           </a>
           {/* Burger menu */}
           <HiBars3BottomRight onClick={openNav} className="w-8 h-8 cursor-pointer text-black lg:hidden" />
         </div>
       </div>
     </div>
-  );
+  );s
 };
 
 export default NavBar;
