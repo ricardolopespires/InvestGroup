@@ -1,46 +1,157 @@
-"use client"
+"use client";
 
 import Logout from "@/app/auth/Logout/page";
+import { quizPerfil, quizUserAnswers, updatedQuizPerfil } from "@/lib/actions/actions.quiz";
+import { GrAchievement } from "react-icons/gr";
+import { useEffect, useState } from "react";
 
-const page = () => {
-    return (
-        <div className="w-full h-full flex flex-col items-center justify-center">
-            <header className="w-full h-20 flex items-center shadow-md justify-between">
-                <div className="container flex items-center w-full gap-4">
-                    <img src="/images/logo.png" alt="Logo-white" className="h-12 ml-4" />
-                                  
-                </div>
-                <div className="text-2xl mr-9">
-                    <Logout/>  
-                </div>                 
-            </header>
-            <h1 className="text-4xl  text-center mt-16 mb-10">Análise do Perfil Investidor</h1>
-            <div className=" container flex flex-col mt-16 mb-10">
-                <p className="text-xl flex items-center gap-2 font-bold">
-                    <span>1</span>
-                    <span>-</span>
-                    <span>Qual é o seu principal objetivo ao investir?</span>
-                </p>
-                <div className="flex flex-col gap-4 mt-10 wifull justify-center ">
-                    <button className="border border-blue-900 text-blue-900 text-xl hover:bg-blue-950 hover:text-white p-4 rounded-lg">
-                    Preservar o capital e evitar perdas
-                    </button>
-                    <button className="border border-blue-900 text-blue-900 text-xl hover:bg-blue-950 hover:text-white p-4 rounded-lg">
-                    Gerar renda extra com baixo risco
-                    </button>
-                    <button className="border border-blue-900 text-blue-900 text-xl hover:bg-blue-950 hover:text-white p-4 rounded-lg">
-                    Equilibrar crescimento e segurança
-                    </button>
-                    <button className="border border-blue-900 text-blue-900 text-xl hover:bg-blue-950 hover:text-white p-4 rounded-lg">
-                    Maximizar o retorno a longo prazo
-                    </button>
-                    <button className="border border-blue-900 text-blue-900 text-xl hover:bg-blue-950 hover:text-white p-4 rounded-lg">
-                    Buscar altos ganhos, mesmo com alto risco
-                    </button>
-                </div>                
-            </div>           
-        </div>
-    );
+interface Answer {
+  id: number;
+  text: string;
+  answer_text?: string;
 }
 
-export default page;
+interface Question {
+  id: number;
+  title: string;
+  answers: Answer[];
+}
+
+interface User {
+  email: string;
+}
+
+const QuizPage = () => {
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const user: User | null = JSON.parse(localStorage.getItem("user") || "null");
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        setIsLoading(true);
+        const response = await quizPerfil();
+        
+        if (!response || !Array.isArray(response.questions)) {
+          throw new Error("Estrutura de resposta inválida");
+        }
+        
+        setQuestions(response.questions);
+      } catch (err) {
+        console.error("Erro ao buscar o quiz:", err);
+        setError("Erro ao carregar as perguntas. Tente novamente.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchQuestions();
+  }, []);
+
+  const handleAnswerClick = async (answerIndex: number) => {
+    if (!user) return;
+
+    const newSelectedAnswers = [...selectedAnswers, answerIndex];
+    setSelectedAnswers(newSelectedAnswers);
+    
+    const currentQuestion = questions[currentQuestionIndex];
+    
+    // Envia a resposta do usuário
+    if (newSelectedAnswers.length <= questions.length) {
+      try {
+        await quizUserAnswers({
+          UserId: user.email,
+          QuestionId: currentQuestion.title,
+          AnwserId: currentQuestion.answers[answerIndex].answer_text || currentQuestion.answers[answerIndex].text
+        });
+      } catch (err) {
+        console.error("Erro ao salvar resposta:", err);
+      }
+    }
+
+    // Processa próxima pergunta ou finaliza
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      try {
+        const totalScore = newSelectedAnswers.reduce((sum, value) => sum + value, 0);
+        const response = await updatedQuizPerfil({
+          ValueId: totalScore,
+          userId: user.email,
+        });
+
+        if (response.status === 200) {
+          console.log("Perfil atualizado com sucesso");
+        }
+      } catch (err) {
+        console.error("Erro ao atualizar perfil:", err);
+      }
+    }
+  };
+
+  const currentQuestion = questions[currentQuestionIndex];
+  const isQuizCompleted = selectedAnswers.length >= questions.length;
+
+  return (
+    <div className="w-full min-h-screen flex flex-col items-center">
+      <header className="w-full h-20 flex items-center justify-between shadow-md px-4">
+        <div className="flex items-center gap-4">
+          <img src="/images/logo.png" alt="Logo" className="h-12" />
+        </div>
+        <div className="text-2xl">
+          <Logout />
+        </div>
+      </header>
+
+      {error ? (
+        <div className="mt-16 text-red-600 text-xl">{error}</div>
+      ) : isQuizCompleted ? (
+        <div className="flex flex-col items-center justify-center mt-60 gap-4">
+          <GrAchievement className="text-[140px] text-amber-500" />
+          <p className="text-xl text-center">Obrigado por completar o quiz!</p>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center w-full max-w-2xl px-4">
+          <h1 className="text-4xl text-center mt-16 mb-10">
+            Análise do Perfil Investidor
+          </h1>
+
+          {isLoading ? (
+            <p className="text-xl text-center mt-16">Carregando perguntas...</p>
+          ) : currentQuestion ? (
+            <div className="my-10 w-full">
+              <p className="text-xl flex items-center gap-2 font-bold mb-6">
+                <span>{currentQuestionIndex + 1}</span>
+                <span>-</span>
+                <span>{currentQuestion.title}</span>
+              </p>
+
+              <div className="flex flex-col gap-4">
+                {currentQuestion.answers.map((answer, index) => (
+                  <button
+                    key={answer.id}
+                    onClick={() => handleAnswerClick(index)}
+                    className="border border-blue-900 text-blue-900 text-xl hover:bg-blue-950 hover:text-white p-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={!user}
+                  >
+                    {answer.answer_text || answer.text}
+                  </button>
+                ))}
+              </div>
+
+              <p className="mt-6 text-gray-600">
+                Pergunta {currentQuestionIndex + 1} de {questions.length}
+              </p>
+            </div>
+          ) : null}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default QuizPage;

@@ -178,5 +178,56 @@
           "61-75": "Agressivo"
         }
       }
-    }
+    },
+    
+    "perfis_investidor": [
+        {
+          "nome": "Conservador",
+          "faixa_pontos": "15-30",
+          "Descrição": "O investidor conservador prioriza a segurança do capital acima de tudo, evitando perdas a qualquer custo. Ele busca retornos previsíveis e garantidos, mesmo que isso signifique abrir mão de ganhos maiores. É comum entre pessoas com baixa tolerância ao risco ou horizonte de tempo curto.",
+          "Características": {
+            "Objetivo principal": "Preservação do capital",
+            "Horizonte de tempo": "Curto (menos de 3 anos)",
+            "Reação a perdas": "Alta preocupação, tendência a vender imediatamente",
+            "Preferência": "Ativos de baixo risco (poupança, títulos públicos, CDBs)",
+            "Exemplo de frase": "Prefiro ganhar pouco, mas ter certeza de que meu dinheiro está seguro."
+          }
+        },
+        {
+          "nome": "Moderado Conservador",
+          "faixa_pontos": "31-45",
+          "Descrição": "O investidor moderado conservador busca um equilíbrio entre segurança e crescimento, com leve inclinação para a proteção do capital. Ele aceita riscos mínimos para obter retornos um pouco maiores, mantendo a maior parte do portfólio em investimentos seguros.",
+          "Características": {
+            "Objetivo principal": "Renda estável com risco mínimo",
+            "Horizonte de tempo": "Médio (3 a 5 anos)",
+            "Reação a perdas": "Preocupação moderada, mas espera por recuperação",
+            "Preferência": "Maioria em renda fixa (fundos DI, Tesouro) com pequena exposição a variável",
+            "Exemplo de frase": "Quero um retorno razoável, mas sem arriscar muito."
+          }
+        },
+        {
+          "nome": "Moderado Agressivo",
+          "faixa_pontos": "46-60",
+          "Descrição": "O investidor moderado agressivo foca no crescimento do patrimônio a longo prazo, aceitando um nível moderado de risco. Ele equilibra ativos seguros e arriscados, buscando retornos mais atrativos sem se expor excessivamente às oscilações do mercado.",
+          "Características": {
+            "Objetivo principal": "Crescimento moderado com risco controlado",
+            "Horizonte de tempo": "Médio a longo (5 a 10 anos)",
+            "Reação a perdas": "Calma relativa, mantém investimentos e ajusta estratégias",
+            "Preferência": "Mix de renda fixa e variável (ações de empresas sólidas, fundos imobiliários)",
+            "Exemplo de frase": "Estou disposto a correr algum risco para crescer meu patrimônio, mas com cautela."
+          }
+        },
+        {
+          "nome": "Agressivo",
+          "faixa_pontos": "61-75",
+          "Descrição": "O investidor agressivo visa maximizar os retornos, mesmo enfrentando altos riscos. Ele encara as oscilações do mercado como oportunidades e tolera perdas significativas no curto prazo em busca de ganhos expressivos no futuro. É típico de quem tem alta experiência e horizonte longo.",
+          "Características": {
+            "Objetivo principal": "Alto crescimento do patrimônio",
+            "Horizonte de tempo": "Longo (mais de 10 anos)",
+            "Reação a perdas": "Tranquilidade, pode até investir mais em quedas",
+            "Preferência": "Ativos de alto risco (ações especulativas, criptomoedas, derivativos)",
+            "Exemplo de frase": "Quero o maior retorno possível e estou preparado para os altos e baixos."
+          }
+        }
+      ]  
   }

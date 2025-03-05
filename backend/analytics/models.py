@@ -47,16 +47,21 @@ class Investidor(models.Model):
 class Perfil(models.Model):
     nome = models.CharField(max_length=50)
     descricao = models.TextField()
+    objective = models.CharField(max_length=500, )
+    time_horizon = models.CharField(max_length=500, )
+    risk_tolerance = models.CharField(max_length=500, )
+    preference = models.CharField(max_length=500, )
+    sentence = models.CharField(max_length=500, )
     minimo = models.IntegerField( default = 0)
     maximo = models.IntegerField( default = 0)
-    investidor = models.ManyToManyField(User, related_name="perfis")
+    investidor = models.ManyToManyField(User, related_name="perfis", blank=True)
 
     class Meta:
         verbose_name = "Perfil"
         verbose_name_plural = "Perfis"
 
     def __str__(self):
-        return f"Perfil de {self.investidor.nome}"
+        return f"Perfil de {self.nome}"
     
 
     
@@ -64,13 +69,18 @@ class Perfil(models.Model):
 class Situacao(models.Model):
     nome = models.CharField(max_length=50)
     descricao = models.TextField()
+    objective = models.CharField(max_length=500, )
+    time_horizon = models.CharField(max_length=500, )
+    risk_tolerance = models.CharField(max_length=500, )
+    preference = models.CharField(max_length=500, )
+    sentence = models.CharField(max_length=500, )    
     minimo = models.IntegerField( default = 0)
     maximo = models.IntegerField( default = 0)
-    investidor = models.ManyToManyField(User, related_name="situaçao")
+    investidor = models.ManyToManyField(User, related_name="situaçao", blank=True)
 
     class Meta:
         verbose_name = "Situação"
         verbose_name_plural = "Situações"
 
     def __str__(self):
-        return f"Situacao de {self.investidor.nome}"
+        return f"Situacao {self.nome}"

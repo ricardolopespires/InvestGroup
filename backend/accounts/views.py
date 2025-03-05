@@ -43,38 +43,26 @@ class UserListView(APIView):
 
 class UserStatusView(APIView):
     def get(self, request, pk):
-        queryset = User.objects.filter(email = pk)
+        queryset = User.objects.filter(id = pk)
         serializer = UserStatusSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def put(self, request, pk, format=None):
-        queryset = User.objects.get(email = pk)
+        queryset = User.objects.get(id = pk)
         serializer = UserStatusSerializer(queryset, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
     
-class UserUpdatedView(APIView):
-    def get(self, request, pk):
-        queryset = User.objects.filter(email = pk)
-        serializer = UserSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    def put(self, request, pk, format=None):
-        queryset = User.objects.get(email = pk)
-        serializer = UserSerializer(queryset, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    def delete(self, request, pk, format=None):
-        queryset = User.objects.get(email = pk)    
+    def delete(self, request, pk):
+        queryset = User.objects.get(id = pk)
         queryset.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+    
+
 
 
 class RegisterView(GenericAPIView):

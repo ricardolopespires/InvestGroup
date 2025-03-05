@@ -14,9 +14,7 @@ class Quiz(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    @property
-    def question_count(self):   
-        return self.questions.count()
+
 
     class Meta:     
         verbose_name = _("Quiz")      
@@ -65,9 +63,8 @@ class Answer(models.Model):
 # Novo modelo UserAnswer para rastrear as respostas selecionadas pelo usuário
 class UserAnswer(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="user_answers")
-    selected_answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name="selected_by_users")
-    selected_at = models.DateTimeField(auto_now_add=True)
+    question = models.CharField(max_length=255)
+    selected_answer = models.CharField(max_length=255)    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -75,7 +72,7 @@ class UserAnswer(models.Model):
         verbose_name = _("User Answer")
         verbose_name_plural = _("User Answers")
         unique_together = (("user", "question"),)  # Garante que um usuário só responda uma vez por pergunta
-        ordering = ["selected_at"]
+        ordering = ["created_at"]
 
     def __str__(self):
-        return f"{self.user.username} - {self.question.title} - {self.selected_answer.answer_text}"
+        return f"{self.user} - {self.question} - {self.selected_answer}"

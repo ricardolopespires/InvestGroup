@@ -15,11 +15,11 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class QuizSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)
-    question_count = serializers.IntegerField(read_only=True)
+  
 
     class Meta:
         model = Quiz
-        fields = ['id', 'author', 'title', 'questions', 'question_count', 'created_at']
+        fields = ['id',  'title', 'questions', 'created_at']
 
 class UserAnswerSerializer(serializers.ModelSerializer):
     question = QuestionSerializer(read_only=True)
@@ -29,3 +29,11 @@ class UserAnswerSerializer(serializers.ModelSerializer):
         model = UserAnswer
         fields = ['id', 'user', 'question', 'selected_answer', 'selected_at']
         read_only_fields = ['user']
+
+
+
+class UserAnswerCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAnswer
+        fields = ['user_id', 'question', 'selected_answer']
+     

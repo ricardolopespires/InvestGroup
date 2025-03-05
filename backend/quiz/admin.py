@@ -11,7 +11,7 @@ from .models import Quiz
 
 @admin.register(Quiz)
 class QuizAdmin(ImportExportModelAdmin):
-    list_display = ["title", "question_count", "created_at", "updated_at"]
+    list_display = ["title",  "created_at", "updated_at"]
     search_fields = ["title"]
     list_filter = ["created_at", "updated_at"]
 

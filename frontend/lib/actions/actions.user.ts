@@ -1,17 +1,17 @@
 import { toast } from "react-toastify";
-import { encryptId, extractCustomerIdFromUrl, parseStringify } from "../utils";
+import { parseStringify } from "../utils";
 import AxiosInstance from "@/services/AxiosInstance";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { userResetPasswordProp } from "@/types";
+
 
 
 export const getUserInfo = async ({ userId }: getUserInfoProps) => {
     try {
       // Faça a solicitação HTTP para a API
-      const response = await AxiosInstance.get(`/api/v1/auth/user/${userId}/`);
+      const response = await AxiosInstance.get(`/api/v1/auth/list/${userId}/`);
        // Verifique se a resposta contém os dados esperados
-      if (response.data) {
+      if (response.status === 200) {
         // Processar os dados, se necessário
         return response.data; // Não é necessário chamar parseStringify aqui, a menos que seja necessário outro processamento específico
       } else {
@@ -45,14 +45,12 @@ export const getUserInfo = async ({ userId }: getUserInfoProps) => {
 
 export const SignIn = async ({ data }:SignInParams) => {
 
-  
-  console.log(data)
  
     try {
       
       const res = await AxiosInstance.post('/api/v1/auth/login/', { email:data.email, password:data.password });
       const response = res.data;
-      console.log(res.status);
+ 
   
       if (res.status === 200) {
         const userData = {
@@ -66,17 +64,22 @@ export const SignIn = async ({ data }:SignInParams) => {
         localStorage.setItem('user', JSON.stringify(userData)); 
   
   
-        const user = await getUserInfo({ userId: userData.email });
+        const user = await getUserInfo({ UserId: userData.email });      
         localStorage.setItem('perfil', JSON.stringify(user[0].perfil));
-        localStorage.setItem('situacao', JSON.stringify(user[0].situation));       
+        localStorage.setItem('situacao', JSON.stringify(user[0].situation));    
         
         return parseStringify(res);
       } else {
-        toast.error('Algo deu errado');
+        return parseStringify({
+          status: res.status,
+          message: res.data?.message || 'Erro desconhecido',
+        });
       }
     } catch (error) {
-      console.error('Error during login:', error);
-      toast.error('Ocorreu um erro durante o login');
+      return parseStringify({
+        status: 500,
+        message: 'Erro inesperado ao fazer login.',
+      });
     }
   };
 
@@ -147,28 +150,55 @@ export const SignIn = async ({ data }:SignInParams) => {
       }
   
     } catch (error) {
-      return null;
+      return parseStringify({
+        status: 500,
+        message: 'Erro inesperado ao registrar o usuário.',
+      });
     }
   }
 
 
+export const UserGetStatus = async ({userId}:UserIdProps) => {
+  try {
 
-  export const UserStatusManagement = async ({userId}:UserStatusManagementProps) => {
+    // Faça a solicitação HTTP para a API
+    const response = await AxiosInstance.get(`/api/v1/auth/user/status/${userId}/`,);
+     // Verifique se a resposta contém os dados esperados
+      if (response.status === 200) {
+        // Processar os dados, se necessário
+        return response.data; // Não é necessário chamar parseStringify aqui, a menos que seja necessário outro processamento específico
+      } else {
+        throw new Error('Usuário não encontrado');
+      }
 
+    } catch (error) {
+      return parseStringify({
+        status: 500,
+        message: 'Erro inesperado ao registrar o usuário.',
+      });
+    } 
+
+}
+
+
+  export const UserUpdatedStatus = async ({userId, data}:UserStatusProps) => {
     try {
+
       // Faça a solicitação HTTP para a API
-      const response = await AxiosInstance.get(`/api/v1/auth/user/management/status/${userId}/`);
+      const response = await AxiosInstance.put(`/api/v1/auth/user/status/${userId}/`, data);
        // Verifique se a resposta contém os dados esperados
-        if (response.data) {
+        if (response.status === 200) {
           // Processar os dados, se necessário
-          return response.data; // Não é necessário chamar parseStringify aqui, a menos que seja necessário outro processamento específico
+          return parseStringify(response); // Não é necessário chamar parseStringify aqui, a menos que seja necessário outro processamento específico
         } else {
           throw new Error('Usuário não encontrado');
         }
   
       } catch (error) {
-        console.error('Erro ao obter informações do usuário:', error);
-        throw error; // Rejeita o erro para que o chamador também possa lidar com ele, se necessário
+        return parseStringify({
+          status: 500,
+          message: 'Erro inesperado ao registrar o usuário.',
+        });
       }  
   }
   

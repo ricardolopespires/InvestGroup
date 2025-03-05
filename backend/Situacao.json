@@ -177,5 +177,44 @@
         "41-60": "Sólida"
       }
     }
-  }
+  },
+ "situacoes_financeiras": [
+      {
+        "nome": "Crítica",
+        "faixa_pontos": "0-20",
+        "Descrição": "A situação financeira crítica caracteriza indivíduos com dificuldades severas para manter as finanças. A renda é baixa, as dívidas são altas em relação à renda, e não há reservas ou investimentos significativos. Imprevistos financeiros frequentemente levam ao uso de crédito ou à inadimplência, e o foco está na sobrevivência imediata.",
+        "Características": {
+          "Objetivo principal": "Sobrevivência imediata ou quitação de dívidas",
+          "Horizonte de tempo": "Muito curto (dia a dia ou mensal)",
+          "Reação a imprevistos": "Incapacidade de lidar sem recorrer a empréstimos ou crédito",
+          "Preferência": "Liquidez imediata (dinheiro em mãos ou poupança mínima)",
+          "Exemplo de frase": "Mal consigo pagar as contas e qualquer problema me deixa no vermelho."
+        }
+      },
+      {
+        "nome": "Moderada",
+        "faixa_pontos": "21-40",
+        "Descrição": "A situação financeira moderada reflete uma estabilidade relativa, mas com vulnerabilidades. Há uma renda suficiente para cobrir despesas básicas, mas as dívidas ainda existem e a reserva de emergência é limitada. Investimentos são simples (como poupança ou renda fixa), e imprevistos podem desequilibrar o orçamento, embora haja alguma capacidade de resposta.",
+        "Características": {
+          "Objetivo principal": "Construir uma reserva de emergência ou reduzir dívidas",
+          "Horizonte de tempo": "Curto a médio (1 a 3 anos)",
+          "Reação a imprevistos": "Uso de reserva mínima ou ajustes no orçamento, às vezes com crédito",
+          "Preferência": "Ativos de baixo risco (poupança, renda fixa básica)",
+          "Exemplo de frase": "Consigo me manter, mas um imprevisto grande pode complicar minha vida."
+        }
+      },
+      {
+        "nome": "Sólida",
+        "faixa_pontos": "41-60",
+        "Descrição": "A situação financeira sólida indica uma posição confortável e bem estruturada. A renda é alta, as dívidas são inexistentes ou muito baixas, e há reservas robustas para emergências. Investimentos são diversificados, e o foco está no crescimento do patrimônio ou na independência financeira a longo prazo. Imprevistos são gerenciados sem impacto significativo.",
+        "Características": {
+          "Objetivo principal": "Crescimento do patrimônio ou independência financeira",
+          "Horizonte de tempo": "Longo (mais de 5 anos)",
+          "Reação a imprevistos": "Uso de reservas amplas sem comprometer o planejamento",
+          "Preferência": "Mix de ativos (renda fixa, variável, imóveis, etc.)",
+          "Exemplo de frase": "Tenho segurança financeira e posso planejar meu futuro com tranquilidade."
+        }
+      }
+    ]
+
 }

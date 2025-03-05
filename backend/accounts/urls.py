@@ -13,7 +13,7 @@ from .views import (
 
 from .views import UserListView
 from .views import UserDetailView
-from .views import UserUpdatedView
+
 from .views import ChangePasswordView
 from .views import ImageUploadView
 from .views import TwoFactorView
@@ -23,9 +23,7 @@ from rest_framework_simplejwt.views import (TokenRefreshView,)
 
 urlpatterns = [
         path('list/<str:pk>/',UserListView.as_view(), name ="list"),
-        path('user/<str:pk>/',UserUpdatedView.as_view(), name ="user"),
-        path('user/management/status/<str:pk>/', UserStatusView.as_view(), name ="user-status"),
-        path('updated/delete/<str:pk>/',UserUpdatedView.as_view(), name ="list"),
+        path('user/status/<str:pk>/', UserStatusView.as_view(), name ="user-status"),     
         path('register/', RegisterView.as_view(), name='register'),
         path('verify-email/', VerifyUserEmail.as_view(), name='verify'),
         path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

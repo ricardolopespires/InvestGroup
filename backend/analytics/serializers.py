@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import Investidor
+from .models import Perfil
+from .models import Situacao
 
 class InvestidorSerializer(serializers.ModelSerializer):
     saude_financeira = serializers.SerializerMethodField()
@@ -24,3 +26,23 @@ class InvestidorSerializer(serializers.ModelSerializer):
         # Vincula o usuário autenticado ao investidor
         validated_data['usuario'] = self.context['request'].user
         return super().create(validated_data)
+    
+
+class PerfilSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Perfil
+        fields = [
+            'id', 'nome', 'descricao', 'objective', 'time_horizon', 
+            'risk_tolerance', 'preference', 'sentence', 'minimo', 'maximo', 'investidor'
+        ]
+    
+    def validate(self, data):
+        if 'minimo' in data and 'maximo' in data:
+            if data['minimo'] > data['maximo']:
+                raise serializers.ValidationError({'minimo': 'O valor mínimo não pode ser maior que o máximo.'})
+        return data
+
+class SituacaoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Situacao
+        fields = ['id', 'nome', 'descricao', 'objective', 'TimeHorizon', 'RiskTolerance', 'preference','minimo', 'maximo',]

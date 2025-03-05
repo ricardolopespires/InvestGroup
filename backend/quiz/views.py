@@ -3,7 +3,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from .models import Quiz, Question, Answer, UserAnswer
-from .serializers import QuizSerializer, QuestionSerializer, AnswerSerializer, UserAnswerSerializer
+from .serializers import QuizSerializer
+from .serializers import UserAnswerCreateSerializer
+from .serializers import QuizSerializer
+from .serializers import QuestionSerializer
+from .serializers import AnswerSerializer
+from .serializers import UserAnswerSerializer
+from .serializers import UserAnswerCreateSerializer
 from django.shortcuts import get_object_or_404
 
 # Quiz API
@@ -127,19 +133,19 @@ class UserAnswerListCreateAPIView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        question_id = request.data.get('question')
-        answer_id = request.data.get('selected_answer')
+        question = request.data.get('question')
+        answer = request.data.get('selected_answer')
 
-        if not question_id or not answer_id:
+        if not question or not answer:
             return Response({"error": "Question and selected_answer are required."}, 
                           status=status.HTTP_400_BAD_REQUEST)
 
         user_answer, created = UserAnswer.objects.update_or_create(
             user=request.user,
-            question_id=question_id,
-            defaults={'selected_answer_id': answer_id}
+            question=question,
+            defaults={'selected_answer': answer}
         )
-        serializer = UserAnswerSerializer(user_answer)
+        serializer = UserAnswerCreateSerializer(user_answer)
         return Response(serializer.data, status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)
 
 class UserAnswerDetailAPIView(APIView):
