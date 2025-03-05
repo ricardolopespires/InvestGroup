@@ -12,13 +12,13 @@
 </div>
 <div>
 <p align="left">
-  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/ricardolopespires/SmartCity">
+  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/ricardolopespires/investGroup">
   <img alt="Mozilla HTTP Observatory Grade" src="https://img.shields.io/mozilla-observatory/grade/github.com?publish">
-  <img alt="GitHub Language Count" src="https://img.shields.io/github/languages/count/ricardolopespires/SmartCity"/>
-  <img alt="GitHub Repo Size" src="https://img.shields.io/github/repo-size/ricardolopespires/SmartCity"/>
-  <img alt="GitHub Pull Requests" src="https://img.shields.io/github/issues-pr/ricardolopespires/SmartCity"/>
-  <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/ricardolopespires/SmartCity"/>
-  <img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/ricardolopespires/SmartCity"/> 
+  <img alt="GitHub Language Count" src="https://img.shields.io/github/languages/count/ricardolopespires/investGroup"/>
+  <img alt="GitHub Repo Size" src="https://img.shields.io/github/repo-size/ricardolopespires/investGroup"/>
+  <img alt="GitHub Pull Requests" src="https://img.shields.io/github/issues-pr/ricardolopespires/investGroup"/>
+  <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/ricardolopespires/investGroup"/>
+  <img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/ricardolopespires/investGroup"/> 
   <img alt="PyPI - Django Version" src="https://img.shields.io/pypi/djversions/djangorestframework" />
 </p>
 </div>
