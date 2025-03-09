@@ -139,12 +139,16 @@ class SituacaoAllView(APIView):
 
 class SituacaoView(APIView):
     permission_classes = [IsAuthenticated]
-
+        
     def get(self, request, pk):
-        # Lista apenas as situações do usuário autenticado
-        situacoes = Situacao.objects.filter(id = pk)
-        serializer = SituacaoSerializer(situacoes, many=True)
+        situacao = Situacao.objects.filter(id=pk).first()
+        if situacao is None:
+            return Response({"error": "Situação não encontrada"}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Adicione uma resposta quando a situação for encontrada
+        serializer = SituacaoSerializer(situacao)
         return Response(serializer.data, status=status.HTTP_200_OK)
+        
     
     def post(self, request):
         # Cria uma nova situação vinculada ao investidor do usuário autenticado
@@ -158,21 +162,17 @@ class SituacaoView(APIView):
 class SituacaoDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get_object(self, pk):
-        try:
-            # Garante que apenas a situação do usuário autenticado seja acessada
-            return Situacao.objects.get(id = pk)
-        except Situacao.DoesNotExist:
-            return None
-
     def get(self, request, pk):
-        situacao = self.get_object(pk)
+        situacao = Situacao.objects.filter(id=pk).first()
         if situacao is None:
-            return Response({"error": "Situação não encontrada"}, status=status.HTTP_404_NOT_FOUND) 
+            return Response({"error": "Situação não encontrada"}, status=status.HTTP_404_NOT_FOUND)
         
+        # Adicione uma resposta quando a situação for encontrada
+        serializer = SituacaoSerializer(situacao)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     def put(self, request, pk):
-        situacao = self.get_object(pk)
+        situacao = Situacao.objects.filter(id=pk).first()
         if situacao is None:
             return Response({"error": "Situação não encontrada"}, status=status.HTTP_404_NOT_FOUND)
         serializer = SituacaoSerializer(situacao, data=request.data, partial=True)
@@ -182,7 +182,7 @@ class SituacaoDetailView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, pk):
-        situacao = self.get_object(pk)
+        situacao = Situacao.objects.filter(id=pk).first()
         if situacao is None:
             return Response({"error": "Situação não encontrada"}, status=status.HTTP_404_NOT_FOUND)
         situacao.delete()

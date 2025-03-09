@@ -4,22 +4,9 @@ import Logout from "@/app/auth/Logout/page";
 import { quizPerfil, quizUserAnswers, updatedQuizPerfil } from "@/lib/actions/actions.quiz";
 import { GrAchievement } from "react-icons/gr";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-interface Answer {
-  id: number;
-  text: string;
-  answer_text?: string;
-}
 
-interface Question {
-  id: number;
-  title: string;
-  answers: Answer[];
-}
-
-interface User {
-  email: string;
-}
 
 const QuizPage = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -27,6 +14,9 @@ const QuizPage = () => {
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+
+    const router = useRouter();
 
   const user: User | null = JSON.parse(localStorage.getItem("user") || "null");
 
@@ -84,8 +74,10 @@ const QuizPage = () => {
           userId: user.email,
         });
 
+        console.log(response);
         if (response.status === 200) {
-          console.log("Perfil atualizado com sucesso");
+          localStorage.setItem('perfil', JSON.stringify(true));
+          router.push("/quiz/situacao");
         }
       } catch (err) {
         console.error("Erro ao atualizar perfil:", err);
@@ -99,9 +91,11 @@ const QuizPage = () => {
   return (
     <div className="w-full min-h-screen flex flex-col items-center">
       <header className="w-full h-20 flex items-center justify-between shadow-md px-4">
-        <div className="flex items-center gap-4">
-          <img src="/images/logo.png" alt="Logo" className="h-12" />
-        </div>
+        <a href={"/"} className="flex items-center gap-2 ">
+            <div className="flex items-center gap-4 cursor-pointer">      
+                <img src="/images/logo.png" alt="Logo" className="h-12" />          
+            </div>
+        </a>
         <div className="text-2xl">
           <Logout />
         </div>

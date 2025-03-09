@@ -35,6 +35,11 @@ const guestRoutes = [
         label:"Economina",
         href: "/unidades/overview"
     },
+    {
+        icons: Compass,
+        label:"Trading",
+        href: "/trading"
+    },
 ]
 
 

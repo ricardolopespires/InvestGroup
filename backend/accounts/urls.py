@@ -13,7 +13,6 @@ from .views import (
 
 from .views import UserListView
 from .views import UserDetailView
-
 from .views import ChangePasswordView
 from .views import ImageUploadView
 from .views import TwoFactorView

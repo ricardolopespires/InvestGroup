@@ -64,7 +64,7 @@ export const SignIn = async ({ data }:SignInParams) => {
         localStorage.setItem('user', JSON.stringify(userData)); 
   
   
-        const user = await getUserInfo({ UserId: userData.email });      
+        const user = await getUserInfo({ userId: userData.email });      
         localStorage.setItem('perfil', JSON.stringify(user[0].perfil));
         localStorage.setItem('situacao', JSON.stringify(user[0].situation));    
         
@@ -92,14 +92,7 @@ export const SignIn = async ({ data }:SignInParams) => {
     console.log(data)
     try {
       // Verifica se o email já está cadastrado
-      const user = await getUserInfo({ userId: data.email });
-  
-      if (user.email === data.email) {
-        return {
-          status: 409, // Código 409 (Conflict) para conflitos de recursos
-          message: "O email já está cadastrado. Por favor, utilize um email diferente.",
-        };
-      }
+    
   
       // Verifica se as senhas coincidem
       if (data.password !== data.password2) {

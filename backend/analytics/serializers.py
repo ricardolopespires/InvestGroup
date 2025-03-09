@@ -45,4 +45,5 @@ class PerfilSerializer(serializers.ModelSerializer):
 class SituacaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Situacao
-        fields = ['id', 'nome', 'descricao', 'objective', 'TimeHorizon', 'RiskTolerance', 'preference','minimo', 'maximo',]
+        fields = ['id', 'nome', 'descricao', 'objective', 'time_horizon', 
+            'risk_tolerance',  'preference','minimo', 'maximo', 'investidor']

@@ -45,6 +45,28 @@ interface upatedPerfilInvestidorProps{
   }
 }
 
+interface UpdatedSituationInvestidorProps{
+  situationId:number;
+  data:{
+    id: number;
+    nome: string;
+    descricao: string;
+    objective: string;
+    time_horizon: string;
+    risk_tolerance: string
+    preference: string;
+    sentence: string;
+    minimo: number;
+    maximo: number;
+    investidor: [ ]
+  }
+
+}
+
+interface SituationInvestidorProps
+{
+  situationId:number;
+}
 
 // Interfaces para tipagem
 interface UpdateQuizParams {
@@ -99,3 +121,20 @@ interface UpdateQuizParams {
     timestamp: string;
   }
   
+
+  
+  interface Answer {
+    id: number;
+    text: string;
+    answer_text?: string;
+  }
+  
+  interface Question {
+    id: number;
+    title: string;
+    answers: Answer[];
+  }
+  
+  interface User {
+    email: string;
+  }

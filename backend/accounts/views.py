@@ -26,19 +26,37 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view 
 from .models import User, TwoFactor
 from rest_framework.views import APIView
+from rest_framework.exceptions import NotFound
 import pyotp
 # Create your views here.
 
 
 
 
-class UserListView(APIView):    
-    permission_classes = [IsAuthenticated]   
+class UserListView(APIView):
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
-        queryset = User.objects.filter(email = pk)
-        serializer = UserSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        try:
+            # Filtrando o usuário pelo e-mail
+            queryset = User.objects.filter(email=pk)
+            
+            # Verifica se existe algum usuário
+            if not queryset.exists():
+                raise NotFound(detail="Usuário não encontrado com o email fornecido.")
+
+            # Serializando os dados encontrados
+            serializer = UserSerializer(queryset, many=True)
+            
+            # Retorna a resposta com os dados dos usuários
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        except Exception as e:
+            # Caso haja algum erro inesperado
+            return Response(
+                {"detail": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
     
 
 class UserStatusView(APIView):

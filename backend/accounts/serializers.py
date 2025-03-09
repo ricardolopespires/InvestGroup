@@ -76,30 +76,39 @@ class UserStatusSerializer(serializers.Serializer):
         return instance 
 
 
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=68, min_length=6, write_only=True)
-    password2= serializers.CharField(max_length=68, min_length=6, write_only=True)
+    password2 = serializers.CharField(max_length=68, min_length=6, write_only=True)
 
     class Meta:
-        model=User
+        model = User
         fields = ['email', 'first_name', 'last_name', 'password', 'password2']
 
     def validate(self, attrs):
-        password=attrs.get('password', '')
-        password2 =attrs.get('password2', '')
-        if password !=password2:
-            raise serializers.ValidationError("passwords do not match")
-         
+        password = attrs.get('password', '')
+        password2 = attrs.get('password2', '')
+
+        # Verificar se as senhas coincidem
+        if password != password2:
+            raise serializers.ValidationError("Passwords do not match")
+        
+        # Verificar se o email já está cadastrado
+        email = attrs.get('email', '')
+        if User.objects.filter(email=email).exists():
+            raise serializers.ValidationError("This email is already registered.")
+        
         return attrs
 
     def create(self, validated_data):
-        user= User.objects.create_user(
+        user = User.objects.create_user(
             email=validated_data['email'],
             first_name=validated_data.get('first_name'),
             last_name=validated_data.get('last_name'),
-            password=validated_data.get('password')
-            )
+            password=validated_data['password']  # Aqui já sabemos que 'password' é validado
+        )
         return user
+
 
 class LoginSerializer(serializers.ModelSerializer):  
     email = serializers.EmailField(max_length=155, min_length=6)
