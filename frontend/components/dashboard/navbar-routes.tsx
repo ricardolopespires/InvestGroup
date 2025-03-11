@@ -3,6 +3,7 @@
 
 import React from 'react'
 import { BarChart, Compass, Layout, List } from "lucide-react";
+
 import { cn } from '@/lib/utils'
 import { usePathname } from "next/navigation";
 import NavbarItem from './navbar-items';
@@ -18,27 +19,32 @@ const guestRoutes = [
     {
         icons: Compass,
         label:"Pessoal",
-        href: "/contabilidades/overview"
+        href: "/personal/overview"
     },    
     {
         icons: Compass,
         label:"Criptos",
-        href: "/colaboradores/overview"
+        href: "/cryptos/overview"
     },
     {
         icons: Compass,
         label:"Ações",
-        href: "/colaboradores/overview"
+        href: "/stock/overview"
     },
     {
         icons: Compass,
-        label:"Economina",
-        href: "/unidades/overview"
+        label:"Economia",
+        href: "/economic/overview"
     },
     {
         icons: Compass,
         label:"Trading",
         href: "/trading"
+    },
+    {
+        icons: Compass,
+        label:"Consultores",
+        href: "/consultants/overview"
     },
 ]
 

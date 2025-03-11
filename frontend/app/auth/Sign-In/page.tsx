@@ -28,7 +28,7 @@ import { toast } from "react-toastify";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { SignIn } from "@/lib/actions/actions.user";
+import { SignIn, UserGetStatus } from "@/lib/actions/actions.user";
 
 const formSchema = z.object({
   email: z.string().email("Email é obrigatório"),
@@ -58,6 +58,7 @@ const Page = () => {
 
     console.log(res);
     if (res.status === 200) {
+      await UserGetStatus({userId:data.email})
       await router.push('/dashboard/overview');
       toast.success("Parabéns Login sucedido");
     } else if (res.status === 400) {

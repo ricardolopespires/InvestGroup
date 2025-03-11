@@ -1,5 +1,3 @@
-
-
 import Accordion from "@/components/home/Accordion";
 import Assessment from "@/components/home/assessment";
 import Compliance from "@/components/home/Compliance";
@@ -25,7 +23,7 @@ export default function Home() {
       <Prices/>
       <Accordion/>
       <Assessment/>
-      <Newsletter/>
+     
       <Footer/>
     </div>
   );

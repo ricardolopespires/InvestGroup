@@ -7,16 +7,12 @@ import { cn } from '@/lib/utils'
 import { usePathname, useRouter } from 'next/navigation'
 
 
-interface MenuItemPros{
-    
-    icons: LucideIcon;
+interface MenuItemPros{ 
     label: string;
     href: string;
-
 }
 
-const MenuItem = ({
-    icons:Icon,
+const MenuItem = ({   
     label,
     href,
 
@@ -35,7 +31,7 @@ const MenuItem = ({
 
 
   return (
-   <div className='flex flex-col items-center'>    
+   <div className='flex flex-col items-center mt-10'>    
     <button
         onClick={onClick}
         type='button'

@@ -61,12 +61,8 @@ export const SignIn = async ({ data }:SignInParams) => {
   
         localStorage.setItem('token', JSON.stringify(response.access_token));
         localStorage.setItem('refresh_token', JSON.stringify(response.refresh_token));
-        localStorage.setItem('user', JSON.stringify(userData)); 
-  
-  
-        const user = await getUserInfo({ userId: userData.email });      
-        localStorage.setItem('perfil', JSON.stringify(user[0].perfil));
-        localStorage.setItem('situacao', JSON.stringify(user[0].situation));    
+        localStorage.setItem('user', JSON.stringify(userData));   
+        
         
         return parseStringify(res);
       } else {
@@ -153,13 +149,20 @@ export const SignIn = async ({ data }:SignInParams) => {
 
 export const UserGetStatus = async ({userId}:UserIdProps) => {
   try {
+    const user = await getUserInfo({ userId: userId }); 
 
     // Faça a solicitação HTTP para a API
-    const response = await AxiosInstance.get(`/api/v1/auth/user/status/${userId}/`,);
+    const response = await AxiosInstance.get(`/api/v1/auth/user/status/${user[0].id}/`,);
+    console.log(response.status)
      // Verifique se a resposta contém os dados esperados
-      if (response.status === 200) {
+    if (response.status === 200) {
         // Processar os dados, se necessário
-        return response.data; // Não é necessário chamar parseStringify aqui, a menos que seja necessário outro processamento específico
+        // Não é necessário chamar parseStringify aqui, a menos que seja necessário outro processamento específico             
+        localStorage.setItem('perfil', JSON.stringify(user[0].perfil));
+        localStorage.setItem('situacao', JSON.stringify(user[0].situation));
+        
+        return response.data;
+
       } else {
         throw new Error('Usuário não encontrado');
       }
@@ -171,7 +174,7 @@ export const UserGetStatus = async ({userId}:UserIdProps) => {
       });
     } 
 
-}
+};
 
 
   export const UserUpdatedStatus = async ({userId, data}:UserStatusProps) => {

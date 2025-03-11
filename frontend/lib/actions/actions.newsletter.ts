@@ -1,4 +1,5 @@
-import AxiosInstance from "@/services/AxiosInstance"
+
+import AxiosInstance from "@/services/AxiosInstance";
 import { parseStringify } from "../utils";
 
 
