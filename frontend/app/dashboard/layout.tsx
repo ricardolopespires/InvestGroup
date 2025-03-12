@@ -37,8 +37,9 @@ const layout = ({children}) => {
       <Navbar/>   
       <section className='absolute inset-x-0 top-[50px] h-screen px-20'>
       <Menu/>
-      </section>
       {children} 
+      </section>
+    
       </main>
     )
 };

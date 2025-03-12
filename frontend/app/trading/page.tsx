@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react'
 import AtivoList from "@/components/AtivoList";
 import Boleta from "@/components/Boleta";
 import { getAssetList } from "@/lib/actions/actions.trading";
+import TradingHeader from "@/components/TradingHeader";
 
 const page = ({childrens}) => {
     
@@ -16,6 +17,7 @@ const page = ({childrens}) => {
     const [filter, setFilter] = useState<string>(""); // Estado para o filtro de pesquisa
     const [error, setError] = useState<string | null>(null);
     const [selected, setSelected] = useState([])
+    const [typeSelected, setTypeSelected] = useState("tradingview")
     
       useEffect(() => {
         const fetchCryptos = async () => {
@@ -94,7 +96,7 @@ const page = ({childrens}) => {
             </div>
             </div>
             <div className="w-[85%]">
-
+            <TradingHeader item={selected} typeSelected={typeSelected} setTypeSelected={setTypeSelected}/>
             </div>
         </div>
         <div className="flex w-full h-[800px]">
