@@ -33,7 +33,7 @@ const Boleta = () => {
               type="number" 
               value={price} 
               onChange={(e) => setPrice(e.target.value)}
-              className="w-24 bg-gray-700"
+              className="w-24 bg-gray-700 border-none"
             />
           </div>
           <div className="flex justify-between items-center">
@@ -42,7 +42,7 @@ const Boleta = () => {
               type="number" 
               value={stopOrder} 
               onChange={(e) => setStopOrder(e.target.value)}
-              className="w-24 bg-gray-700"
+              className="w-24 bg-gray-700 border-none"
             />
           </div>
           <div className="flex justify-between items-center">
@@ -51,14 +51,14 @@ const Boleta = () => {
               type="number" 
               value={quantity} 
               onChange={(e) => setQuantity(e.target.value)}
-              className="w-24 bg-gray-700"
+              className="w-24 bg-gray-700 border-none"
             />
           </div>
         </div>
         
         <div className="grid grid-cols-3 gap-2 mb-4">
           {[1, 2, 3].map((num) => (
-            <Button key={num} variant="outline" className="bg-gray-700">
+            <Button key={num} className="bg-gray-700 hover:bg-gray-400">
               {num}
             </Button>
           ))}
@@ -70,17 +70,17 @@ const Boleta = () => {
         </div>
         
         <div className="grid grid-cols-2 gap-2 mb-4">
-          <Button className="bg-yellow-500 text-black">C Limite</Button>
-          <Button className="bg-green-500">V Stop</Button>
-          <Button className="bg-yellow-500 text-black">C Mercado</Button>
-          <Button className="bg-green-500">V Mercado</Button>
+          <Button className=" bg-yellow-500 hover:bg-yellow-400 text-black">C Limite</Button>
+          <Button className="bg-green-500 hover:bg-green-400">V Stop</Button>
+          <Button className="bg-yellow-500 hover:bg-yellow-400 text-black">C Mercado</Button>
+          <Button className="bg-green-500 hover:bg-green-400">V Mercado</Button>
         </div>
         
         <div className="space-y-2">
-          <Button variant="outline" className="w-full bg-gray-700">Cancel Ord.</Button>
-          <Button variant="outline" className="w-full bg-gray-700">Inverter</Button>
-          <Button variant="outline" className="w-full bg-gray-700">Zerar</Button>
-          <Button className="w-full bg-red-500">Cancelar ordens + Zerar</Button>
+          <Button  className="w-full bg-gray-700 hover:bg-gray-400">Cancel Ord.</Button>
+          <Button  className="w-full bg-gray-700 hover:bg-gray-400">Inverter</Button>
+          <Button  className="w-full bg-gray-700 hover:bg-gray-400">Zerar</Button>
+          <Button className="w-full bg-red-500 hover:bg-red-400">Cancelar ordens + Zerar</Button>
         </div>
         
         <div className="mt-4">

@@ -9,6 +9,9 @@ import AtivoList from "@/components/AtivoList";
 import Boleta from "@/components/Boleta";
 import { getAssetList } from "@/lib/actions/actions.trading";
 import TradingHeader from "@/components/TradingHeader";
+import TradingView from "@/components/TradingView";
+import AnalyticsTrading from "@/components/AnalyticsTrading";
+import CardAnalytics from "@/components/CardAnalytics";
 
 const page = ({childrens}) => {
     
@@ -39,17 +42,18 @@ const page = ({childrens}) => {
     
   return (
     
-    <div className="flex flex-col gap-1" >
+    <div className="flex flex-col gap-1 " >
         <header className='bg-[#151928] w-full h-16'>
             <div className='ml-20 mr-20 flex h-full items-center justify-between'>
                 
                 <div className="flex items-center gap-4 text-white">
                 <img src={"/images/favicon.png"} alt="logotipo" className='w-[20px]' />
-                        <div className="flex items-center gap-4 text-sm">
+                        <div className="flex items-center gap-4 text-sm ml-9">
                             <button onClick={()=>setTypeAsset("crypto")}>Crypto</button>
-                            <button onClick={()=>setTypeAsset("currency")}>Currency</button>
-                            <button onClick={()=>setTypeAsset("index")}>Indexs</button>
+                            <button onClick={()=>setTypeAsset("currency")}>Moedas</button>
+                            <button onClick={()=>setTypeAsset("index")}>Índices</button>
                             <button onClick={()=>setTypeAsset("commodities")}>Commodities</button>
+                            <button onClick={()=>setTypeAsset("commodities")}>Ações</button>
                         </div>
                     </div>
                 <div className='flex items-center gap-4'>                    
@@ -104,7 +108,8 @@ const page = ({childrens}) => {
                 <AtivoList ListAsset={listAsset} setSelected={setSelected} selected={selected}/>
             </div>
             <div className="w-[70%]">
-
+                {typeSelected === "tradingview" ? <TradingView symbol={selected?.symbol}/>:""}
+                {typeSelected === "strategic" ? <CardAnalytics selected={selected}/>:""}
             </div>
             <div className="w-[15%]">
             <Boleta/>
