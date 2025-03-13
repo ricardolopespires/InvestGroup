@@ -43,7 +43,9 @@ INSTALLED_APPS = [
 
     #---------------------------- Dashboard ---------------------------------------------------------------
     'quiz.apps.QuizConfig',
-    'analytics.apps.AnalyticsConfig',   
+    'analytics.apps.AnalyticsConfig',
+    'history.apps.HistoryConfig',
+    'trading.apps.TradingConfig' ,  
 
     #---------------------------- third party application --------------------------------------------------
     'rest_framework',

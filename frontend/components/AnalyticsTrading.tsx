@@ -4,6 +4,8 @@ import { createChart, CandlestickSeries } from 'lightweight-charts';
 
 
 const AnalyticsTrading = ({data}) => {
+
+  console.log(data)
   const chartContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,7 +38,7 @@ const AnalyticsTrading = ({data}) => {
 
       return () => chart.remove(); // Cleanup chart on unmount
     }
-  }, []);
+  }, [data]);
 
   return (
     <div className='p-4'>

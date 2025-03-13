@@ -65,3 +65,4 @@ export const data = [
   { open: 13.50, high: 14.00, low: 13.30, close: 13.80, time: 1643983076 },
   { open: 13.80, high: 14.20, low: 13.60, close: 14.00, time: 1644069476 }
 ];
+

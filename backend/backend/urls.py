@@ -25,6 +25,8 @@ urlpatterns = [
     path('api/v1/quiz/', include('quiz.urls')),
     path('api/v1/analytics/', include('analytics.urls')),
     path('api/v1/quiz/', include('quiz.urls')),
+    path('api/v1/history/', include('history.urls')),
+    path('api/v1/trading/', include('trading.urls')),
     
 ]
 

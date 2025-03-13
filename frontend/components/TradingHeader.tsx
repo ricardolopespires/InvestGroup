@@ -3,7 +3,6 @@ import { ArrowDownIcon, ArrowUpIcon, CircleIcon } from "lucide-react"
 
 export default function TradingHeader({ item, typeSelected, setTypeSelected }: TradingHeaderProps) {
 
-  console.log(item)
   return (
     <div className="w-full text-white p-4 flex flex-col md:flex-row justify-between items-start md:items-center text-sm">
       <div className="flex gap-9 items-center">
