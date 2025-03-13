@@ -5,6 +5,7 @@ app_name = 'history'
 
 urlpatterns = [
       
-        path('data/<str:symbol>/', FinancialDataView.as_view(), name='financial_data'),
+       path('data/<str:symbol>/', FinancialDataView.as_view(), name='financial_data'),
+
     ]
 

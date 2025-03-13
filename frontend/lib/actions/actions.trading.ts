@@ -25,9 +25,8 @@ export const getAssetList = async({CodeAsset}:getAssetListProps)=>{
 export const getHistoryAssets = async({symbol, period})=>{
     try{
         const res = await AxiosInstance.get(`/api/v1/history/data/${symbol}-USD/`)
-        if(res.status === 200){
-            const data =  transformData(res.data)
-            return data
+        if(res.status === 200){        
+            return res.data
         }else{
            return parseStringify({"status":400, "message":"Enviada com error"})
         }
