@@ -12,6 +12,7 @@ import TradingHeader from "@/components/TradingHeader";
 import TradingView from "@/components/TradingView";
 import AnalyticsTrading from "@/components/AnalyticsTrading";
 import CardAnalytics from "@/components/CardAnalytics";
+import { Code } from "lucide-react";
 
 const page = ({childrens}) => {
     
@@ -108,8 +109,8 @@ const page = ({childrens}) => {
                 <AtivoList ListAsset={listAsset} setSelected={setSelected} selected={selected}/>
             </div>
             <div className="w-[70%]">
-                {typeSelected === "tradingview" ? <TradingView symbol={selected?.symbol}/>:""}
-                {typeSelected === "strategic" ? <CardAnalytics selected={selected}/>:""}
+                {typeSelected === "tradingview" ? <TradingView symbol={selected?.symbol}  CodeAsset={typeAsset}/>:""}
+                {typeSelected === "strategic" ? <CardAnalytics selected={selected} CodeAsset={typeAsset}/>:""}
             </div>
             <div className="w-[15%]">
             <Boleta/>

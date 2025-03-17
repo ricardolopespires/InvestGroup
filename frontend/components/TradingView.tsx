@@ -6,14 +6,16 @@ import React from 'react'
 
 
 
-const TradingView = ({symbol}:TradingViewProps) => {
+const TradingView = ({symbol, CodeAsset}:TradingViewProps) => {
+
+
   return (
     
     <div className="h-[98%] w-full">
-        <AdvancedRealTimeChart 
+        { CodeAsset === "crypto" ? <AdvancedRealTimeChart 
         theme="dark"
         interval="D"
-        symbol={`binance:${symbol}USD`}
+        symbol={`${symbol}USD`}
         allow_symbol_change={false}
         withdateranges={true}
         timezone={true}
@@ -21,7 +23,19 @@ const TradingView = ({symbol}:TradingViewProps) => {
         show_popup_button={true}
         >
 
-    </AdvancedRealTimeChart>
+    </AdvancedRealTimeChart>:
+    <AdvancedRealTimeChart 
+    theme="dark"
+    interval="D"
+    symbol={symbol}
+    allow_symbol_change={false}
+    withdateranges={true}
+    timezone={true}
+    autosize={true}
+    show_popup_button={true}
+    >
+
+</AdvancedRealTimeChart>}
     </div>
   )
 }

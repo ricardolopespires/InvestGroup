@@ -5,11 +5,10 @@ from .services import FinancialDataAnalyzer
 from .serializers import FinancialDataSerializer, FinancialDataListSerializer
 
 class FinancialDataView(APIView):
-    def get(self, request, symbol):
+    def get(self, request, symbol, interval):
         try:
             # Obter parâmetros opcionais de período, intervalo e outros
-            period = request.query_params.get('period', '5y')
-            interval = request.query_params.get('interval', '1wk')
+            period = request.query_params.get('period', '5y')          
             include_signals = request.query_params.get('include_signals', 'true').lower() == 'true'
             signal_distance = int(request.query_params.get('signal_distance', 15))
             signal_width = int(request.query_params.get('signal_width', 3))

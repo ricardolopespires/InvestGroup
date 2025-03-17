@@ -3,8 +3,7 @@ import { createChart, CandlestickSeries, createSeriesMarkers } from 'lightweight
 
 const AnalyticsTrading = ({ data, signals, selected }) => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
-
-  console.log(signals);
+  
 
   useEffect(() => {
     // Initialize markers array
@@ -46,7 +45,7 @@ const AnalyticsTrading = ({ data, signals, selected }) => {
           vertLines: { visible: false },
         },
         width: 1300,
-        height: 723,
+        height: 680,
       });
 
       // Add the candlestick series
@@ -78,7 +77,7 @@ const AnalyticsTrading = ({ data, signals, selected }) => {
   }, [data, signals]);
 
   return (
-    <div className="p-4">
+    <div className="p-2">
       <div ref={chartContainerRef} style={{ position: 'relative' }}>
         <div className="text-white flex items-center gap-2">
           <img src={selected.image} alt={selected.symbol} className="w-9 h-9" />
