@@ -22,7 +22,7 @@ const Navbar = () => {
           <NavbarRoutes/>
      </div>
      <div className="flex items-center space-x-4 text-2xl ">      
-     <a href="/auth/profile" className="text-green-500"><FaRegUserCircle /></a>
+     <a href="/settings/overview" className="text-green-500"><FaRegUserCircle /></a>
      <Logout/>
      
      </div>

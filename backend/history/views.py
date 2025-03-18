@@ -1,3 +1,4 @@
+from datetime import datetime
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -58,5 +59,40 @@ class FinancialDataView(APIView):
                     response_data['indicators']['close_smooth'] = smooth_data
 
             return Response(response_data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+
+
+class MT5APIView(APIView):
+    def __init__(self):
+        self.mt5 = MT5Connection(
+            account=settings.MT5_ACCOUNT,
+            password=settings.MT5_PASSWORD,
+            server=settings.MT5_SERVER
+        )
+
+    def get(self, request):
+        try:
+            action = request.query_params.get('action', 'connect')
+            
+            if action == 'connect':
+                result = self.mt5.connect()
+            elif action == 'account_info':
+                result = self.mt5.get_account_info()
+            elif action == 'historical':
+                symbol = request.query_params.get('symbol')
+                timeframe = request.query_params.get('timeframe')
+                start = datetime.fromisoformat(request.query_params.get('start'))
+                end = datetime.fromisoformat(request.query_params.get('end'))
+                result = self.mt5.get_historical_data(symbol, timeframe, start, end)
+            elif action == 'disconnect':
+                result = self.mt5.disconnect()
+            else:
+                return Response({"error": "Ação inválida"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            return Response(result, status=status.HTTP_200_OK)
+            
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

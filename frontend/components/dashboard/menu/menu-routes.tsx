@@ -17,7 +17,11 @@ import { usePathname } from "next/navigation";
 import MenuItem from "./menu-items";
 import { FaDesktop, FaUserTie, FaChartPie } from "react-icons/fa";
 import { CiCalculator2 } from "react-icons/ci";
-import { FaBitcoinSign } from "react-icons/fa6";
+import { LuBellRing } from "react-icons/lu";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import { MdDisplaySettings } from "react-icons/md";
+import { GiSettingsKnobs } from "react-icons/gi";
+import { FaSitemap } from "react-icons/fa";
 
 // Definição das rotas
 const guestRoutes = [
@@ -136,6 +140,45 @@ const consultantRoutes = [
   },
 ];
 
+const settingsRoutes = [
+  {
+    icon: <MdDisplaySettings />,
+    label: "Settings",
+    href: "/settings/overview",
+    title: "Configurações ",
+    subtitle: "Gerencie suas configurações de privacidade e dados",
+  },
+  {
+    icon: <MdOutlineAdminPanelSettings />,
+    label: "Segurança",
+    href: "/settings/security",
+    title: "Segurança ",
+    subtitle: "Gerencie as configurações de segurança da sua conta",
+  },
+  {
+    icon: <GiSettingsKnobs />,
+    label: "Preferências",
+    href: "/settings/preferences",
+    title: "Preferências",
+    subtitle: "Gerencie suas configurações de privacidade e dados",
+  },
+  {
+    icon: <LuBellRing />,
+    label: "Notificações",
+    href: "/settings/notifications",
+    title: "Notificações",
+    subtitle: "Gerencie como você recebe notificações",
+  },
+  
+  {
+    icon: <FaSitemap />,
+    label: "API",
+    href: "/settings/api",
+    title: "APIs ",
+    subtitle: "Gerencie suas configurações das suas APIs",
+  },
+]
+
 const MenuRoutes = () => {
   const pathname = usePathname();
 
@@ -145,6 +188,8 @@ const MenuRoutes = () => {
   const isStockPage = pathname?.includes("/colaboradores");
   const isEconomicPage = pathname?.includes("/administracao");
   const isConsultantPage = pathname?.includes("/consultants");
+  const isSettingsPage = pathname?.includes("/settings");
+
 
   // Seleciona as rotas com base na página atual
   const routes = isPersonalPage
@@ -157,6 +202,8 @@ const MenuRoutes = () => {
     ? economicRoutes
     : isConsultantPage
     ? consultantRoutes
+    : isSettingsPage
+    ? settingsRoutes
     : guestRoutes;
 
   // Encontra a rota atual com base no pathname

@@ -53,9 +53,71 @@ class CurrencyDetail(APIView):
 # Stock Views (already provided)
 class StockList(APIView):
     def get(self, request):
-        stocks = Stock.objects.all()
-        serializer = StockSerializer(stocks, many=True)
-        return Response(serializer.data)
+        
+        try:
+            stocks = Stock.objects.all()
+            if not stocks:
+                return Response(
+                    {"message": "Nenhuma commoditie encontrada"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            result_data = []
+            
+            for stock in stocks:
+                try:
+                    ticker = yf.Ticker(stock.yahoo)  # Use Ticker em vez de Tickers
+                    # Obtém dados históricos dos últimos 5 dias
+                    history = ticker.history(period="5d")
+                    
+                    # Verifica se há dados suficientes
+                    if len(history) < 2:
+                        continue  # Pula para o próximo se não houver dados suficientes
+
+                    # Obtém os preços de fechamento mais recentes
+                    today_close = history['Close'].iloc[-1]
+                    yesterday_close = history['Close'].iloc[-2]
+
+                    # Calcula a variação percentual
+                    percentage_change = ((today_close - yesterday_close) / yesterday_close) * 100
+
+                    # Monta os dados do ticker
+                    ticker_info = {
+                        'id': stock.id,
+                        'name': stock.name,  # Certifique-se de ter este campo no modelo
+                        "image":"http://localhost:8000/media/" + str(stock.img),
+                        'symbol': stock.symbol,
+                        'yahoo': stock.yahoo,                        
+                        'current_price': round(today_close, 2),
+                        'close_24h': round(yesterday_close, 2),
+                        'price_change_percentage_24h': round(percentage_change, 2),
+                        'total_volume': int(history['Volume'].iloc[-1]),
+                        'last_update': history.index[-1].strftime('%Y-%m-%d %H:%M:%S'),
+                        'open_24h': round(history['Open'].iloc[-1], 2),
+                        'high_24h': round(history['High'].iloc[-1], 2),
+                        'low_24h': round(history['Low'].iloc[-1], 2),
+                    }
+                    
+                    result_data.append(ticker_info)
+                
+                except Exception as e:
+                    # Log do erro para debug
+                    print(f"Erro ao processar {stock.yahoo}: {str(e)}")
+                    continue  # Continua mesmo se uma commoditie falhar
+
+            if not result_data:
+                return Response(
+                    {"message": "Nenhum dado de mercado disponível"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            return Response(result_data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {"error": f"Erro ao processar a requisição: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
     
     def post(self, request):
         serializer = StockSerializer(data=request.data)
@@ -350,3 +412,76 @@ class CommoditieListView(APIView):
             response_data.append(commoditie_data)
 
         return Response(response_data, status=status.HTTP_200_OK)
+    
+
+
+
+
+
+# Commoditie Views
+class CurrencyList(APIView):
+    def get(self, request):
+        try:
+            commodities = Currency.objects.all()
+            if not commodities:
+                return Response(
+                    {"message": "Nenhuma commoditie encontrada"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            result_data = []
+            
+            for commodity in commodities:
+                try:
+                    ticker = yf.Ticker(commodity.yahoo)  # Use Ticker em vez de Tickers
+                    # Obtém dados históricos dos últimos 5 dias
+                    history = ticker.history(period="5d")
+                    
+                    # Verifica se há dados suficientes
+                    if len(history) < 2:
+                        continue  # Pula para o próximo se não houver dados suficientes
+
+                    # Obtém os preços de fechamento mais recentes
+                    today_close = history['Close'].iloc[-1]
+                    yesterday_close = history['Close'].iloc[-2]
+
+                    # Calcula a variação percentual
+                    percentage_change = ((today_close - yesterday_close) / yesterday_close) * 100
+
+                    # Monta os dados do ticker
+                    ticker_info = {
+                        'id': commodity.id,
+                        'name': commodity.name,  # Certifique-se de ter este campo no modelo
+                        "image":"http://localhost:8000/media/" + str(commodity.img),
+                        'symbol': commodity.symbol,
+                        'yahoo': commodity.yahoo,                        
+                        'current_price': round(today_close, 2),
+                        'close_24h': round(yesterday_close, 2),
+                        'price_change_percentage_24h': round(percentage_change, 2),
+                        'total_volume': int(history['Volume'].iloc[-1]),
+                        'last_update': history.index[-1].strftime('%Y-%m-%d %H:%M:%S'),
+                        'open_24h': round(history['Open'].iloc[-1], 2),
+                        'high_24h': round(history['High'].iloc[-1], 2),
+                        'low_24h': round(history['Low'].iloc[-1], 2),
+                    }
+                    
+                    result_data.append(ticker_info)
+                
+                except Exception as e:
+                    # Log do erro para debug
+                    print(f"Erro ao processar {commodity.yahoo}: {str(e)}")
+                    continue  # Continua mesmo se uma commoditie falhar
+
+            if not result_data:
+                return Response(
+                    {"message": "Nenhum dado de mercado disponível"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            return Response(result_data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {"error": f"Erro ao processar a requisição: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

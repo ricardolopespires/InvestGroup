@@ -54,7 +54,7 @@ const page = ({childrens}) => {
                             <button onClick={()=>setTypeAsset("currency")}>Moedas</button>
                             <button onClick={()=>setTypeAsset("index")}>Índices</button>
                             <button onClick={()=>setTypeAsset("commodities")}>Commodities</button>
-                            <button onClick={()=>setTypeAsset("commodities")}>Ações</button>
+                            <button onClick={()=>setTypeAsset("stocks")}>Ações</button>
                         </div>
                     </div>
                 <div className='flex items-center gap-4'>                    
