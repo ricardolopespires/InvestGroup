@@ -72,7 +72,7 @@ const page = ({childrens}) => {
             <div  className="flex items-center justify-between p-4 text-white h-full">
                 <div className="flex flex-col">
                   <div className="flex  items-center gap-2">
-                    <img src={selected?.image} alt={selected?.name} className="w-7 h-7 rounded-full"/>
+                    <img src={selected?.image} alt={selected?.name} className="w-7 h-7 rounded-sm"/>
                     <div className="flex flex-col">
                       <span className="text-sm">{selected?.symbol?.toUpperCase()}</span>
                       <span className="text-xs text-gray-400">{selected?.name}</span>

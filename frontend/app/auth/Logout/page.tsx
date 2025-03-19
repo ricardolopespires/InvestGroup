@@ -23,7 +23,7 @@ const Logout = () => {
       }
     
   return (    
-    <button onClick={handleLogout}  className="hover:text-green-500"><FaSignInAlt/></button>
+    <button onClick={handleLogout}  className="hover:text-green-500 text-2xl"><FaSignInAlt/></button>
   )
 }
 

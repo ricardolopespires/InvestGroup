@@ -49,7 +49,7 @@ const AtivoList = ({ ListAsset, setSelected, selected }: AtivoListProps) => {
 
               <div className="flex flex-col w-full">
                 <div className="flex  items-center gap-2 w-full">
-                  <img src={item?.image} alt={item?.name} className="w-7 h-7 rounded-full"/>
+                  <img src={item?.image} alt={item?.name} className="w-7 h-7 rounded-sm"/>
                     <div className="flex flex-col">
                       <span className="text-sm text-white">{item?.symbol?.toUpperCase()}</span>
                       <span className="text-xs text-gray-400">{item?.name}</span>

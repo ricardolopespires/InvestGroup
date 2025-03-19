@@ -28,6 +28,8 @@ urlpatterns = [
     path('api/v1/history/', include('history.urls')),
     path('api/v1/trading/', include('trading.urls')),
     path('api/v1/', include('apis.urls')),
+    path('api/v1/finances/', include('finances.urls')),
+    path('api/v1/transactions/', include('transactions.urls')),
     
 ]
 

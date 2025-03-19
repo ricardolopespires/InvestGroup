@@ -45,7 +45,10 @@ INSTALLED_APPS = [
     'quiz.apps.QuizConfig',
     'analytics.apps.AnalyticsConfig',
     'history.apps.HistoryConfig',
-    'trading.apps.TradingConfig' ,  
+    'trading.apps.TradingConfig',
+    'finances.apps.FinancesConfig',
+    'transactions.apps.TransactionsConfig',
+      
 
     #---------------------------- third party application --------------------------------------------------
     'rest_framework',

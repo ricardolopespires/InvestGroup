@@ -61,6 +61,7 @@ class UserStatusSerializer(serializers.Serializer):
     id = serializers.IntegerField() 
     email = serializers.CharField(max_length=100)
     is_active = serializers.BooleanField(default=False)
+    img = serializers.ImageField()
     situation = serializers.BooleanField( default=False)
     perfil = serializers.BooleanField( default=False)
     two_factor = serializers.BooleanField( default=False)

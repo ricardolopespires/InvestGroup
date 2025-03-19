@@ -15,13 +15,15 @@ import {
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import MenuItem from "./menu-items";
-import { FaDesktop, FaUserTie, FaChartPie } from "react-icons/fa";
+import { FaDesktop, FaUserTie, FaChartPie, FaBuromobelexperte  } from "react-icons/fa";
 import { CiCalculator2 } from "react-icons/ci";
 import { LuBellRing } from "react-icons/lu";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { MdDisplaySettings } from "react-icons/md";
 import { GiSettingsKnobs } from "react-icons/gi";
 import { FaSitemap } from "react-icons/fa";
+import { RiRobot3Fill } from "react-icons/ri";
+import { BsRobot } from "react-icons/bs";
 
 // Definição das rotas
 const guestRoutes = [
@@ -175,6 +177,20 @@ const settingsRoutes = [
     label: "API",
     href: "/settings/api",
     title: "APIs ",
+    subtitle: "Gerencie suas configurações das suas APIs",
+  },
+  {
+    icon: <BsRobot />,
+    label: "Agentes",
+    href: "/settings/agents",
+    title: "Agentes",
+    subtitle: "Gerencie suas configurações das suas APIs",
+  },
+  {
+    icon: <FaBuromobelexperte />,
+    label: "Gerenciamento",
+    href: "/settings/management",
+    title: "Gerenciamentos ",
     subtitle: "Gerencie suas configurações das suas APIs",
   },
 ]

@@ -44,6 +44,7 @@ export const getUserInfo = async ({ userId }: getUserInfoProps) => {
 
 
 export const SignIn = async ({ data }:SignInParams) => {
+  
 
  
     try {
@@ -53,6 +54,8 @@ export const SignIn = async ({ data }:SignInParams) => {
  
   
       if (res.status === 200) {
+        
+        
         const userData = {
           user_id: response.user_id,
           full_name: response.full_name,
