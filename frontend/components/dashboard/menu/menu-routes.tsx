@@ -19,6 +19,7 @@ import { FaDesktop, FaUserTie, FaChartPie, FaBuromobelexperte  } from "react-ico
 import { CiCalculator2 } from "react-icons/ci";
 import { LuBellRing } from "react-icons/lu";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import { LuChartPie } from "react-icons/lu";
 import { MdDisplaySettings } from "react-icons/md";
 import { GiSettingsKnobs } from "react-icons/gi";
 import { FaSitemap } from "react-icons/fa";
@@ -142,6 +143,17 @@ const consultantRoutes = [
   },
 ];
 
+const investmentsRoutes = [
+  {
+    icon: <LuChartPie />,
+    label: "Overview",
+    href: "/investments/overview",
+    title: "Inestimentos",
+    subtitle: "Descubra onde investir o seu dinheiro, com boa rentabilidade e muita segurança.",
+  },
+];
+
+
 const settingsRoutes = [
   {
     icon: <MdDisplaySettings />,
@@ -204,6 +216,7 @@ const MenuRoutes = () => {
   const isStockPage = pathname?.includes("/colaboradores");
   const isEconomicPage = pathname?.includes("/administracao");
   const isConsultantPage = pathname?.includes("/consultants");
+  const isInvestmentsPage = pathname?.includes("/investments");
   const isSettingsPage = pathname?.includes("/settings");
 
 
@@ -218,6 +231,8 @@ const MenuRoutes = () => {
     ? economicRoutes
     : isConsultantPage
     ? consultantRoutes
+    : isInvestmentsPage
+    ? investmentsRoutes
     : isSettingsPage
     ? settingsRoutes
     : guestRoutes;

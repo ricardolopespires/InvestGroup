@@ -43,6 +43,11 @@ const guestRoutes = [
     },
     {
         icons: Compass,
+        label:"Investimentos",
+        href: "/investments/overview"
+    },
+    {
+        icons: Compass,
         label:"Consultores",
         href: "/consultants/overview"
     },

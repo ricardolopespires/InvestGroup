@@ -1,12 +1,23 @@
+"use client";
 
+import React from 'react'; // Importação correta do React
+import { useParams, usePathname } from "next/navigation";
+import PlataformsMetaTrader from "@/components/PlataformsMetaTrader";
+import ApiCrypto from '@/components/ApiCrypto';
 
+const Page = () => { // Usar PascalCase para nome de componentes
 
-import React from 'react'
+  const params = useParams(); // Correção na definição do tipo
 
-const page = () => {
+  console.log(params); // Lembre-se de remover ou ajustar isso em produção
+
   return (
-    <div>page</div>
-  )
-}
+    <div className="z-40">
+      {params.id === "metaTrader" ? <PlataformsMetaTrader /> : ""}
+      {params.id === "crypto" ? <ApiCrypto/> : ""}
+      
+    </div>
+  );
+};
 
-export default page
+export default Page; // Garantir que o nome da exportação corresponda ao nome do componente

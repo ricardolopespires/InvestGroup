@@ -47,7 +47,7 @@ export function ChartPie() {
   }, [])
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col h-full justify-between">
       <CardHeader className="items-center pb-0">
         <CardTitle>Pie Chart - Donut with Text</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
@@ -56,7 +56,7 @@ export function ChartPie() {
         <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
           <PieChart>
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Pie data={chartData} dataKey="visitors" nameKey="browser" innerRadius={60} strokeWidth={5}>
+            <Pie data={chartData} dataKey="visitors" nameKey="browser" innerRadius={70} strokeWidth={7}>
               <Label
                 content={({ viewBox }) => {
                   if (viewBox && "cx" in viewBox && "cy" in viewBox) {
