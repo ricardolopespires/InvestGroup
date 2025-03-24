@@ -7,7 +7,7 @@ from .models import Commoditie, Currency, Stock
 
 @admin.register(Commoditie)
 class CommoditieAdmin(ImportExportModelAdmin):
-    list_display = ['name']
+    list_display = ['name','symbol','yahoo','tradingview']
 
 
 

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 # Create your models here.
@@ -50,13 +51,23 @@ class Broker(models.Model):
 
 
 class MT5API(models.Model):
-    broker_name = models.CharField(max_length=100)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    broker = models.CharField(max_length=100)
     image = models.CharField(max_length=255)
     account = models.CharField(max_length=255)
-    login = models.IntegerField(unique=True, max_length=255)
     password = models.CharField(max_length=255)
     server = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
+    
+
+
+    class Meta:
+        verbose_name = "MT5 API"
+        verbose_name_plural = "MT5 APIs"
+        
 
     def __str__(self):
-        return f"{self.broker_name} - {self.login}"
+        return f"{self.broker} - {self.password}"
+    

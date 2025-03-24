@@ -16,9 +16,9 @@ class APICryptoAdmin(ImportExportModelAdmin):
 
 @admin.register(MT5API)
 class MT5APIAdmin(ImportExportModelAdmin):
-    list_display = ["broker_name", "login", "password", "server", "created_at"]
-    search_fields = ["broker_name", "login"]
-    list_filter = ["broker_name", "created_at"]
+    list_display = ["broker", "account","password", "server", "created_at"]
+    search_fields = ["broker", "password"]
+    list_filter = ["broker", "created_at"]
 
 
 @admin.register(Broker)

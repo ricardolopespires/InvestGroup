@@ -11,3 +11,15 @@ class FinancialDataSerializer(serializers.Serializer):
 
 class FinancialDataListSerializer(serializers.ListSerializer):
     child = FinancialDataSerializer()
+
+
+
+
+class SignalSerializer(serializers.Serializer):
+    time = serializers.IntegerField()
+    position = serializers.CharField()
+    color = serializers.CharField()
+    shape = serializers.CharField()
+    text = serializers.CharField()
+    type = serializers.CharField()
+    size = serializers.IntegerField()

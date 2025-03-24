@@ -1,9 +1,14 @@
-from datetime import datetime
-from rest_framework.views import APIView
+from .serializers import FinancialDataListSerializer
+from django.db.models import Avg, Count, Min, Sum, Q
+from .serializers import FinancialDataSerializer
 from rest_framework.response import Response
-from rest_framework import status
 from .services import FinancialDataAnalyzer
-from .serializers import FinancialDataSerializer, FinancialDataListSerializer
+from rest_framework.views import APIView
+from .serializers import SignalSerializer
+from rest_framework import status
+from apis.models import MT5API
+from .services import MT5Connector
+
 
 class FinancialDataView(APIView):
     def get(self, request, symbol, interval):
@@ -64,35 +69,43 @@ class FinancialDataView(APIView):
         
 
 
-
 class MT5APIView(APIView):
-    def __init__(self):
-        self.mt5 = MT5Connection(
-            account=settings.MT5_ACCOUNT,
-            password=settings.MT5_PASSWORD,
-            server=settings.MT5_SERVER
-        )
-
-    def get(self, request):
+    def get(self, request, symbol, interval, pk):
+        api = MT5API.objects.filter(
+            Q(user_id=pk),
+            Q(is_active=True)
+        ).last()
+        
+        if not api:
+            return Response({'error': 'Conta MT5 não encontrada ou inativa'}, status=status.HTTP_404_NOT_FOUND)
+        
         try:
-            action = request.query_params.get('action', 'connect')
+            # Inicializa o analisador com os parâmetros fornecidos           
+            mt5 = MT5Connector(
+                symbol=symbol,
+                interval=interval,
+                account=api.account,
+                password=api.password,
+                server=api.server
+            )
             
-            if action == 'connect':
-                result = self.mt5.connect()
-            elif action == 'account_info':
-                result = self.mt5.get_account_info()
-            elif action == 'historical':
-                symbol = request.query_params.get('symbol')
-                timeframe = request.query_params.get('timeframe')
-                start = datetime.fromisoformat(request.query_params.get('start'))
-                end = datetime.fromisoformat(request.query_params.get('end'))
-                result = self.mt5.get_historical_data(symbol, timeframe, start, end)
-            elif action == 'disconnect':
-                result = self.mt5.disconnect()
-            else:
-                return Response({"error": "Ação inválida"}, status=status.HTTP_400_BAD_REQUEST)
+            if not mt5.initialize_mt5():
+                return Response({'error': 'Falha ao inicializar o MetaTrader 5'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
-            return Response(result, status=status.HTTP_200_OK)
+            if not mt5.login():
+                return Response({'error': 'Falha no login do MetaTrader 5'}, status=status.HTTP_401_UNAUTHORIZED)
             
+            mt5.download_data()
+            mt5.preprocess_data()
+            mt5.calculate_indicators()
+            signals = mt5.calculate_signals()
+            
+            response_data = {
+                'data': mt5.get_all_data(),
+                'signals': signals
+            }
+            
+            return Response(response_data, status=status.HTTP_200_OK)
+        
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
