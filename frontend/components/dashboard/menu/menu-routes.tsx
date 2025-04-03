@@ -86,27 +86,28 @@ const cryptosRoutes = [
 ];
 
 const stockRoutes = [
-  {
-    icon: <FaChartPie />,
-    label: "Overview",
-    href: "/colaboradores/overview",
-    title: "Visão Geral dos Colaboradores",
-    subtitle: "Resumo da equipe",
-  },
-  {
-    icon: Clock,
-    label: "Folha de Ponto",
-    href: "/colaboradores/ponto",
-    title: "Controle de Ponto",
-    subtitle: "Registro de horas trabalhadas",
-  },
-  {
-    icon: Users,
-    label: "Férias",
-    href: "/colaboradores/ferias",
-    title: "Gestão de Férias",
-    subtitle: "Planejamento e controle de férias",
-  },
+    {
+      icon: <FaChartPie />,
+      label: "Overview",
+      href: "/stock/overview",
+      title: "Mercado de Ações",
+      subtitle: "Resumo e Tendências do Mercado",
+    },
+    {
+      icon: <FaChartPie />,
+      label: "Mercado",
+      href: "/stock/market",
+      title: "Mercado de Ações",
+      subtitle: "Acompanhe as cotações e desempenho das ações em tempo real",
+    },
+    {
+      icon: <FaChartPie />,
+      label: "Portfólio",
+      href: "/stock/portfolio",
+      title: "Mercado de Ações",
+      subtitle: "Acompanhamento do seu Portfólio",
+    },   
+  
 ];
 
 const economicRoutes = [
@@ -213,7 +214,7 @@ const MenuRoutes = () => {
   // Determina qual grupo de rotas usar com base no pathname
   const isPersonalPage = pathname?.includes("/unidades");
   const isCryptoPage = pathname?.includes("/consultants");
-  const isStockPage = pathname?.includes("/colaboradores");
+  const isStockPage = pathname?.includes("/stock");
   const isEconomicPage = pathname?.includes("/administracao");
   const isConsultantPage = pathname?.includes("/consultants");
   const isInvestmentsPage = pathname?.includes("/investments");

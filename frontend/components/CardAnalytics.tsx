@@ -5,6 +5,9 @@ import { cn } from '@/lib/utils'
 
 
 const CardAnalytics = ({ selected , CodeAsset}) => {
+
+    const user = JSON.parse(localStorage.getItem('user'))
+
     const [time, setTime] = useState("1d")
     const [data, setData] = useState({
         prices: [],
@@ -13,16 +16,15 @@ const CardAnalytics = ({ selected , CodeAsset}) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            if(CodeAsset === "crypto"){
-                const res = await getHistoryAssets({ symbol: selected.symbol, period:time, CodeAsset:CodeAsset })
+           
+            const res = await getHistoryAssets({ selected: selected, period:time, CodeAsset:CodeAsset, UserId:user.email })
             setData(res)
-            }else{
-                const res = await getHistoryAssets({ symbol: selected.yahoo, period:time, CodeAsset:CodeAsset })
-                setData(res)
-            }
+          
             }
         fetchData();
-    }, [selected, time, CodeAsset])
+    }, [selected, time, CodeAsset, user])
+
+    console.log(data)
 
     return (
         <section className='flex flex-col ml-1 mr-1'>
@@ -57,6 +59,12 @@ const CardAnalytics = ({ selected , CodeAsset}) => {
                         onClick={() => setTime("1h")}
                     >
                         1h
+                    </button>
+                    <button
+                        className={cn({ "text-white": time === "4h", "text-gray-500": time !== "4h" })}
+                        onClick={() => setTime("4h")}
+                    >
+                        4h
                     </button>
                     <button
                         className={cn({ "text-white": time === "1d", "text-gray-500": time !== "1d" })}

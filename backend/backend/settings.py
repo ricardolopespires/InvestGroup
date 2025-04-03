@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'trading.apps.TradingConfig',
     'finances.apps.FinancesConfig',
     'transactions.apps.TransactionsConfig',
+    'plataform.apps.PlataformConfig',
       
 
     #---------------------------- third party application --------------------------------------------------
@@ -58,7 +59,8 @@ INSTALLED_APPS = [
     'import_export',
     'django_filters',   
     'multiselectfield' ,
-    'apis.apps.ApisConfig',
+    
+
     
 
     #---------------------------- API application -----------------------------------------------------------

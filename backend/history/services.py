@@ -193,13 +193,13 @@ class MT5Connector:
         if not self.symbol:
             raise ValueError("Símbolo não definido.")
         
-        if not mt5.symbol_select(self.symbol, True):
-            raise ValueError(f"Símbolo {self.symbol} não disponível.")
+       
         
         bars = self._convert_period_to_bars()
-        rates = mt5.copy_rates_from(self.symbol, self.interval, datetime.now(), bars)
+        rates = mt5.copy_rates_from(self.symbol, self.interval, datetime.now(), bars)            
+            
         if rates is None:
-            raise ValueError("Falha ao obter os dados do mercado.")
+            rates = mt5.copy_rates_from(("#" + self.symbol), self.interval, datetime.now(), bars)
         
         self.dataset = pd.DataFrame(rates)
         self.dataset['time'] = pd.to_datetime(self.dataset['time'], unit='s')
@@ -217,10 +217,14 @@ class MT5Connector:
             raise ValueError("Os dados ainda não foram baixados.")        
         self.dataset[['open', 'high', 'low', 'close']] = self.dataset[['open', 'high', 'low', 'close']].astype(float)       
         self.dataset = self.dataset.round(2)
-        self.dataset.drop(["tick_volume", "spread", "real_volume"], axis=1, inplace=True)
+        
+        # Correção: Converter o índice timestamp para cada linha
+        self.dataset["time"] = self.dataset.index.map(lambda x: int(x.timestamp()))
+        
         logger.info("Dados pré-processados com sucesso.")
         return self.dataset
 
+ 
     def calculate_indicators(self, atr_period=14, atr_smoothing_window=30, smooth_window=49, smooth_polyorder=5):
         """Calcula indicadores técnicos como ATR e suavização de preços."""
         if self.dataset is None:
@@ -231,7 +235,7 @@ class MT5Connector:
         self.dataset["close_smooth"] = savgol_filter(self.dataset.close, smooth_window, smooth_polyorder)
         self.dataset['atr'] = self.dataset['atr'].fillna(0).astype(int)
         logger.info("Indicadores técnicos calculados.")
-        print(self.dataset.head())
+        
         return self.dataset
 
     def calculate_signals(self, distance=15, width=3):
@@ -252,11 +256,33 @@ class MT5Connector:
 
         signals = []
         for idx in peaks_idx:
-            signals.append({"time": int(self.dataset.index[idx].timestamp()), "type": "sell"})
+            time = int(self.dataset.index[idx].timestamp())
+            price = self.dataset.close.iloc[idx]
+            signals.append({
+                "time": time,
+                "position": "aboveBar",
+                "color": "#e91e63",
+                "shape": "arrowDown",
+                "text": f"Sell @ {price:.2f}",
+                "type": "sell",
+                "size": 2
+            })
+
         for idx in troughs_idx:
-            signals.append({"time": int(self.dataset.index[idx].timestamp()), "type": "buy"})
+            time = int(self.dataset.index[idx].timestamp())
+            price = self.dataset.close.iloc[idx]
+            signals.append({
+                "time": time,
+                "position": "belowBar",
+                "color": "#2196F3",
+                "shape": "arrowUp",
+                "text": f"Buy @ {price:.2f}",
+                "type": "buy",
+                "size": 2
+            })
         
         self.dataset["signal"] = self.dataset["signal"].fillna(0).astype("string")
+        self.dataset.drop(["tick_volume", "spread", "real_volume","atr","close_smooth"], axis=1, inplace=True)
         logger.info("Sinais de compra e venda calculados.")
         return signals
 

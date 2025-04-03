@@ -6,9 +6,9 @@ from .services import FinancialDataAnalyzer
 from rest_framework.views import APIView
 from .serializers import SignalSerializer
 from rest_framework import status
-from apis.models import MT5API
+from plataform.models import MT5API
 from .services import MT5Connector
-
+import pandas as pd
 
 class FinancialDataView(APIView):
     def get(self, request, symbol, interval):
@@ -71,16 +71,12 @@ class FinancialDataView(APIView):
 
 class MT5APIView(APIView):
     def get(self, request, symbol, interval, pk):
-        api = MT5API.objects.filter(
-            Q(user_id=pk),
-            Q(is_active=True)
-        ).last()
+        api = MT5API.objects.filter(Q(user_id=pk), Q(is_active=True)).last()
         
         if not api:
             return Response({'error': 'Conta MT5 não encontrada ou inativa'}, status=status.HTTP_404_NOT_FOUND)
         
         try:
-            # Inicializa o analisador com os parâmetros fornecidos           
             mt5 = MT5Connector(
                 symbol=symbol,
                 interval=interval,
@@ -101,8 +97,9 @@ class MT5APIView(APIView):
             signals = mt5.calculate_signals()
             
             response_data = {
-                'data': mt5.get_all_data(),
-                'signals': signals
+                'prices': mt5.get_all_data(),
+                'signals': signals,
+                "status": 200
             }
             
             return Response(response_data, status=status.HTTP_200_OK)
