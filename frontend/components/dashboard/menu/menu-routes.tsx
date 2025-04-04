@@ -16,6 +16,8 @@ import {
 import { usePathname } from "next/navigation";
 import MenuItem from "./menu-items";
 import { FaDesktop, FaUserTie, FaChartPie, FaBuromobelexperte  } from "react-icons/fa";
+import { IoWalletOutline } from "react-icons/io5";
+import { SiMarketo } from "react-icons/si";
 import { CiCalculator2 } from "react-icons/ci";
 import { LuBellRing } from "react-icons/lu";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
@@ -90,21 +92,21 @@ const stockRoutes = [
       icon: <FaChartPie />,
       label: "Overview",
       href: "/stock/overview",
-      title: "Mercado de Ações",
+      title: "Overview",
       subtitle: "Resumo e Tendências do Mercado",
     },
     {
-      icon: <FaChartPie />,
+      icon: <SiMarketo />,
       label: "Mercado",
       href: "/stock/market",
       title: "Mercado de Ações",
       subtitle: "Acompanhe as cotações e desempenho das ações em tempo real",
     },
     {
-      icon: <FaChartPie />,
+      icon: <IoWalletOutline />,
       label: "Portfólio",
       href: "/stock/portfolio",
-      title: "Mercado de Ações",
+      title: "Portfólio",
       subtitle: "Acompanhamento do seu Portfólio",
     },   
   

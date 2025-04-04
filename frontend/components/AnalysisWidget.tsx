@@ -21,7 +21,7 @@ const AnalysisWidget = ({ asset }) => {
       symbol: asset , // Usa o ativo fornecido ou um padrão
       showIntervalTabs: true,
       displayMode: "single",
-      locale: "en",
+      locale: "br",
       colorTheme: "light",
     });
 

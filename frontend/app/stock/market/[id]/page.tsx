@@ -34,7 +34,7 @@ const page = () => {
         </div>
       </div>
       <div className='mb-16'>
-        <TableOperationsStock/>
+        <TableOperationsStock asset={id}/>
       </div>
       
 
