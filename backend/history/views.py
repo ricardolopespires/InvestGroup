@@ -5,10 +5,15 @@ from rest_framework.response import Response
 from .services import FinancialDataAnalyzer
 from rest_framework.views import APIView
 from .serializers import SignalSerializer
+from .serializers import MT5DataSerializer
 from rest_framework import status
 from plataform.models import MT5API
 from .services import MT5Connector
 import pandas as pd
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class FinancialDataView(APIView):
     def get(self, request, symbol, interval):
@@ -103,6 +108,42 @@ class MT5APIView(APIView):
             }
             
             return Response(response_data, status=status.HTTP_200_OK)
+        
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+class PositionsView(APIView):
+    def get(self, request, symbol, type, interval, pk):
+
+        api = MT5API.objects.filter(Q(user_id=pk), Q(is_active=True)).last()
+        
+        if not api:
+            return Response({'error': 'Conta MT5 não encontrada ou inativa'}, status=status.HTTP_404_NOT_FOUND)
+        
+        try:
+            mt5 = MT5Connector(
+                symbol=symbol,
+                interval=interval,
+                account=api.account,
+                password=api.password,
+                server=api.server
+            )
+            
+            if not mt5.initialize_mt5():
+                return Response({'error': 'Falha ao inicializar o MetaTrader 5'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+            if not mt5.login():
+                return Response({'error': 'Falha no login do MetaTrader 5'}, status=status.HTTP_401_UNAUTHORIZED)
+
+            positions = mt5.positions_get(symbol=symbol, type=type)
+            
+            return Response({
+                'positions': MT5DataSerializer.serialize_positions(positions),                
+            }, status=status.HTTP_200_OK)
+            
         
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

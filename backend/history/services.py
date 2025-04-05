@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -285,6 +285,46 @@ class MT5Connector:
         self.dataset.drop(["tick_volume", "spread", "real_volume","atr","close_smooth"], axis=1, inplace=True)
         logger.info("Sinais de compra e venda calculados.")
         return signals
+    
+    def positions_get(self, symbol=None, type=None):
+        """Retrieve all current open positions, optionally filtered by symbol."""        
+        
+        if type == "stock":
+            positions = mt5.positions_get(symbol= "#" + symbol)
+
+        else:
+            positions = mt5.positions_get(symbol=symbol) if symbol else mt5.positions_get()
+
+        if not positions:
+            logger.info("No open positions found.")
+            return pd.DataFrame()
+        
+        df = pd.DataFrame(list(positions), columns=positions[0]._asdict().keys())
+        df['time'] = pd.to_datetime(df['time'], unit='s')
+        df['time_update'] = pd.to_datetime(df['time_update'], unit='s')
+        df['type'] = df['type'].map({0: 'buy', 1: 'sell'})
+        return df[['ticket', 'time', 'time_update', 'type', 'symbol', 'volume', 'price_open', 
+                  'price_current', 'sl', 'tp', 'profit', 'comment']]
+
+    def history_deals_get(self, days_back=30):
+        """Retrieve historical deals for the account over a specified period."""
+        if not self.connected:
+            raise ConnectionError("MT5 not initialized.")
+        
+        from_date = datetime.now() - timedelta(days=days_back)
+        to_date = datetime.now()
+        
+        deals = mt5.history_deals_get(from_date, to_date)
+        if not deals:
+            logger.info(f"No historical deals found for the last {days_back} days.")
+            return pd.DataFrame()
+        
+        df = pd.DataFrame(list(deals), columns=deals[0]._asdict().keys())
+        df['time'] = pd.to_datetime(df['time'], unit='s')
+        df['type'] = df['type'].map({0: 'buy', 1: 'sell', 2: 'balance', 3: 'credit'})
+        df['entry'] = df['entry'].map({0: 'in', 1: 'out', 2: 'in/out', 3: 'reversed'})
+        return df[['ticket', 'time', 'type', 'entry', 'symbol', 'volume', 'price', 
+                  'profit', 'swap', 'commission', 'comment']]
 
     def get_all_data(self):
         """Retorna todos os dados formatados."""
@@ -292,6 +332,9 @@ class MT5Connector:
         if self.dataset is None:
             raise ValueError("Os dados ainda não foram baixados.")        
         return self.dataset.to_dict(orient="records") 
+    
+
+
 
     def shutdown(self):
         """Encerra a conexão com o MetaTrader5."""

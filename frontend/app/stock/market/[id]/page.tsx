@@ -12,6 +12,7 @@ const page = () => {
 
 
   const { id } = useParams();
+  const user = JSON.parse(localStorage.getItem('user'))
 
  
   return (
@@ -34,7 +35,7 @@ const page = () => {
         </div>
       </div>
       <div className='mb-16'>
-        <TableOperationsStock asset={id}/>
+        <TableOperationsStock symbol={id} UserId={user.email}/>
       </div>
       
 
