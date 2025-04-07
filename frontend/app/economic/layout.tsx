@@ -32,12 +32,12 @@ const layout = ({children}) => {
 
   return (
     <main className="flex min-h-screen flex-col z-10 ">
-      <Navbar/>   
+    <Navbar/>   
       <section className='absolute inset-x-0 top-[50px] h-screen px-20'>
-   
-      </section>
-      {children} 
-      </main>
+        <Menu/>
+      </section> 
+      {children}
+    </main>
     )
 };
 

@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import MenuItem from "./menu-items";
-import { FaDesktop, FaUserTie, FaChartPie, FaBuromobelexperte  } from "react-icons/fa";
+import { FaDesktop, FaUserTie, FaChartPie, FaBuromobelexperte, FaGlobeAmericas  } from "react-icons/fa";
 import { IoWalletOutline } from "react-icons/io5";
 import { SiMarketo } from "react-icons/si";
 import { CiCalculator2 } from "react-icons/ci";
@@ -114,23 +114,23 @@ const stockRoutes = [
 
 const economicRoutes = [
   {
-    icon: Compass,
+    icon: <FaGlobeAmericas />,
     label: "Overview",
-    href: "/administracao/overview",
-    title: "Visão Geral da Administração",
-    subtitle: "Resumo administrativo",
+    href: "/economic/overview",
+    title: "Visão Geral da Economia",	
+    subtitle: "A visão geral da economia analisa a produção, distribuição e consumo de bens e serviços.",
   },
   {
     icon: DollarSign,
-    label: "Taxa Ordinária",
-    href: "/administracao/ordinaria",
-    title: "Taxas Ordinárias",
+    label: "Indices",
+    href: "/economic/ordinaria",
+    title: "Indeces",
     subtitle: "Gestão de taxas regulares",
   },
   {
     icon: FileText,
-    label: "Taxa Extra",
-    href: "/administracao/extra",
+    label: "Analytics",
+    href: "/economic/extra",
     title: "Taxas Extras",
     subtitle: "Controle de cobranças adicionais",
   },
@@ -217,7 +217,7 @@ const MenuRoutes = () => {
   const isPersonalPage = pathname?.includes("/unidades");
   const isCryptoPage = pathname?.includes("/consultants");
   const isStockPage = pathname?.includes("/stock");
-  const isEconomicPage = pathname?.includes("/administracao");
+  const isEconomicPage = pathname?.includes("/economic");
   const isConsultantPage = pathname?.includes("/consultants");
   const isInvestmentsPage = pathname?.includes("/investments");
   const isSettingsPage = pathname?.includes("/settings");
