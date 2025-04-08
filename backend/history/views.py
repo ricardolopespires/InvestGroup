@@ -139,11 +139,85 @@ class PositionsView(APIView):
                 return Response({'error': 'Falha no login do MetaTrader 5'}, status=status.HTTP_401_UNAUTHORIZED)
 
             positions = mt5.positions_get(symbol=symbol, type=type)
+            result = positions.to_dict('records')
             
-            return Response({
-                'positions': MT5DataSerializer.serialize_positions(positions),                
-            }, status=status.HTTP_200_OK)
+            return Response( result, status=status.HTTP_200_OK)
             
         
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+class LastSignalStockView(APIView):
+    def get(self, request, symbol, interval, type, pk):
+        """
+        Retorna os últimos sinais de compra/venda para o símbolo especificado nos timeframes W1, D1 e H4.
+
+        Args:
+            request: Requisição HTTP.
+            symbol (str): Símbolo do ativo (ex: 'EURUSD').
+            type (str): Tipo de ativo (não usado diretamente aqui, mas passado na URL).
+            pk (int): ID do usuário para buscar a conta MT5 associada.
+
+        Returns:
+            Response: Dados serializados dos últimos sinais ou mensagem de erro.
+        """
+        # Busca a última conta MT5 ativa do usuário
+        api = MT5API.objects.filter(Q(user_id=pk) & Q(is_active=True)).last()
+        
+        if not api:
+            return Response(
+                {'error': 'Conta MT5 não encontrada ou inativa'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        try:
+            # Instancia o MT5Connector com as credenciais da conta
+            mt5 = MT5Connector(
+                symbol=symbol,
+                interval=interval,  # Intervalo será definido em get_last_signal_by_timeframes
+                account=api.account,
+                password=api.password,
+                server=api.server
+            )
+            
+            # Inicializa a conexão com o MetaTrader 5
+            if not mt5.initialize_mt5():
+                return Response(
+                    {'error': 'Falha ao inicializar o MetaTrader 5'},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+            
+            # Realiza o login na conta
+            if not mt5.login():
+                return Response(
+                    {'error': 'Falha no login do MetaTrader 5'},
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
+
+            # Obtém os últimos sinais para os timeframes padrão (W1, D1, H4)
+            signals = mt5.get_last_signal_by_timeframes(symbol= "#" + symbol)
+            
+            # Serializa os dados e retorna a resposta
+            return Response(
+                {
+                    'signals': MT5DataSerializer.serialize_positions(signals),
+                },
+                status=status.HTTP_200_OK
+            )
+        
+        except Exception as e:
+            # Captura qualquer erro inesperado e retorna uma resposta genérica
+            return Response(
+                {'error': f'Erro ao processar a solicitação: {str(e)}'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        finally:
+            # Garante que a conexão com o MT5 seja encerrada, mesmo em caso de erro
+            try:
+                mt5.shutdown()
+            except:
+                pass  # Ignora erros no shutdown para não sobrescrever a resposta principal

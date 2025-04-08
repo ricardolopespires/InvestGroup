@@ -69,3 +69,29 @@ class MT5DataSerializer:
         if df.empty:
             return []
         return DealSerializer(df.to_dict('records'), many=True).data
+    
+
+    @staticmethod
+    def serialize_positions(df):
+        """
+        Serializa um DataFrame de posições/signais em um formato JSON.
+
+        Args:
+            df (pd.DataFrame): DataFrame com colunas 'timeframe', 'time', 'signal', 'price'.
+
+        Returns:
+            list: Lista de dicionários serializados.
+        """
+        if df.empty:
+            return []
+        
+        # Converte o DataFrame para uma lista de dicionários
+        result = df.to_dict(orient='records')
+        
+        # Formata o timestamp e outros campos, se necessário
+        for item in result:
+            if item['time'] is not None:
+                item['time'] = item['time'].isoformat()  # Converte para string ISO
+            if pd.isna(item['price']):
+                item['price'] = None  # Trata valores NaN
+        return result

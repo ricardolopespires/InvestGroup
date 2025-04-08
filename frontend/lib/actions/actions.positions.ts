@@ -12,9 +12,9 @@ export const getStockPositions = async({symbol, UserId})=>{
             const user_id = user[0].id
                 
             const res = await AxiosInstance.get(`api/v1/history/positions/${symbol}/stock/1d/${user_id}/`)
-            console.log(res.data.positions)
+            console.log(res.data)
             if(res.status === 200){        
-                return res.data.positions
+                return res.data
             }else{
             return parseStringify({"status":400, "message":"Enviada com error"})
             }

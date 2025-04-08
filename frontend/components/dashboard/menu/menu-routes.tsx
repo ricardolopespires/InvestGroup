@@ -77,41 +77,6 @@ const personalRoutes = [
   },
 ];
 
-const cryptosRoutes = [
-  {
-    icon: <FaUserTie />,
-    label: "Overview",
-    href: "/consultants/overview",
-    title: "Consultores Financeiro",
-    subtitle: "Escolha seu profissional que ajuda a gerir as finanças",
-  },
-];
-
-const stockRoutes = [
-    {
-      icon: <FaChartPie />,
-      label: "Overview",
-      href: "/stock/overview",
-      title: "Overview",
-      subtitle: "Resumo e Tendências do Mercado",
-    },
-    {
-      icon: <SiMarketo />,
-      label: "Mercado",
-      href: "/stock/market",
-      title: "Mercado de Ações",
-      subtitle: "Acompanhe as cotações e desempenho das ações em tempo real",
-    },
-    {
-      icon: <IoWalletOutline />,
-      label: "Portfólio",
-      href: "/stock/portfolio",
-      title: "Portfólio",
-      subtitle: "Acompanhamento do seu Portfólio",
-    },   
-  
-];
-
 const economicRoutes = [
   {
     icon: <FaGlobeAmericas />,
@@ -152,6 +117,34 @@ const investmentsRoutes = [
     label: "Overview",
     href: "/investments/overview",
     title: "Inestimentos",
+    subtitle: "Descubra onde investir o seu dinheiro, com boa rentabilidade e muita segurança.",
+  },
+  {
+    icon: <LuChartPie />,
+    label: "Ações",
+    href: "/investments/stock",
+    title: "Ações",
+    subtitle: "Descubra onde investir o seu dinheiro, com boa rentabilidade e muita segurança.",
+  },
+  {
+    icon: <LuChartPie />,
+    label: "Commodities",
+    href: "/investments/commodities",
+    title: "Commodities",
+    subtitle: "Descubra onde investir o seu dinheiro, com boa rentabilidade e muita segurança.",
+  },
+  {
+    icon: <LuChartPie />,
+    label: "Moedas",
+    href: "/investments/currencies",
+    title: "Moedas",
+    subtitle: "Descubra onde investir o seu dinheiro, com boa rentabilidade e muita segurança.",
+  },
+  {
+    icon: <LuChartPie />,
+    label: "Índices",
+    href: "/investments/indexes",
+    title: "índeces",
     subtitle: "Descubra onde investir o seu dinheiro, com boa rentabilidade e muita segurança.",
   },
 ];
@@ -214,9 +207,7 @@ const MenuRoutes = () => {
   const pathname = usePathname();
 
   // Determina qual grupo de rotas usar com base no pathname
-  const isPersonalPage = pathname?.includes("/unidades");
-  const isCryptoPage = pathname?.includes("/consultants");
-  const isStockPage = pathname?.includes("/stock");
+  const isPersonalPage = pathname?.includes("/unidades"); 
   const isEconomicPage = pathname?.includes("/economic");
   const isConsultantPage = pathname?.includes("/consultants");
   const isInvestmentsPage = pathname?.includes("/investments");
@@ -226,10 +217,6 @@ const MenuRoutes = () => {
   // Seleciona as rotas com base na página atual
   const routes = isPersonalPage
     ? personalRoutes
-    : isCryptoPage
-    ? cryptosRoutes
-    : isStockPage
-    ? stockRoutes
     : isEconomicPage
     ? economicRoutes
     : isConsultantPage

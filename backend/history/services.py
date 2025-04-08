@@ -286,6 +286,63 @@ class MT5Connector:
         logger.info("Sinais de compra e venda calculados.")
         return signals
     
+    def get_last_signal_by_timeframes(self, symbol, timeframes=['1wk', '1d', '4h']):
+        """
+        Obtém o último sinal de compra ou venda para os timeframes especificados (W1, D1, H4).
+        
+        Args:
+            symbol (str): Símbolo do ativo (ex: 'EURUSD').
+            timeframes (list): Lista de timeframes a serem analisados (padrão: ['1wk', '1d', '4h']).
+        
+        Returns:
+            pd.DataFrame: DataFrame com o último sinal para cada timeframe.
+        """
+        if not self.initialize_mt5():
+            raise ConnectionError("Não foi possível inicializar o MetaTrader5.")
+        
+        if not self.login():
+            raise ConnectionError("Não foi possível realizar o login no MetaTrader5.")
+        
+        last_signals = []
+        
+        for timeframe in timeframes:
+            # Configura o timeframe atual
+            self.symbol = symbol
+            self.set_interval(timeframe)
+            
+            # Baixa e processa os dados
+            self.download_data()
+            self.preprocess_data()
+            self.calculate_indicators()
+            self.calculate_signals()
+            
+            # Filtra apenas os sinais válidos ('buy' ou 'sell')
+            signals_df = self.dataset[self.dataset['signal'].isin(['buy', 'sell'])].copy()
+            
+            if not signals_df.empty:
+                # Pega o último sinal
+                last_signal = signals_df.tail(1).iloc[0]
+                print(last_signal)
+                # Adiciona o sinal ao resultado
+                last_signals.append({
+                    'timeframe': timeframe,
+                    'time': last_signal.name,  # O índice é o timestamp
+                    'signal': last_signal['signal'],
+                    'price': last_signal['close']
+                })
+            else:
+                last_signals.append({
+                    'timeframe': timeframe,
+                    'time': None,
+                    'signal': 'Nenhum sinal encontrado',
+                    'price': None
+                })
+        
+        # Cria o DataFrame final
+        result_df = pd.DataFrame(last_signals)
+        logger.info("Últimos sinais calculados para os timeframes especificados.")
+        return result_df
+    
     def positions_get(self, symbol=None, type=None):
         """Retrieve all current open positions, optionally filtered by symbol."""        
         

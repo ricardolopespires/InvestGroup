@@ -8,6 +8,7 @@ import { FaReplyAll } from "react-icons/fa";
 import FundamentalDataWidget from '@/components/FundamentalDataWidget';
 import CompanyProfileWidget from '@/components/CompanyProfileWidget';
 import TableOperationsStock from '@/components/TableOperationsStock';
+import TrendFollowing from '@/components/TrendFollowing';
 const page = () => {
 
 
@@ -34,8 +35,11 @@ const page = () => {
           <FundamentalDataWidget asset={id}/>
         </div>
       </div>
-      <div className='mb-16'>
+      <div >
         <TableOperationsStock symbol={id} UserId={user.email}/>
+      </div>
+      <div className='mb-16'>
+        <TrendFollowing symbol={id} UserId={user.email}/>
       </div>
       
 
