@@ -1,6 +1,7 @@
 import { parseStringify } from "../utils";
 import { getAssetCryptos } from "./actions.crypto"
 import AxiosInstance from "@/services/AxiosInstance"
+import { getUserInfo } from "./actions.user";
 
 
 
@@ -22,3 +23,4 @@ export const getAssetsCommodities = async()=>{
         }
 
 };
+

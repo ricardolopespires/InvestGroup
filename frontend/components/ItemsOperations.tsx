@@ -1,11 +1,11 @@
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { getStockPositions } from "@/lib/actions/actions.positions"
+import { getPositions } from "@/lib/actions/actions.positions"
 import { IoClose } from "react-icons/io5";
 import { MdCurrencyExchange } from "react-icons/md";
 import { cn } from "@/lib/utils"
 import React, { use, useEffect } from 'react'
 
-const ItemsOperationsStock = ({symbol, UserId}) => {
+const ItemsOperations = ({symbol,Assest, UserId}) => {
 
   const [operations, setOperations] = React.useState([])
   const [loading, setLoading] = React.useState(true)
@@ -13,13 +13,13 @@ const ItemsOperationsStock = ({symbol, UserId}) => {
 
    useEffect(() => {
     const fetchData = async () => {
-      const res = await getStockPositions({symbol:symbol, UserId:UserId})     
+      const res = await getPositions({symbol:symbol, Assest:Assest, UserId:UserId})     
         setOperations(res)
         console.log(res)
         setLoading(false)
       }
     fetchData()
-  }, [symbol, UserId])
+  }, [symbol, Assest, UserId])
   
   return (
     <div className='w-full h-full flex flex-col items-center '>
@@ -73,4 +73,4 @@ const ItemsOperationsStock = ({symbol, UserId}) => {
   )
 }
 
-export default ItemsOperationsStock
+export default ItemsOperations

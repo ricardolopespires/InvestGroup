@@ -30,6 +30,8 @@ urlpatterns = [
     path('api/v1/finances/', include('finances.urls')),
     path('api/v1/transactions/', include('transactions.urls')),
     path('api/v1/plataform/', include('plataform.urls')),
+    path('api/v1/advisor/', include('advisors.urls')),
+    path('api/v1/notifications/', include('notifications.urls')),
     
 ]
 

@@ -7,10 +7,12 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import React from "react";
-import ItemsOperationsStock from "./ItemsOperationsStock";
-import PerformaceOperationsStock from "./PerformaceOperationsStock";
+import ItemsOperations from "./ItemsOperations";
+import PerformaceOperations from "./PerformaceOperations";
+import OperationsHistory from "./OperationsHistory";
 
-const TableOperationsStock = ({ symbol, UserId }: { symbol: string, UserId:string } ) => {
+
+const TableOperations = ({ symbol, Assest, UserId }: { symbol: string, Assest:string, UserId:string } ) => {
 const [selectedTab, setSelectedTab] = React.useState("tabelas");
 
 return (
@@ -58,12 +60,13 @@ return (
     </div>
     <CardContent className="flex flex-col  h-[500px]">
       {/* Aqui você pode adicionar o conteúdo da tabela ou gráfico com base na aba selecionada */}
-      {selectedTab === "tabelas" ?  <ItemsOperationsStock symbol={symbol} UserId={UserId}/>: ""}
-      {selectedTab === "performance" ?  <PerformaceOperationsStock/>: ""}
+      {selectedTab === "tabelas" ?  <ItemsOperations symbol={symbol} UserId={UserId} Assest={Assest}/>: ""}
+      {selectedTab === "history" ?  <OperationsHistory symbol={symbol} UserId={UserId} Asset={Assest}/>: ""}
+      {selectedTab === "performance" ?  <PerformaceOperations/>: ""}
     </CardContent>
   </Card>
 );
 };
 
-export default TableOperationsStock;
+export default TableOperations;
 

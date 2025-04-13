@@ -5,14 +5,13 @@ import { getUserInfo } from "./actions.user";
 
 
 
-export const getStockPositions = async({symbol, UserId})=>{
+export const getPositions = async({symbol, Assest, UserId})=>{
 
         try{
             const user = await getUserInfo({userId:UserId})
             const user_id = user[0].id
                 
-            const res = await AxiosInstance.get(`api/v1/history/positions/${symbol}/stock/1d/${user_id}/`)
-            console.log(res.data)
+            const res = await AxiosInstance.get(`api/v1/history/positions/${symbol}/${Assest}/1d/${user_id}/`);           
             if(res.status === 200){        
                 return res.data
             }else{

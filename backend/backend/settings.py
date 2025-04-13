@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'finances.apps.FinancesConfig',
     'transactions.apps.TransactionsConfig',
     'plataform.apps.PlataformConfig',
+    'advisors.apps.AdvisorsConfig',
+    'notifications.apps.NotificationsConfig',
       
 
     #---------------------------- third party application --------------------------------------------------

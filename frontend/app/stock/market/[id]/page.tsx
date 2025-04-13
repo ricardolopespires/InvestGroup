@@ -7,7 +7,7 @@ import { useParams  } from 'next/navigation'
 import { FaReplyAll } from "react-icons/fa";
 import FundamentalDataWidget from '@/components/FundamentalDataWidget';
 import CompanyProfileWidget from '@/components/CompanyProfileWidget';
-import TableOperationsStock from '@/components/TableOperationsStock';
+import TableOperationsStock from '@/components/TableOperations';
 import TrendFollowing from '@/components/TrendFollowing';
 const page = () => {
 

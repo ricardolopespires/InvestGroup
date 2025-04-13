@@ -9,7 +9,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 import React from 'react'
 
-const PerformaceOperationsStock = () => {
+const PerformaceOperations = () => {
   return (
     <div className="mt-4 flex flex-col h-full w-full">
       {/* Header Summary */}
@@ -128,4 +128,4 @@ const PerformaceOperationsStock = () => {
   )
 }
 
-export default PerformaceOperationsStock
+export default PerformaceOperations

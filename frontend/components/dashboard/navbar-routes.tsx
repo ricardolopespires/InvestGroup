@@ -23,16 +23,6 @@ const guestRoutes = [
     },    
     {
         icons: Compass,
-        label:"Criptos",
-        href: "/cryptos/overview"
-    },
-    {
-        icons: Compass,
-        label:"Ações",
-        href: "/stock/overview"
-    },
-    {
-        icons: Compass,
         label:"Economia",
         href: "/economic/overview"
     },

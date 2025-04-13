@@ -286,7 +286,7 @@ class MT5Connector:
         logger.info("Sinais de compra e venda calculados.")
         return signals
     
-    def get_last_signal_by_timeframes(self, symbol, timeframes=['1wk', '1d', '4h']):
+    def get_last_signal_by_timeframes(self, symbol, timeframes=['1wk', '1d', '4h'], type=None):
         """
         Obtém o último sinal de compra ou venda para os timeframes especificados (W1, D1, H4).
         
@@ -307,7 +307,10 @@ class MT5Connector:
         
         for timeframe in timeframes:
             # Configura o timeframe atual
-            self.symbol = symbol
+            if type == "stock":
+                self.symbol = "#" + symbol
+            else:
+                self.symbol = symbol              
             self.set_interval(timeframe)
             
             # Baixa e processa os dados
@@ -362,18 +365,20 @@ class MT5Connector:
         df['type'] = df['type'].map({0: 'buy', 1: 'sell'})
         return df[['ticket', 'time', 'time_update', 'type', 'symbol', 'volume', 'price_open', 
                   'price_current', 'sl', 'tp', 'profit', 'comment']]
+    
 
-    def history_deals_get(self, days_back=30):
+    def history_deals_get(self):
         """Retrieve historical deals for the account over a specified period."""
         if not self.connected:
             raise ConnectionError("MT5 not initialized.")
         
-        from_date = datetime.now() - timedelta(days=days_back)
-        to_date = datetime.now()
-        
-        deals = mt5.history_deals_get(from_date, to_date)
+        # obtemos o número de transações no histórico
+        from_date=datetime(2010,1,1)
+        to_date=datetime.now()
+                
+        deals = mt5.history_deals_get(from_date, to_date, group="*,!*EUR*,!*GBP*")
         if not deals:
-            logger.info(f"No historical deals found for the last {days_back} days.")
+            logger.info(f"No historical deals found for the last {from_date.days} days.")
             return pd.DataFrame()
         
         df = pd.DataFrame(list(deals), columns=deals[0]._asdict().keys())
@@ -390,7 +395,6 @@ class MT5Connector:
             raise ValueError("Os dados ainda não foram baixados.")        
         return self.dataset.to_dict(orient="records") 
     
-
 
 
     def shutdown(self):

@@ -15,7 +15,9 @@ import {
     TableRow,
   } from "@/components/ui/table";
   import { getTrendFollowingStocks } from "@/lib/actions/actions.stock";
+import { getTrendFollowing } from "@/lib/actions/actions.trendfollowing";
 import { cn, timeDifferences } from "@/lib/utils";
+import { Asset } from "next/font/google";
   import React, { useEffect, useState } from "react";
 import { symbol } from "zod";
   
@@ -28,12 +30,13 @@ import { symbol } from "zod";
   
   interface TrendFollowingProps {
     symbol: string;
+    Assest: string;
     UserId: string;
 
   }
 
 
-  const TrendFollowing: React.FC<TrendFollowingProps> = ({ symbol, UserId }) => {
+  const TrendFollowing: React.FC<TrendFollowingProps> = ({ symbol, Assest, UserId }) => {
     const [signal, setSignal] = useState<TrendSignal[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -42,12 +45,13 @@ import { symbol } from "zod";
       const fetchData = async () => {
         try {
         
-          const res = await getTrendFollowingStocks({
+          const res = await getTrendFollowing({
             symbol: symbol,
+            Assest: Assest,
             UserId: UserId,
           });        
   
-          setSignal(res.signals);
+          setSignal(res);
           setError(null);
         } catch (err) {
           setError(err instanceof Error ? err.message : "Erro ao buscar dados.");

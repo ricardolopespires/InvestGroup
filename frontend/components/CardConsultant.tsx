@@ -3,10 +3,10 @@ import React from 'react';
 const CardConsultant: React.FC = () => {
   return (
     <div className="relative w-80 p-4 rounded-lg flex flex-col items-center justify-center border bg-white mb-6">
-      <div className="h-40 w-60  flex items-center justify-center bg-gray-100 shadow-md">
-        <div className="h-[calc(100%-25px)] w-[calc(100%-25px)]  overflow-hidden">
+      <div className="h-40 w-40  flex items-center justify-center bg-gray-100 shadow-md rounded-full">
+        <div className="h-[calc(100%-25px)] w-[calc(100%-25px)]  rounded-full">
           <img 
-            className="h-full w-full object-cover" 
+            className="h-full w-full object-cover rounded-full" 
             src="https://images.unsplash.com/photo-1492288991661-058aa541ff43?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" 
             alt="Consultant" 
           />

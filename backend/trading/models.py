@@ -13,7 +13,7 @@ class Currency(models.Model):
     name = models.CharField(max_length=255)
     symbol = models.CharField(max_length=10)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="Maior")
-    img = models.ImageField(upload_to='Flags')  # Corrigido: removido o '/'
+    img = models.ImageField(upload_to='Flags', blank=True, null=True)  # Corrigido: removido o '/'
     yahoo = models.CharField(max_length=255)
     tradingview = models.CharField(max_length=255)
     

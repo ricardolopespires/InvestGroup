@@ -121,6 +121,13 @@ const investmentsRoutes = [
   },
   {
     icon: <LuChartPie />,
+    label: "Criptomoedas",
+    href: "/investments/cryptos",
+    title: "Criptomoedas",
+    subtitle: "Descubra onde investir o seu dinheiro, com boa rentabilidade e muita segurança.",
+  },
+  {
+    icon: <LuChartPie />,
     label: "Ações",
     href: "/investments/stock",
     title: "Ações",
@@ -145,6 +152,13 @@ const investmentsRoutes = [
     label: "Índices",
     href: "/investments/indexes",
     title: "índeces",
+    subtitle: "Descubra onde investir o seu dinheiro, com boa rentabilidade e muita segurança.",
+  },
+  {
+    icon: <LuChartPie />,
+    label: "Advisor",
+    href: "/investments/advisor",
+    title: "Robos de Investimentos",
     subtitle: "Descubra onde investir o seu dinheiro, com boa rentabilidade e muita segurança.",
   },
 ];
