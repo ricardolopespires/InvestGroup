@@ -53,7 +53,7 @@ const page = () => {
         </div>
       </div>
       <div >
-        <TableOperations symbol={id} Assest={"commodities"} UserId={user.email}/>
+        <TableOperations symbol={id} UserId={user.email}/>
       </div>
       <div className='mb-16'>
         <TrendFollowing symbol={id} Assest={"commodities"} UserId={user.email}/>

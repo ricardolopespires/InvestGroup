@@ -35,3 +35,16 @@ export function timeDifferences(dateStr: string): string {
     return `${Math.floor(diffHours)} hora(s)`;
   }
 }
+
+
+export function formatDayAndMonth(createdAt: string): string {
+  const date = new Date(createdAt);
+
+  const day = date.getDate();
+  const month = date.toLocaleString('pt-BR', { month: 'long' }) // "April"
+  const year = date.getFullYear();
+
+  return `${day} ${month} ${year}`;
+}
+
+; // Saída: "15 April"

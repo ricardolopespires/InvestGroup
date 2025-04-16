@@ -28,14 +28,15 @@ class Transacao(models.Model):
 
 class Operation(models.Model):
     CHOICE_TYPE = (
-        ('sell', 'sell'),
-        ('buy', 'buy'),
+        (0, 'sell'),
+        (1, 'buy'),
     )
     id = models.IntegerField(primary_key=True)
+    magic = models.IntegerField(default=0)
     asset = models.CharField(max_length=60, )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    entry = models.DateTimeField(auto_now_add=True )
-    type = models.CharField(max_length=20, choices=CHOICE_TYPE, default='buy')
+    date = models.DateTimeField(auto_now_add=True )
+    type = models.CharField(max_length=20, choices=CHOICE_TYPE, default = 1)
     volume = models.FloatField()
     price_entry = models.DecimalField(max_digits=10, decimal_places=2)
     sl = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -44,8 +45,21 @@ class Operation(models.Model):
     profit = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     stoploss = models.BooleanField(default=False)
     takeprofit = models.BooleanField(default=False)
-
+    comment = models.TextField(null=True, blank=True)
     
 
+    def save(self, *args, **kwargs):
+
+        if self.profit > 0:
+            self.stoploss = False
+            self.takeprofit = True
+        elif self.profit < 0:
+            self.stoploss = True
+            self.takeprofit = False
+
+        super(Operation, self).save(*args, **kwargs)
+            
+        
+
     def __str__(self):
-        return f"{self.tipo} - {self.transacao.descricao}"
+        return f"{self.type} - {self.profit}"

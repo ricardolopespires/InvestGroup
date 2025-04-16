@@ -55,6 +55,8 @@ class Perfil(models.Model):
     minimo = models.IntegerField( default = 0)
     maximo = models.IntegerField( default = 0)
     investidor = models.ManyToManyField(User, related_name="perfis", blank=True)
+    fixa = models.IntegerField( default = 0)
+    variável = models.IntegerField( default = 0)
 
     class Meta:
         verbose_name = "Perfil"

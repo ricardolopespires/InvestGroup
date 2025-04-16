@@ -4,6 +4,31 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 
 
+
+
+
+
+class Asset(models.Model):
+    """
+    Modelo que representa um ativo financeiro.
+    """
+    name = models.CharField(max_length=255)
+    alocation = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, default=0.00)
+    advisor = models.ManyToManyField("advisors.Robo", related_name="assets", blank=True)
+
+    class Meta:
+        verbose_name = _("Ativo")
+        verbose_name_plural = _("Ativos")
+
+    def __str__(self):
+        return self.name
+        
+
+
+
+
+
+
 class Robo(models.Model):
     """
     Modelo que representa um robô de trading.
@@ -12,6 +37,12 @@ class Robo(models.Model):
         max_length=255,
         verbose_name=_("Nome"),
         help_text=_("O nome do robô de trading.")
+    )
+    asset = models.ForeignKey(
+        'advisors.Asset',
+        on_delete=models.CASCADE,
+        related_name='robots',       
+        help_text=_("O ativo financeiro associado a este robô.")
     )
     user = models.ManyToManyField(
         'accounts.User',
@@ -24,14 +55,7 @@ class Robo(models.Model):
         blank=True,
         verbose_name=_("Descrição"),
         help_text=_("Descrição detalhada da estratégia do robô.")
-    )
-    logo = models.ImageField(
-        upload_to='robo_logos/',
-        blank=True,
-        null=True,
-        verbose_name=_("Logotipo"),
-        help_text=_("Imagem do logotipo do robô.")
-    )
+    )   
     performance_fee = models.FloatField(
         default=0.0,
         verbose_name=_("Taxa de Performance"),
@@ -99,6 +123,39 @@ class Robo(models.Model):
             'valor_gerenciado': f"R${self.amount:,.2f}",
             'ativo': "Sim" if self.is_active else "Não",
         }
+
+
+
+class Level(models.Model):
+    """
+        Modelo que representa os níveis de risco do investidor,
+    com perfil e alocação sugerida por classe de ativo.
+    """
+    RISK_CHOICES = (
+        (1, "Conservador"),
+        (2, "Moderado"),
+        (3, "Agressivo"),
+        (4, "Ultra Agressivo"),
+    )
+    advisor = models.ForeignKey(
+        'advisors.robo',
+        on_delete=models.CASCADE,
+        related_name='levels',
+        verbose_name=_("Orientador"),
+        help_text=_("O orientador associado a este nível de risco.")
+    )
+    risk_level = models.IntegerField(choices=RISK_CHOICES, unique=True)     
+    stock = models.IntegerField(default=0)
+    crypto = models.IntegerField(default=0)
+    forex = models.IntegerField(default=0) 
+    commodities = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.advisor.name} - {self.get_risk_level_display()}"
+
+
+
+
 
 class Performance(models.Model):
     """
@@ -242,3 +299,4 @@ class Performance(models.Model):
         Retorna True se o retorno diário for positivo, False caso contrário.
         """
         return self.daily_return > 0
+    
