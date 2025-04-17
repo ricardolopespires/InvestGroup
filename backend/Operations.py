@@ -13,6 +13,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 django.setup()
 
 from transactions.models import Operation
+from trading.models import Stock
  
 # establish MetaTrader 5 connection to a specified trading account
 if not mt5.initialize(login=6062572, server="LiteFinance-MT5-Demo",password="Rben290719rr@"):
@@ -20,6 +21,25 @@ if not mt5.initialize(login=6062572, server="LiteFinance-MT5-Demo",password="Rbe
     quit()
 
 
+
+
+for i in mt5.symbols_get():
+    if "#" in i.name:
+        ativo = i.name.replace("#","")
+        if Stock.objects.filter(symbol = ativo).exists():
+            pass
+        else:
+            symbol_info = mt5.symbol_info(i.name)
+            
+            Stock.objects.get_or_create(
+                name = symbol_info.description,
+                symbol = ativo,
+                exchange = symbol_info.exchange,
+                mt5 = symbol_info.name,
+            )
+
+
+'''
 # get the number of deals in history
 from_date=datetime(2020,1,1)
 to_date=datetime.now()
@@ -60,4 +80,6 @@ elif len(deals) > 0:
     
 print("")
 # shut down connection to the MetaTrader 5 terminal
+
+'''
 mt5.shutdown()

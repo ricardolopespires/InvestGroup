@@ -133,8 +133,8 @@ class Level(models.Model):
     """
     RISK_CHOICES = (
         (1, "Conservador"),
-        (2, "Moderado"),
-        (3, "Agressivo"),
+        (3, "Moderado"),
+        (2, "Agressivo"),
         (4, "Ultra Agressivo"),
     )
     advisor = models.ForeignKey(
@@ -300,3 +300,36 @@ class Performance(models.Model):
         """
         return self.daily_return > 0
     
+
+
+
+
+class Risk(models.Model):
+    advisor = models.ForeignKey(
+        'advisors.Robo',
+        on_delete=models.CASCADE,
+        related_name='risks',
+        help_text="Robô responsável pela operação."
+    )
+    amount = models.PositiveIntegerField(
+        default=0,
+        validators=[MinValueValidator(0)],
+        help_text="Quantidade de operações ou contratos."
+    )
+    level = models.FloatField(
+        default=0.00,
+        validators=[MinValueValidator(0.0), MaxValueValidator(1.0)],
+        help_text="Percentual de risco por operação (0.0 a 1.0)."
+    )
+    breakeven = models.IntegerField(
+        default=0,
+        help_text="Ponto de equilíbrio da operação em pontos ou unidades específicas."
+    )
+
+    def __str__(self):
+        return f"{self.advisor.name} - Quantidade: {self.amount} | Risco: {self.level:.2%}"
+
+    class Meta:
+        verbose_name = "Configuração de Risco"
+        verbose_name_plural = "Configurações de Risco"
+        ordering = ['advisor']

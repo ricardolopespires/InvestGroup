@@ -66,7 +66,7 @@ class StockList(APIView):
             
             for stock in stocks:
                 try:
-                    ticker = yf.Ticker(stock.yahoo)  # Use Ticker em vez de Tickers
+                    ticker = yf.Ticker(stock.symbol)  # Use Ticker em vez de Tickers
                     # Obtém dados históricos dos últimos 5 dias
                     history = ticker.history(period="5d")
                     
@@ -87,7 +87,7 @@ class StockList(APIView):
                         'name': stock.name,  # Certifique-se de ter este campo no modelo
                         "image":"http://localhost:8000/media/" + str(stock.img),
                         'symbol': stock.symbol,
-                        'yahoo': stock.yahoo,                        
+                        'yahoo': stock.symbol,                        
                         'current_price': round(today_close, 2),
                         'close_24h': round(yesterday_close, 2),
                         'price_change_percentage_24h': round(percentage_change, 2),

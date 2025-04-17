@@ -10,7 +10,7 @@ from .models import Situacao
 admin.site.register(Investidor)
 @admin.register(Perfil)
 class AdminPerfil(admin.ModelAdmin):
-    list_display = ('nome','objective', 'time_horizon', 'minimo', 'maximo', "fixa", "variável")
+    list_display = ('id','nome','objective', 'time_horizon', 'minimo', 'maximo', "fixa", "variável")
     list_filter = ('nome', 'fixa', 'variável')
     search_fields = ('nome', "fixa","variável")
     ordering = ('nome',)

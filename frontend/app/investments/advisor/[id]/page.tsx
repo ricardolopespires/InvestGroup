@@ -21,6 +21,7 @@ import ReviewInvest from '@/components/ReviewInvest'
 import { RiRobot2Line } from 'react-icons/ri'
 import IsActiveRobo from '@/components/IsActiveRobo'
 import OperationsAdvisor from '@/components/OperationsAdvisor'
+import PerformaceAdvisor from '@/components/PerformaceAdvisor'
 
 const page = () => {
 
@@ -106,27 +107,37 @@ const page = () => {
           <ul className="flex flex-wrap gap-6 text-sm cursor-pointer">
             <li className={cn(
                 "pb-2", tableData=== "about" ? "border-b-2 border-green-600 font-medium":"text-gray-600")}
-                onClick={() => setTableData("about")}>Sobre</li>
+                onClick={() => setTableData("about")}>Sobre
+            </li>
             <li className={cn(
                 "pb-2", tableData=== "Operations" ? "border-b-2 border-green-600 font-medium":"text-gray-600")}
-                onClick={() => setTableData("Operations")}>Operações</li>
+                onClick={() => setTableData("Operations")}>Operações
+            </li>
             <li className={cn(
                 "pb-2", tableData=== "settings" ? "border-b-2 border-green-600 font-medium":"text-gray-600")}
-                onClick={() => setTableData("settings")}>settings</li>          
+                onClick={() => setTableData("settings")}>Settings
+            </li>          
             <li className={cn(
                 "pb-2", tableData=== "notifications" ? "border-b-2 border-green-600 font-medium":"text-gray-600")}
-                onClick={() => setTableData("notifications")}>Notificações</li>
+                onClick={() => setTableData("notifications")}>Notificações
+            </li>
             <li className={cn(
                 "pb-2", tableData=== "Review" ? "border-b-2 border-green-600 font-medium":"text-gray-600")}
-                onClick={() => setTableData("Review")}>Reviews</li>
+                onClick={() => setTableData("Review")}>Reviews
+            </li>
+            <li className={cn(
+                "pb-2", tableData=== "Performace" ? "border-b-2 border-green-600 font-medium":"text-gray-600")}
+                onClick={() => setTableData("Performace")}>Performace
+            </li>
           </ul>
         </nav>
 
         { tableData === "about" ? <AboutInvest/>:""}
         { tableData === "Operations" ? <OperationsAdvisor/>:""}
-        { tableData === "settings" ? <SettingsInvest/>:""}
+        { tableData === "settings" ? <SettingsInvest AdvisorId={id}/>:""}
         { tableData === "notifications" ? <NotificationsInvest/>:""}
         { tableData === "Review" ? <ReviewInvest/>:""}
+        { tableData === "Performace" ? <PerformaceAdvisor AdvisorId={undefined}/>:""}
       </div>
     </div>
         

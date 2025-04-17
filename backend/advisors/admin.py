@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Robo,  Level
+from .models import Robo,  Level, Risk
 from .models import Asset
 
 # Register your models here.
@@ -29,3 +29,10 @@ class AdminLevel(admin.ModelAdmin):
     search_fields = ('advisor', 'risk_level')
     ordering = ('advisor', 'risk_level')
     readonly_fields = ()
+
+
+@admin.register(Risk)
+class AdminRisk(admin.ModelAdmin):
+    list_display = ('advisor', 'amount', 'level', 'breakeven')
+    list_filter = ('advisor', 'amount', 'level', 'breakeven')
+    search_fields = ('advisor', 'amount', 'level', 'breakeven')

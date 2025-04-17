@@ -20,5 +20,5 @@ class CommoditieAdmin(ImportExportModelAdmin):
 
 @admin.register(Stock)
 class CommoditieAdmin(ImportExportModelAdmin):
-    list_display = ['name', 'category', 'symbol',]
+    list_display = ['name', 'exchange', 'category', 'symbol',]
     search_fields = ['name', 'symbol']

@@ -174,6 +174,14 @@ class MT5Connector:
             error_code = mt5.last_error()
             logger.error(f"Falha ao conectar à conta #{self.account}, código de erro: {error_code}")
             return False
+        
+
+    def balance(self, value):
+        """Retorna o saldo atual da conta."""
+        account = mt5.account_info()
+        return account.balance
+        
+        
 
     def set_interval(self, interval):
         """Define o intervalo de tempo (timeframe) para as operações."""

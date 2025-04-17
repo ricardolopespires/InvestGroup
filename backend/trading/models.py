@@ -46,10 +46,16 @@ class Stock(models.Model):
         verbose_name="Categoria"
     )
     symbol = models.CharField(max_length=10)
-    img = models.ImageField(upload_to='logo')  # Corrigido: removido o '/'
-    yahoo = models.CharField(max_length=255)
-    tradingview = models.CharField(max_length=255)
+    img = models.ImageField(upload_to='logo', blank=True, null=True)  # Corrigido: removido o '/'
+    exchange = models.CharField(max_length=255)
+    mt5 = models.CharField(max_length=255)
+    signal_4h = models.CharField(max_length=255, blank=True, null=True)
+    signal_1d = models.CharField(max_length=255, blank=True, null=True)
+    signal_1w = models.CharField(max_length=255, blank=True, null=True)
     
+ 
+       
+        
     def __str__(self):
         return f"{self.category} - {self.name}"
 
