@@ -154,3 +154,16 @@ class OperationDetailAPIView(APIView):
         operation = self.get_object(pk, request.user)
         operation.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+
+class CloseOperationAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        ticket = request.data.get('ticket')
+        print(ticket)
+        if not ticket:
+            return Response({"error": "É necessário ingresso do ticket da operação."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "Operação concluída com sucesso.","status":201}, status=status.HTTP_200_OK)
+        

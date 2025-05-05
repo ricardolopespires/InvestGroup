@@ -33,9 +33,9 @@ const CountPopulation = ({population}) => {
     // const population = 1000000; // Example population value
   return (
     <section className='flex items-center justify-between gap-2 has-tooltip'>
-        <span className='tooltip rounded shadow-lg p-1 bg-gray-100 text-xs -mt-16 flex items-center justify-center right-20 w-60 '>
-            Porcentagem em relação da população mundial
-            </span>
+        <div className='tooltip rounded shadow-lg p-2 bg-blue-700 text-xs text-white  -mt-[80px]  right-80 w-60 '>
+          <span className="flex items-center justify-center gap-2 w-full h-full ">  Porcentagem em relação da população mundial</span>
+        </div>
         <FaStreetView className="text-2xl text-gray-500"/>
         <span className='text-sm'>{populationPercentage } %</span>
     </section>

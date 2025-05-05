@@ -32,6 +32,7 @@ urlpatterns = [
     path('api/v1/plataform/', include('plataform.urls')),
     path('api/v1/advisor/', include('advisors.urls')),
     path('api/v1/notifications/', include('notifications.urls')),
+    path('api/v1/agents/', include('agents.urls')),
     
 ]
 

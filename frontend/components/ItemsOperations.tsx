@@ -1,9 +1,9 @@
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { getPositions } from "@/lib/actions/actions.positions"
-import { IoClose } from "react-icons/io5";
-import { MdCurrencyExchange } from "react-icons/md";
+import  InverterOperations from "@/components/InverterOperations"
 import { cn } from "@/lib/utils"
 import React, { use, useEffect } from 'react'
+import CloseOperation from "./CloseOperation"
 
 const ItemsOperations = ({symbol,Assest, UserId}) => {
 
@@ -14,8 +14,7 @@ const ItemsOperations = ({symbol,Assest, UserId}) => {
    useEffect(() => {
     const fetchData = async () => {
       const res = await getPositions({symbol:symbol, Assest:Assest, UserId:UserId})     
-        setOperations(res)
-        console.log(res)
+        setOperations(res)        
         setLoading(false)
       }
     fetchData()
@@ -55,8 +54,8 @@ const ItemsOperations = ({symbol,Assest, UserId}) => {
                     item.profit > 0 ? "text-green-500":"text-red-500"
                   )}>{item.profit}</div> {/* Substitua pelo valor correto */}
                    <div className='flex items-center justify-center gap-2'>
-                    <button className="bg-red-500 text-white h-6 w-6 rounded-sm text-lg flex items-center justify-center"><IoClose /></button>
-                    <button className="bg-blue-500 text-white h-6 w-6 rounded-sm text-sm flex items-center justify-center"><MdCurrencyExchange/></button>
+                    <CloseOperation ticket={item.ticket}/>
+                    <InverterOperations operation = {item }/>
                     </div> 
               </div>
               )

@@ -3,6 +3,7 @@ from .views import (
     CategoriaListCreateView, CategoriaDetailView,
     TransacaoListCreateView, TransacaoDetailView,
     OperationListCreateAPIView, OperationDetailAPIView,
+    CloseOperationAPIView
     
 )
 app_name = 'transactions'
@@ -21,5 +22,6 @@ urlpatterns = [
 
     path('operations/list/<str:pk>/<str:user_id>/', OperationListCreateAPIView.as_view(), name='operation-list-create'),
     path('operations/<int:pk>/', OperationDetailAPIView.as_view(), name='operation-detail'),
+    path('operations/close/<int:pk>/', CloseOperationAPIView.as_view(), name='close-operation'),    
 
 ]

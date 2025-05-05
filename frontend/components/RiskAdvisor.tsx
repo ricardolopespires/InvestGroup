@@ -36,7 +36,7 @@ const RiskAdvisor = ({AdvisorId}) => {
   }, [AdvisorId]);
   
   return (
-    <Card className="w-[45%]">
+    <Card className="w-full">
         <CardHeader>
             <CardTitle className="flex items-center gap-2">
                 <AiFillDashboard className="text-xl text-blue-900"/>
@@ -50,10 +50,7 @@ const RiskAdvisor = ({AdvisorId}) => {
             <SliderQtOperations AdvisorId={AdvisorId} data={risk?.amount}/>
             <Breakeven AdvisorId={AdvisorId} data={risk?.breakeven}/>
             </div>
-        </CardContent>
-        <CardFooter>
-            <p>Card Footer</p>
-        </CardFooter>
+        </CardContent>      
         </Card>
 
   )

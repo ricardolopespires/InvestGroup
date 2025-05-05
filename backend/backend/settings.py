@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'plataform.apps.PlataformConfig',
     'advisors.apps.AdvisorsConfig',
     'notifications.apps.NotificationsConfig',
+    'agents.apps.AgentsConfig',
       
 
     #---------------------------- third party application --------------------------------------------------

@@ -140,7 +140,6 @@ class FinancialDataAnalyzer:
     
 
 
-
 class MT5Connector:
     def __init__(self, symbol=None, interval=None, account=None, password=None, server=None):
         self.symbol = symbol
@@ -150,6 +149,7 @@ class MT5Connector:
         self.password = password
         self.server = server
         self.dataset = None
+        self.connected = False
 
     def initialize_mt5(self):
         """Inicializa a conexão com o terminal MetaTrader5."""
@@ -158,6 +158,7 @@ class MT5Connector:
             logger.error(f"Falha na inicialização do MetaTrader5, código de erro: {error_code}")
             return False
         logger.info(f"MetaTrader5 versão: {mt5.version()}")
+        self.connected = True
         return True
 
     def login(self):
@@ -174,14 +175,11 @@ class MT5Connector:
             error_code = mt5.last_error()
             logger.error(f"Falha ao conectar à conta #{self.account}, código de erro: {error_code}")
             return False
-        
 
-    def balance(self, value):
+    def balance(self):
         """Retorna o saldo atual da conta."""
         account = mt5.account_info()
-        return account.balance
-        
-        
+        return account.balance if account else None
 
     def set_interval(self, interval):
         """Define o intervalo de tempo (timeframe) para as operações."""
@@ -201,11 +199,9 @@ class MT5Connector:
         if not self.symbol:
             raise ValueError("Símbolo não definido.")
         
-       
-        
         bars = self._convert_period_to_bars()
         rates = mt5.copy_rates_from(self.symbol, self.interval, datetime.now(), bars)            
-            
+        
         if rates is None:
             rates = mt5.copy_rates_from(("#" + self.symbol), self.interval, datetime.now(), bars)
         
@@ -226,13 +222,11 @@ class MT5Connector:
         self.dataset[['open', 'high', 'low', 'close']] = self.dataset[['open', 'high', 'low', 'close']].astype(float)       
         self.dataset = self.dataset.round(2)
         
-        # Correção: Converter o índice timestamp para cada linha
         self.dataset["time"] = self.dataset.index.map(lambda x: int(x.timestamp()))
         
         logger.info("Dados pré-processados com sucesso.")
         return self.dataset
 
- 
     def calculate_indicators(self, atr_period=14, atr_smoothing_window=30, smooth_window=49, smooth_polyorder=5):
         """Calcula indicadores técnicos como ATR e suavização de preços."""
         if self.dataset is None:
@@ -255,12 +249,11 @@ class MT5Connector:
         peaks_idx, _ = find_peaks(self.dataset.close_smooth, distance=distance, width=width, prominence=atr)
         troughs_idx, _ = find_peaks(-self.dataset.close_smooth, distance=distance, width=width, prominence=atr)
 
-        self.dataset['signal'] = np.nan  # Inicializa como NaN (float)
-        self.dataset['signal'] = self.dataset['signal'].astype(object)  # Converte para object
+        self.dataset['signal'] = np.nan
+        self.dataset['signal'] = self.dataset['signal'].astype(object)
 
         self.dataset.loc[self.dataset.index[peaks_idx], 'signal'] = 'sell'
         self.dataset.loc[self.dataset.index[troughs_idx], 'signal'] = 'buy'
-
 
         signals = []
         for idx in peaks_idx:
@@ -294,17 +287,162 @@ class MT5Connector:
         logger.info("Sinais de compra e venda calculados.")
         return signals
     
+    def buy_order(self, volume, sl=None, tp=None, comment="Buy Order"):
+        """Executa uma ordem de compra no MetaTrader5."""
+        if not self.connected:
+            raise ConnectionError("MT5 não inicializado.")
+        if not self.symbol:
+            raise ValueError("Símbolo não definido.")
+        
+        # Obtém informações do símbolo
+        symbol_info = mt5.symbol_info(self.symbol)
+        if symbol_info is None:
+            logger.error(f"Símbolo {self.symbol} não encontrado.")
+            return None
+        
+        # Prepara a solicitação de ordem
+        point = symbol_info.point
+        price = mt5.symbol_info_tick(self.symbol).ask
+        
+        request = {
+            "action": mt5.TRADE_ACTION_DEAL,
+            "symbol": self.symbol,
+            "volume": float(volume),
+            "type": mt5.ORDER_TYPE_BUY,
+            "price": price,
+            "sl": sl if sl else 0.0,
+            "tp": tp if tp else 0.0,
+            "type_time": mt5.ORDER_TIME_GTC,
+            "type_filling": mt5.ORDER_FILLING_IOC,
+            "comment": comment
+        }
+        
+        # Envia a ordem
+        result = mt5.order_send(request)
+        if result.retcode != mt5.TRADE_RETCODE_DONE:
+            logger.error(f"Falha ao executar ordem de compra: {result.comment}, código: {result.retcode}")
+            return None
+        
+        logger.info(f"Ordem de compra executada: ticket #{result.order}, preço: {price}, volume: {volume}")
+        return result
+
+    def sell_order(self, volume, sl=None, tp=None, comment="Sell Order"):
+        """Executa uma ordem de venda no MetaTrader5."""
+        if not self.connected:
+            raise ConnectionError("MT5 não inicializado.")
+        if not self.symbol:
+            raise ValueError("Símbolo não definido.")
+        
+        # Obtém informações do símbolo
+        symbol_info = mt5.symbol_info(self.symbol)
+        if symbol_info is None:
+            logger.error(f"Símbolo {self.symbol} não encontrado.")
+            return None
+        
+        # Prepara a solicitação de ordem
+        point = symbol_info.point
+        price = mt5.symbol_info_tick(self.symbol).bid
+        
+        request = {
+            "action": mt5.TRADE_ACTION_DEAL,
+            "symbol": self.symbol,
+            "volume": float(volume),
+            "type": mt5.ORDER_TYPE_SELL,
+            "price": price,
+            "sl": sl if sl else 0.0,
+            "tp": tp if tp else 0.0,
+            "type_time": mt5.ORDER_TIME_GTC,
+            "type_filling": mt5.ORDER_FILLING_IOC,
+            "comment": comment
+        }
+        
+        # Envia a ordem
+        result = mt5.order_send(request)
+        if result.retcode != mt5.TRADE_RETCODE_DONE:
+            logger.error(f"Falha ao executar ordem de venda: {result.comment}, código: {result.retcode}")
+            return None
+        
+        logger.info(f"Ordem de venda executada: ticket #{result.order}, preço: {price}, volume: {volume}")
+        return result
+
+    
+    def close_position(self, ticket, comment="Close Position"):
+        """Fecha uma posição específica com base no ticket."""
+        if not self.connected:
+            raise ConnectionError("MT5 não inicializado.")
+        
+        # Obtém informações da posição
+        position = mt5.positions_get(ticket=ticket)
+        if not position:
+            logger.error(f"Posição com ticket #{ticket} não encontrada.")
+            return None
+        
+        position = position[0]
+        symbol = position.symbol
+        volume = position.volume
+        position_type = position.type
+        
+        # Define o tipo de ordem oposta para fechar a posição
+        close_type = mt5.ORDER_TYPE_SELL if position_type == mt5.ORDER_TYPE_BUY else mt5.ORDER_TYPE_BUY
+        price = mt5.symbol_info_tick(symbol).bid if close_type == mt5.ORDER_TYPE_SELL else mt5.symbol_info_tick(symbol).ask
+        
+        # Prepara a solicitação de fechamento
+        request = {
+            "action": mt5.TRADE_ACTION_DEAL,
+            "symbol": symbol,
+            "volume": float(volume),
+            "type": close_type,
+            "position": ticket,
+            "price": price,
+            "type_time": mt5.ORDER_TIME_GTC,
+            "type_filling": mt5.ORDER_FILLING_IOC,
+            "comment": comment
+        }
+        
+        # Envia a ordem de fechamento
+        result = mt5.order_send(request)
+        if result.retcode != mt5.TRADE_RETCODE_DONE:
+            logger.error(f"Falha ao fechar posição #{ticket}: {result.comment}, código: {result.retcode}")
+            return None
+        
+        logger.info(f"Posição #{ticket} fechada com sucesso.")
+        return result
+
+    def reverse_position(self, ticket, sl=None, tp=None, comment="Reverse Position"):
+        """Inverte uma posição existente, fechando-a e abrindo uma nova na direção oposta."""
+        if not self.connected:
+            raise ConnectionError("MT5 não inicializado.")
+        
+        # Obtém informações da posição
+        position = mt5.positions_get(ticket=ticket)
+        if not position:
+            logger.error(f"Posição com ticket #{ticket} não encontrada.")
+            return None
+        
+        position = position[0]
+        symbol = position.symbol
+        volume = position.volume
+        position_type = position.type
+        
+        # Fecha a posição atual
+        close_result = self.close_position(ticket, comment="Close for Reverse")
+        if not close_result:
+            logger.error(f"Falha ao fechar posição #{ticket} para reversão.")
+            return None
+        
+        # Abre uma nova posição na direção oposta
+        new_order_type = "sell" if position_type == mt5.ORDER_TYPE_BUY else "buy"
+        new_order = self.sell_order(volume, sl, tp, comment) if new_order_type == "sell" else self.buy_order(volume, sl, tp, comment)
+        
+        if not new_order:
+            logger.error(f"Falha ao abrir nova posição oposta para #{ticket}.")
+            return None
+        
+        logger.info(f"Posição #{ticket} invertida com sucesso: nova ordem #{new_order.order}, tipo: {new_order_type}")
+        return new_order
+
     def get_last_signal_by_timeframes(self, symbol, timeframes=['1wk', '1d', '4h'], type=None):
-        """
-        Obtém o último sinal de compra ou venda para os timeframes especificados (W1, D1, H4).
-        
-        Args:
-            symbol (str): Símbolo do ativo (ex: 'EURUSD').
-            timeframes (list): Lista de timeframes a serem analisados (padrão: ['1wk', '1d', '4h']).
-        
-        Returns:
-            pd.DataFrame: DataFrame com o último sinal para cada timeframe.
-        """
+        """Obtém o último sinal de compra ou venda para os timeframes especificados."""
         if not self.initialize_mt5():
             raise ConnectionError("Não foi possível inicializar o MetaTrader5.")
         
@@ -314,30 +452,24 @@ class MT5Connector:
         last_signals = []
         
         for timeframe in timeframes:
-            # Configura o timeframe atual
             if type == "stock":
                 self.symbol = "#" + symbol
             else:
                 self.symbol = symbol              
             self.set_interval(timeframe)
             
-            # Baixa e processa os dados
             self.download_data()
             self.preprocess_data()
             self.calculate_indicators()
             self.calculate_signals()
             
-            # Filtra apenas os sinais válidos ('buy' ou 'sell')
             signals_df = self.dataset[self.dataset['signal'].isin(['buy', 'sell'])].copy()
             
             if not signals_df.empty:
-                # Pega o último sinal
                 last_signal = signals_df.tail(1).iloc[0]
-                print(last_signal)
-                # Adiciona o sinal ao resultado
                 last_signals.append({
                     'timeframe': timeframe,
-                    'time': last_signal.name,  # O índice é o timestamp
+                    'time': last_signal.name,
                     'signal': last_signal['signal'],
                     'price': last_signal['close']
                 })
@@ -349,17 +481,14 @@ class MT5Connector:
                     'price': None
                 })
         
-        # Cria o DataFrame final
         result_df = pd.DataFrame(last_signals)
         logger.info("Últimos sinais calculados para os timeframes especificados.")
         return result_df
     
     def positions_get(self, symbol=None, type=None):
-        """Retrieve all current open positions, optionally filtered by symbol."""        
-        
+        """Retrieve all current open positions, optionally filtered by symbol."""
         if type == "stock":
-            positions = mt5.positions_get(symbol= "#" + symbol)
-
+            positions = mt5.positions_get(symbol="#" + symbol)
         else:
             positions = mt5.positions_get(symbol=symbol) if symbol else mt5.positions_get()
 
@@ -373,20 +502,18 @@ class MT5Connector:
         df['type'] = df['type'].map({0: 'buy', 1: 'sell'})
         return df[['ticket', 'time', 'time_update', 'type', 'symbol', 'volume', 'price_open', 
                   'price_current', 'sl', 'tp', 'profit', 'comment']]
-    
 
     def history_deals_get(self):
         """Retrieve historical deals for the account over a specified period."""
         if not self.connected:
             raise ConnectionError("MT5 not initialized.")
         
-        # obtemos o número de transações no histórico
-        from_date=datetime(2010,1,1)
-        to_date=datetime.now()
+        from_date = datetime(2010, 1, 1)
+        to_date = datetime.now()
                 
-        deals = mt5.history_deals_get(from_date, to_date, group="*,!*EUR*,!*GBP*")
+        deals = mt5.history_deals_get(from_date, to_date, group="*,!*EUR*,!*GBP*,!*XAU*,")
         if not deals:
-            logger.info(f"No historical deals found for the last {from_date.days} days.")
+            logger.info(f"No historical deals found from {from_date} to {to_date}.")
             return pd.DataFrame()
         
         df = pd.DataFrame(list(deals), columns=deals[0]._asdict().keys())
@@ -398,16 +525,14 @@ class MT5Connector:
 
     def get_all_data(self):
         """Retorna todos os dados formatados."""
-        print(self.dataset.head())
         if self.dataset is None:
             raise ValueError("Os dados ainda não foram baixados.")        
-        return self.dataset.to_dict(orient="records") 
-    
-
+        return self.dataset.to_dict(orient="records")
 
     def shutdown(self):
         """Encerra a conexão com o MetaTrader5."""
         mt5.shutdown()
+        self.connected = False
         logger.info("Conexão com MetaTrader5 encerrada.")
 
 if __name__ == "__main__":
