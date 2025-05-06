@@ -48,3 +48,41 @@ export function formatDayAndMonth(createdAt: string): string {
 }
 
 ; // Saída: "15 April"
+
+
+
+// Formatter for BRL currency
+export const formatBRL = (value: number): string =>
+  // new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+
+  new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+
+// Formatter for percentage
+export const formatPercentage = (value: number): string =>
+  new Intl.NumberFormat('pt-BR', { style: 'percent', minimumFractionDigits: 2 }).format(value / 100);
+
+// Formatter for minutes to min:ss
+export const formatMinutes = (minutes: number): string => {
+  if (isNaN(minutes) || minutes === 0) return '0min0s';
+  const mins = Math.floor(minutes);
+  const secs = Math.round((minutes - mins) * 60);
+  return `${mins}min${secs}s`;
+};
+
+// Formatter for numbers
+export const formatNumber = (value: number): string =>
+  new Intl.NumberFormat('pt-BR').format(value);
+
+export function formatNumbers(obj: any): any {
+  // Itera sobre as chaves do objeto
+  for (const key in obj) {
+    if (typeof obj[key] === 'number') {
+      // Arredonda os números para 2 casas decimais
+      obj[key] = parseFloat(obj[key].toFixed(2));
+    } else if (typeof obj[key] === 'object') {
+      // Se o valor for um objeto, chama a função recursivamente
+      formatNumbers(obj[key]);
+    }
+  }
+  return obj;
+}

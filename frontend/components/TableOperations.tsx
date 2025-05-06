@@ -14,6 +14,7 @@ import OperationsHistory from "./OperationsHistory";
 
 const TableOperations = ({ symbol, Assest, UserId }: { symbol: string, Assest:string, UserId:string } ) => {
 const [selectedTab, setSelectedTab] = React.useState("tabelas");
+const user = JSON.parse(localStorage.getItem('user'))
 
 return (
   <Card className="w-full">
@@ -58,11 +59,11 @@ return (
         </button>
       </div>
     </div>
-    <CardContent className="flex flex-col  h-[500px]">
+    <CardContent className="flex flex-col  h-[550px]">
       {/* Aqui você pode adicionar o conteúdo da tabela ou gráfico com base na aba selecionada */}
       {selectedTab === "tabelas" ?  <ItemsOperations symbol={symbol} UserId={UserId} Assest={Assest}/>: ""}
       {selectedTab === "history" ?  <OperationsHistory symbol={symbol} UserId={UserId} Asset={Assest}/>: ""}
-      {selectedTab === "performance" ?  <PerformaceOperations/>: ""}
+      {selectedTab === "performance" ?  <PerformaceOperations userId={user.email} symbol={symbol}/>: ""}
     </CardContent>
   </Card>
 );

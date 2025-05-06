@@ -102,7 +102,7 @@ class StockList(APIView):
                 
                 except Exception as e:
                     # Log do erro para debug
-                    print(f"Erro ao processar {stock.yahoo}: {str(e)}")
+                    print(f"Erro ao processar {stock.symbol}: {str(e)}")
                     continue  # Continua mesmo se uma commoditie falhar
 
             if not result_data:

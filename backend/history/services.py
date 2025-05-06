@@ -9,6 +9,7 @@ import pandas_ta as ta
 import logging
 # import pytz module for working with time zone
 import pytz
+import json
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -155,7 +156,7 @@ class MT5Connector:
         """Inicializa a conexão com o terminal MetaTrader5."""
         if not mt5.initialize():
             error_code = mt5.last_error()
-            logger.error(f"Falha na inicialização do MetaTrader5, código de erro: {error_code}")
+            logger.error(f"Falha Visualização do MetaTrader5, código de erro: {error_code}")
             return False
         logger.info(f"MetaTrader5 versão: {mt5.version()}")
         self.connected = True
@@ -189,10 +190,10 @@ class MT5Connector:
             '6h': mt5.TIMEFRAME_H6, '8h': mt5.TIMEFRAME_H8, '12h': mt5.TIMEFRAME_H12,
             '1d': mt5.TIMEFRAME_D1, '1wk': mt5.TIMEFRAME_W1, '1mn': mt5.TIMEFRAME_MN1
         }
-        if interval not in timeframes:
+        if interval and interval not in timeframes:
             logger.error(f"Intervalo inválido: {interval}")
             raise ValueError(f"Intervalo inválido: {interval}")
-        self.interval = timeframes[interval]
+        self.interval = timeframes.get(interval)
 
     def download_data(self):
         """Baixa os dados de mercado do MetaTrader5."""
@@ -232,7 +233,10 @@ class MT5Connector:
         if self.dataset is None:
             raise ValueError("Os dados ainda não foram baixados.")
         
-        self.dataset["atr"] = ta.atr(self.dataset.high, self.dataset.low, self.dataset.close, timeperiod=atr_period)
+        import talib as ta
+        from scipy.signal import savgol_filter
+        
+        self.dataset["atr"] = ta.ATR(self.dataset.high, self.dataset.low, self.dataset.close, timeperiod=atr_period)
         self.dataset["atr"] = self.dataset["atr"].rolling(window=atr_smoothing_window).mean()
         self.dataset["close_smooth"] = savgol_filter(self.dataset.close, smooth_window, smooth_polyorder)
         self.dataset['atr'] = self.dataset['atr'].fillna(0).astype(int)
@@ -244,6 +248,8 @@ class MT5Connector:
         """Calcula sinais de compra e venda baseados em picos e vales."""
         if self.dataset is None or "close_smooth" not in self.dataset.columns:
             raise ValueError("Os indicadores ainda não foram calculados.")
+        
+        from scipy.signal import find_peaks
         
         atr = self.dataset["atr"].iloc[-1] if not pd.isna(self.dataset["atr"].iloc[-1]) else 1.0
         peaks_idx, _ = find_peaks(self.dataset.close_smooth, distance=distance, width=width, prominence=atr)
@@ -294,13 +300,11 @@ class MT5Connector:
         if not self.symbol:
             raise ValueError("Símbolo não definido.")
         
-        # Obtém informações do símbolo
         symbol_info = mt5.symbol_info(self.symbol)
         if symbol_info is None:
             logger.error(f"Símbolo {self.symbol} não encontrado.")
             return None
         
-        # Prepara a solicitação de ordem
         point = symbol_info.point
         price = mt5.symbol_info_tick(self.symbol).ask
         
@@ -317,7 +321,6 @@ class MT5Connector:
             "comment": comment
         }
         
-        # Envia a ordem
         result = mt5.order_send(request)
         if result.retcode != mt5.TRADE_RETCODE_DONE:
             logger.error(f"Falha ao executar ordem de compra: {result.comment}, código: {result.retcode}")
@@ -333,13 +336,11 @@ class MT5Connector:
         if not self.symbol:
             raise ValueError("Símbolo não definido.")
         
-        # Obtém informações do símbolo
         symbol_info = mt5.symbol_info(self.symbol)
         if symbol_info is None:
             logger.error(f"Símbolo {self.symbol} não encontrado.")
             return None
         
-        # Prepara a solicitação de ordem
         point = symbol_info.point
         price = mt5.symbol_info_tick(self.symbol).bid
         
@@ -356,7 +357,6 @@ class MT5Connector:
             "comment": comment
         }
         
-        # Envia a ordem
         result = mt5.order_send(request)
         if result.retcode != mt5.TRADE_RETCODE_DONE:
             logger.error(f"Falha ao executar ordem de venda: {result.comment}, código: {result.retcode}")
@@ -365,13 +365,11 @@ class MT5Connector:
         logger.info(f"Ordem de venda executada: ticket #{result.order}, preço: {price}, volume: {volume}")
         return result
 
-    
     def close_position(self, ticket, comment="Close Position"):
         """Fecha uma posição específica com base no ticket."""
         if not self.connected:
             raise ConnectionError("MT5 não inicializado.")
         
-        # Obtém informações da posição
         position = mt5.positions_get(ticket=ticket)
         if not position:
             logger.error(f"Posição com ticket #{ticket} não encontrada.")
@@ -382,11 +380,9 @@ class MT5Connector:
         volume = position.volume
         position_type = position.type
         
-        # Define o tipo de ordem oposta para fechar a posição
         close_type = mt5.ORDER_TYPE_SELL if position_type == mt5.ORDER_TYPE_BUY else mt5.ORDER_TYPE_BUY
         price = mt5.symbol_info_tick(symbol).bid if close_type == mt5.ORDER_TYPE_SELL else mt5.symbol_info_tick(symbol).ask
         
-        # Prepara a solicitação de fechamento
         request = {
             "action": mt5.TRADE_ACTION_DEAL,
             "symbol": symbol,
@@ -399,7 +395,6 @@ class MT5Connector:
             "comment": comment
         }
         
-        # Envia a ordem de fechamento
         result = mt5.order_send(request)
         if result.retcode != mt5.TRADE_RETCODE_DONE:
             logger.error(f"Falha ao fechar posição #{ticket}: {result.comment}, código: {result.retcode}")
@@ -413,7 +408,6 @@ class MT5Connector:
         if not self.connected:
             raise ConnectionError("MT5 não inicializado.")
         
-        # Obtém informações da posição
         position = mt5.positions_get(ticket=ticket)
         if not position:
             logger.error(f"Posição com ticket #{ticket} não encontrada.")
@@ -424,13 +418,11 @@ class MT5Connector:
         volume = position.volume
         position_type = position.type
         
-        # Fecha a posição atual
         close_result = self.close_position(ticket, comment="Close for Reverse")
         if not close_result:
             logger.error(f"Falha ao fechar posição #{ticket} para reversão.")
             return None
         
-        # Abre uma nova posição na direção oposta
         new_order_type = "sell" if position_type == mt5.ORDER_TYPE_BUY else "buy"
         new_order = self.sell_order(volume, sl, tp, comment) if new_order_type == "sell" else self.buy_order(volume, sl, tp, comment)
         
@@ -487,7 +479,10 @@ class MT5Connector:
     
     def positions_get(self, symbol=None, type=None):
         """Retrieve all current open positions, optionally filtered by symbol."""
-        if type == "stock":
+        if not self.connected:
+            raise ConnectionError("MT5 não inicializado.")
+        
+        if type == "stock" and symbol:
             positions = mt5.positions_get(symbol="#" + symbol)
         else:
             positions = mt5.positions_get(symbol=symbol) if symbol else mt5.positions_get()
@@ -503,15 +498,15 @@ class MT5Connector:
         return df[['ticket', 'time', 'time_update', 'type', 'symbol', 'volume', 'price_open', 
                   'price_current', 'sl', 'tp', 'profit', 'comment']]
 
-    def history_deals_get(self):
+    def history_deals_get(self, start_date=None, end_date=None):
         """Retrieve historical deals for the account over a specified period."""
         if not self.connected:
             raise ConnectionError("MT5 not initialized.")
         
-        from_date = datetime(2010, 1, 1)
-        to_date = datetime.now()
+        from_date = start_date if start_date else datetime(2010, 1, 1)
+        to_date = end_date if end_date else datetime.now()
                 
-        deals = mt5.history_deals_get(from_date, to_date, group="*,!*EUR*,!*GBP*,!*XAU*,")
+        deals = mt5.history_deals_get(from_date, to_date)
         if not deals:
             logger.info(f"No historical deals found from {from_date} to {to_date}.")
             return pd.DataFrame()
@@ -528,6 +523,156 @@ class MT5Connector:
         if self.dataset is None:
             raise ValueError("Os dados ainda não foram baixados.")        
         return self.dataset.to_dict(orient="records")
+
+
+
+    def calculate_performance_metrics_for_symbol(self, symbol, start_date, end_date, initial_capital=10000):
+        """Calcula métricas de performance para um símbolo específico e retorna um DataFrame."""
+        if not self.connected:
+            raise ConnectionError("MT5 não inicializado.")
+
+        # Obter histórico de deals para o símbolo
+        deals_df = self.history_deals_get(start_date, end_date)
+        if deals_df.empty:
+            return pd.DataFrame({"error": [f"Nenhum deal encontrado para o símbolo {symbol} no período especificado"]})
+
+        # Filtrar pelo símbolo
+        deals_df = deals_df[deals_df['symbol'] == symbol]
+        if deals_df.empty:
+            return pd.DataFrame({"error": [f"Nenhum deal encontrado para o símbolo {symbol}"]})
+
+        # Calcular métricas
+        return self._calculate_metrics(deals_df, initial_capital)
+
+    def calculate_performance_metrics_all(self, start_date, end_date, initial_capital=10000):
+        """Calcula métricas de performance para todas as operações e retorna um DataFrame."""
+        if not self.connected:
+            raise ConnectionError("MT5 não inicializado.")
+
+        # Obter histórico de deals
+        deals_df = self.history_deals_get(start_date, end_date)
+        if deals_df.empty:
+            return pd.DataFrame({"error": ["Nenhum deal encontrado no período especificado"]})
+
+        # Calcular métricas
+        return self._calculate_metrics(deals_df, initial_capital)
+
+    def _calculate_metrics(self, df, initial_capital):
+        """Função auxiliar para calcular métricas de performance e retornar um DataFrame."""
+        # Filtrar apenas deals de compra/venda
+        df = df[df['type'].isin(['buy', 'sell'])].copy()
+        if df.empty:
+            return pd.DataFrame({"error": ["Nenhum deal de compra/venda encontrado"]})
+
+        # Calcular custos totais (comissões + swaps)
+        df['total_cost'] = df['commission'] + df['swap']
+
+        # Classificar operações
+        df['result'] = np.where(df['profit'] > 0, 'vencedora',
+                                np.where(df['profit'] < 0, 'perdedora', 'zerada'))
+
+        # Calcular métricas
+        metrics = {}
+
+        # Resultado Líquido Total
+        metrics['Resultado_Liq_Tot'] = df['profit'].sum() + df['total_cost'].sum()
+
+        # Resultado Total
+        metrics['Resultado_Total'] = df['profit'].sum()
+
+        # Lucro Bruto
+        metrics['Lucro_Bruto'] = df[df['profit'] > 0]['profit'].sum()
+
+        # Prejuízo Bruto
+        metrics['Prejuizo_Bruto'] = abs(df[df['profit'] < 0]['profit'].sum())
+
+        # Operações (total)
+        metrics['Operacoes'] = len(df)
+
+        # Operações Vencedoras
+        metrics['Vencedoras'] = len(df[df['result'] == 'vencedora'])
+
+        # Saldo Líquido Total
+        metrics['Saldo_Liquido_Total'] = metrics['Resultado_Liq_Tot']
+
+        # Fator de Lucro
+        metrics['Fator_de_Lucro'] = metrics['Lucro_Bruto'] / metrics['Prejuizo_Bruto'] if metrics['Prejuizo_Bruto'] > 0 else float('inf')
+
+        # Número Total de Operações
+        metrics['Numero_Total_de_Operacoes'] = metrics['Operacoes']
+
+        # Operações Zeradas
+        metrics['Operacoes_Zeradas'] = len(df[df['result'] == 'zerada'])
+
+        # Média de Lucro/Prejuízo
+        metrics['Media_de_Lucro_Prejuizo'] = df['profit'].mean() if metrics['Operacoes'] > 0 else 0
+
+        # Média de Operações Vencedoras
+        metrics['Media_de_Operacoes_Vencedoras'] = df[df['result'] == 'vencedora']['profit'].mean() if metrics['Vencedoras'] > 0 else 0
+
+        # Maior Operação Vencedora
+        metrics['Maior_Operacao_Vencedora'] = df[df['result'] == 'vencedora']['profit'].max() if metrics['Vencedoras'] > 0 else 0
+
+        # Maior Sequência Vencedora
+        def calculate_streak(series, condition):
+            max_streak = current_streak = 0
+            for result in series:
+                if result == condition:
+                    current_streak += 1
+                    max_streak = max(max_streak, current_streak)
+                else:
+                    current_streak = 0
+            return max_streak
+        metrics['Maior_Sequencia_Vencedora'] = calculate_streak(df['result'], 'vencedora')
+
+        # Média de Tempo em Operações Vencedoras (minutos)
+        df['time_diff'] = df['time'].diff().dt.total_seconds() / 60
+        metrics['Media_de_Tempo_em_Op_Vencedoras_mins'] = df[df['result'] == 'vencedora']['time_diff'].mean() if metrics['Vencedoras'] > 0 else 0
+
+        # Média de Tempo em Operações (minutos)
+        metrics['Media_de_Tempo_em_Operacoes_mins'] = df['time_diff'].mean() if len(df) > 1 else 0
+
+        # Saldo Total
+        metrics['Saldo_Total'] = metrics['Resultado_Total']
+
+        # Custos
+        metrics['Custos'] = abs(df['total_cost'].sum())
+
+        # Percentual de Operações Vencedoras
+        metrics['Percentual_de_Operacoes_Vencedoras'] = (metrics['Vencedoras'] / metrics['Operacoes'] * 100) if metrics['Operacoes'] > 0 else 0
+
+        # Operações Perdedoras
+        metrics['Operacoes_Perdedoras'] = len(df[df['result'] == 'perdedora'])
+
+        # Razão Média Lucro:Média Prejuízo
+        avg_profit = metrics['Media_de_Operacoes_Vencedoras']
+        avg_loss = abs(df[df['result'] == 'perdedora']['profit'].mean()) if metrics['Operacoes_Perdedoras'] > 0 else 0
+        metrics['Razao_Media_Lucro_Media_Prejuizo'] = avg_profit / avg_loss if avg_loss > 0 else float('inf')
+
+        # Média de Operações Perdedoras
+        metrics['Media_de_Operacoes_Perdedoras'] = avg_loss
+
+        # Maior Operação Perdedora
+        metrics['Maior_Operacao_Perdedora'] = abs(df[df['result'] == 'perdedora']['profit'].min()) if metrics['Operacoes_Perdedoras'] > 0 else 0
+
+        # Maior Sequência Perdedora
+        metrics['Maior_Sequencia_Perdedora'] = calculate_streak(df['result'], 'perdedora')
+
+        # Média de Tempo em Operações Perdedoras
+        metrics['Media_de_Tempo_em_Op_Perdedoras'] = df[df['result'] == 'perdedora']['time_diff'].mean() if metrics['Operacoes_Perdedoras'] > 0 else 0
+
+        # Patrimônio Necessário (Maior Operação)
+        metrics['Patrimonio_Necessario_Maior_Operacao'] = abs(df['profit'].min()) if not df['profit'].empty else 0
+
+        # Retorno no Capital Inicial
+        metrics['Retorno_no_Capital_Inicial'] = (metrics['Saldo_Liquido_Total'] / initial_capital * 100) if initial_capital > 0 else 0
+
+        # Patrimônio Máximo
+        df['cumulative_profit'] = df['profit'].cumsum()
+        metrics['Patrimonio_Maximo'] = df['cumulative_profit'].max() + initial_capital if not df['cumulative_profit'].empty else initial_capital
+
+        # Converter métricas para DataFrame
+        return pd.DataFrame([metrics])
 
     def shutdown(self):
         """Encerra a conexão com o MetaTrader5."""

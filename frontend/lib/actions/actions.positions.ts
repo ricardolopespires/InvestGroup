@@ -21,4 +21,4 @@ export const getPositions = async({symbol, Assest, UserId})=>{
             return parseStringify({"status":400, "message":"Enviada com error"})
         }
 
-}
+};

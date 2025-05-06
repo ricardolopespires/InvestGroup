@@ -1,6 +1,7 @@
 import AxiosInstance from "@/services/AxiosInstance";
-import { parseStringify } from "../utils";
-import { UserGetStatus, UserUpdatedStatus } from "./actions.user";
+import { formatNumbers, parseStringify } from "../utils";
+import { getUserInfo, UserGetStatus, UserUpdatedStatus } from "./actions.user";
+import { get } from "http";
 
 // Interfaces para tipagem
 interface PerfilInvestidor {
@@ -332,6 +333,105 @@ export const updateSituation = async ({ value, userId }: UpdatePerfilProps): Pro
       status: 'error',
       message: errorMessage,
       timestamp: new Date().toISOString()
+    };
+  }
+};
+
+
+
+
+
+/**
+ * Fetches performance metrics for a specific asset (symbol) for a user.
+ * @param params - Parameters including userId, symbol, startDate, endDate, and optional initialCapital
+ * @returns Performance metrics, message for empty results, or error response
+ */
+export const getPerformanceAsset = async ({
+  userId,
+  symbol,
+  startDate,
+  endDate,
+  initialCapital,
+}: PerformanceParams): Promise<ApiResponse> => {
+
+  const user = await getUserInfo({userId:userId});
+  if (!user) {
+    return {
+      status: 404,
+      message: 'Usuário não encontrado',
+      timestamp: new Date().toISOString(),
+    };
+  }
+
+  try {
+    const response = await AxiosInstance.get(`api/v1/history/users/${user[0].id}/performance/${symbol}/`, {
+      params: {
+        start_date: startDate,
+        end_date: endDate,
+        initial_capital: initialCapital,
+      },
+    });
+
+    if (response.status === 200) {
+  
+      return {
+        data: response.data.data || response.data, // Handle nested data if present
+        message: response.data.message, // Message for empty results
+      };
+    }
+
+    return {
+      status: response.status,
+      message: response.data?.error || 'Erro ao buscar métricas de desempenho',
+      timestamp: new Date().toISOString(),
+    };
+  } catch (error: any) {
+    return {
+      status: error.response?.status || 500,
+      message: error.response?.data?.error || error.message || 'Erro na requisição de métricas de desempenho',
+      timestamp: new Date().toISOString(),
+    };
+  }
+};
+
+/**
+ * Fetches performance metrics for all operations for a user.
+ * @param params - Parameters including userId, startDate, endDate, and optional initialCapital
+ * @returns Performance metrics, message for empty results, or error response
+ */
+export const getAllPerformance = async ({
+  userId,
+  startDate,
+  endDate,
+  initialCapital,
+}: AllPerformanceParams): Promise<ApiResponse> => {
+  try {
+    const response = await AxiosInstance.get(`/users/${userId}/performance/`, {
+      params: {
+        start_date: startDate,
+        end_date: endDate,
+        initial_capital: initialCapital,
+      },
+    });
+    const dadosFormatados = formatNumbers(response.data)
+    
+    if (response.status === 200) {
+      return {
+        data: dadosFormatados || dadosFormatados,
+        message: response.data.message,
+      };
+    }
+
+    return {
+      status: response.status,
+      message: response.data?.error || 'Erro ao buscar métricas de desempenho para todas as operações',
+      timestamp: new Date().toISOString(),
+    };
+  } catch (error: any) {
+    return {
+      status: error.response?.status || 500,
+      message: error.response?.data?.error || error.message || 'Erro na requisição de métricas de desempenho',
+      timestamp: new Date().toISOString(),
     };
   }
 };
