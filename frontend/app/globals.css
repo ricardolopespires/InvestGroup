@@ -99,3 +99,45 @@
 .has-tooltip:hover .tooltip {
   @apply visible z-50;
 }
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+.neumorphic {
+  background: #ecf0f3;
+  box-shadow: -3px -3px 7px #ffffff, 3px 3px 5px #ceced1;
+}
+.neumorphic-hover:hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background: #ecf0f3;
+  box-shadow: inset -3px -3px 7px #ffffff, inset 3px 3px 5px #ceced1;
+}
+.neumorphic-button:hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 5px;
+  background: #ecf0f3;
+  box-shadow: inset -3px -3px 7px #ffffff, inset 3px 3px 5px #ceced1;
+  z-index: -1;
+}
+.social-row::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 2px;
+  background: #e0e6eb;
+  left: -25px;
+}
+.social-row:first-child::before {
+  background: none;
+}

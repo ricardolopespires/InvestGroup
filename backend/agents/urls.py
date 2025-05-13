@@ -5,9 +5,10 @@ from .views import (
     RiskProfileListCreateView, RiskProfileDetailView,
     PortfolioListCreateView, PortfolioDetailView,
     PortfolioAllocationListCreateView, PortfolioAllocationDetailView,
-    InvestmentAgentListCreateView, InvestmentAgentDetailView,
+    InvestmentAgentConsultantListView, InvestmentAgentDetailView,
     TransactionListCreateView, TransactionDetailView,
-    AdvisorRecommendationListCreateView, AdvisorRecommendationDetailView
+    AdvisorRecommendationListCreateView, AdvisorRecommendationDetailView,
+    InvestmentAgentManagerListView, InvestmentAgentManagerDetailView
 )
 app_name = 'agents'
 
@@ -23,8 +24,10 @@ urlpatterns = [
     path('portfolios/<uuid:id>/', PortfolioDetailView.as_view(), name='portfolio-detail'),
     path('portfolio-allocations/', PortfolioAllocationListCreateView.as_view(), name='portfolio-allocation-list-create'),
     path('portfolio-allocations/<uuid:id>/', PortfolioAllocationDetailView.as_view(), name='portfolio-allocation-detail'),
-    path('investment-agents/', InvestmentAgentListCreateView.as_view(), name='investment-agent-list-create'),
+    path('investment-agents/', InvestmentAgentConsultantListView.as_view(), name='investment-agent-list-create'),
+    path('investment-managers/', InvestmentAgentManagerListView.as_view(), name='investment-agent-list-create'),
     path('investment-agents/<uuid:id>/', InvestmentAgentDetailView.as_view(), name='investment-agent-detail'),
+    path('investment-managers/<uuid:id>/', InvestmentAgentManagerDetailView.as_view(), name='investment-agent-manager-detail'),
     path('transactions/', TransactionListCreateView.as_view(), name='transaction-list-create'),
     path('transactions/<uuid:id>/', TransactionDetailView.as_view(), name='transaction-detail'),
     path('advisor-recommendations/', AdvisorRecommendationListCreateView.as_view(), name='advisor-recommendation-list-create'),

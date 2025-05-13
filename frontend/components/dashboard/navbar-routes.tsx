@@ -38,8 +38,8 @@ const guestRoutes = [
     },
     {
         icons: Compass,
-        label:"Consultores",
-        href: "/consultants/overview"
+        label:"Agentes",
+        href: "/agents/consultants"
     },
 ]
 

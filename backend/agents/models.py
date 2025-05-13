@@ -94,7 +94,7 @@ class PortfolioAllocation(models.Model):
 class InvestmentAgent(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='investment_agents', blank=True)
-    specialty = models.CharField(max_length=100, choices=[
+    asset = models.CharField(max_length=100, choices=[
         ('ação', 'Ação'),
         ('título', 'Título'),
         ('fundo', 'Fundo'),
@@ -111,7 +111,26 @@ class InvestmentAgent(models.Model):
         ('lci', 'LCI'),
         ('lca', 'LCA'),
         ('tesouro direto', 'Tesouro Direto'),      
-        ('fundos imobiliários', 'Fundos Imobiliários'), 
+        ('fundos imobiliários', 'Fundos Imobiliários'),
+        ('gestor de patrimônio', 'Gestor de patrimônio'),       
+        ('gestor de investimentos', 'Gestor de investimentos'),
+        ('gestor de risco', 'Gestor de risco'),
+
+    ])
+    model = models.CharField(max_length=100, choices=[
+        ('robo', 'Robo'),
+        ('humano', 'Humano'),
+        ('híbrido', 'Híbrido'),
+    ])
+    specialty = models.CharField(max_length=100, choices=[
+       
+        ('consultor', 'Consultor'),
+        ('gestor', 'Gestor'),
+        ('analista', 'Analista'),
+        ('especialista', 'Especialista'),
+      
+         
+
     ])
     portfolios = models.ManyToManyField(Portfolio, related_name='investment_agents', blank=True)
     description = models.TextField(blank=True, null=True)
@@ -120,14 +139,34 @@ class InvestmentAgent(models.Model):
     reviews = models.IntegerField(default=0, help_text="Number of reviews received")
     name = models.CharField(max_length=100)
     experience = models.IntegerField(default=0, help_text="Experience in years")
-    langchain_model = models.CharField(max_length=100, default="gpt-4", help_text="Language model used by LangChain")
+    langchain_model = models.CharField(max_length=100, choices=[       
+        ('gpt-4', 'GPT-4'),
+        ('gemini', 'Gemini'),
+        ('llama-2', 'Llama 2'),
+        ('claude', 'Claude'),
+        ('mistral', 'Mistral'),
+        ('qwen', 'Qwen'),
+        ('deepSpeeker', 'DeepSpeeker'),
+        ('grok', 'Grok'),
+
+
+        ], default='gpt-3.5-turbo')
+    langchain_tool = models.CharField(max_length=100, choices=[
+        ('chat', 'Chat'),
+        ('llm', 'LLM'),
+        ('retriever', 'Retriever'),
+        ('qa', 'QA'),
+        ('agent', 'Agent'),
+        ('tool', 'Tool'),
+    ])
     strategy = models.CharField(max_length=50, choices=[
         
         ('avesso ao risco', 'Averso ao risco'), 
         ('equilibrado', 'Equilibrado'),
         ('crescimento', 'Crescimento')
     ])
-    config = models.JSONField(default=dict, help_text="LangChain agent configuration")
+    config = models.JSONField(default=dict, help_text="LangChain agent configuration", blank=True, null=True)
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

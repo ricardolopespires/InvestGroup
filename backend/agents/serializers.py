@@ -41,7 +41,7 @@ class InvestmentAgentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = InvestmentAgent
-        fields = ['id', 'users', 'portfolios', 'name', 'avatar','specialty', 'rating', 'reviews', 'experience', 'langchain_model', 'strategy', 'config', 'created_at', 'updated_at']
+        fields = ['id', 'users', 'portfolios', 'name', 'avatar','description','asset', 'model', 'specialty', 'rating', 'reviews', 'experience', 'langchain_model', 'strategy', 'config', 'created_at', 'updated_at']
         read_only_fields = ['id', 'users', 'created_at', 'updated_at']  # 'users' está como read-only, já que o relacionamento é ManyToMany
 
 

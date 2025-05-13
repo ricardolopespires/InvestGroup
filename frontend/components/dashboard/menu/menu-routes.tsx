@@ -101,13 +101,27 @@ const economicRoutes = [
   },
 ];
 
-const consultantRoutes = [
+const agentsRoutes = [
   {
     icon: <FaUserTie />,
-    label: "Overview",
-    href: "/consultants/overview",
-    title: "Consultores Financeiro",
+    label: "Consultores",
+    href: "/agents/consultants",
+    title: "Visão Geral dos Consultores",
     subtitle: "Consultores de investimentos especializados para ajudar em suas decisões financeiras",
+  },
+  {
+    icon: <RiRobot3Fill />,
+    label: "Gestores",
+    href: "/agents/managers",
+    title: "Gestores de Investimentos",
+    subtitle: "Gestores de investimentos especializados para ajudar em suas decisões financeiras",
+      },
+  {
+    icon: <FaChartPie />,
+    label: "Analytics",
+    href: "/agents/analytics",
+    title: "Análises dos Agentes",
+    subtitle: "Estatísticas e métricas detalhadas dos agentes de investimentos",
   },
 ];
 
@@ -223,7 +237,7 @@ const MenuRoutes = () => {
   // Determina qual grupo de rotas usar com base no pathname
   const isPersonalPage = pathname?.includes("/unidades"); 
   const isEconomicPage = pathname?.includes("/economic");
-  const isConsultantPage = pathname?.includes("/consultants");
+  const isagentsPage = pathname?.includes("/agents");
   const isInvestmentsPage = pathname?.includes("/investments");
   const isSettingsPage = pathname?.includes("/settings");
 
@@ -233,8 +247,8 @@ const MenuRoutes = () => {
     ? personalRoutes
     : isEconomicPage
     ? economicRoutes
-    : isConsultantPage
-    ? consultantRoutes
+    : isagentsPage
+    ? agentsRoutes
     : isInvestmentsPage
     ? investmentsRoutes
     : isSettingsPage

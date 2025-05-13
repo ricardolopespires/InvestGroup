@@ -31,7 +31,7 @@ class PortfolioAllocationAdmin(admin.ModelAdmin):
 
 @admin.register(InvestmentAgent)
 class InvestmentAgentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'strategy', 'langchain_model', 'get_users', 'get_portfolios', 'created_at')
+    list_display = ('name', 'strategy', 'asset' ,'specialty', 'model', 'langchain_model', 'langchain_tool',  'created_at')
     search_fields = ('name',)
     list_filter = ('strategy', 'langchain_model', 'created_at')
     filter_horizontal = ('users', 'portfolios')  # Widget para ManyToManyField

@@ -86,3 +86,28 @@ export function formatNumbers(obj: any): any {
   }
   return obj;
 }
+
+
+
+export function toCapitalizer(frase: string): string {
+  return frase
+    .split(' ')
+    .map(palavra => palavra.charAt(0).toUpperCase() + palavra.slice(1).toLowerCase())
+    .join(' ');
+}
+
+export function paragraph(texto: string | undefined): string {
+  if (!texto || typeof texto !== 'string') {
+    throw new Error("O parâmetro 'texto' deve ser uma string válida.");
+  }
+
+  const palavras = texto.split(/\s+/);
+  const blocos: string[] = [];
+
+  for (let i = 0; i < palavras.length; i += 400) {
+    const bloco = palavras.slice(i, i + 400).join(' ');
+    blocos.push(bloco);
+  }
+
+  return blocos.join('\n\n'); // Dupla quebra de linha = "espaço para baixo"
+}

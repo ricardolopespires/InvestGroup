@@ -11,7 +11,7 @@ import { Button } from './ui/button'
 import { ChevronDown } from 'lucide-react'
 import PortifolioInvest from './PortifolioInvest'
 
-const AboutInvest = () => {
+const AboutInvest = ({description}) => {
   return (
     <div className="flex-1 p-6">
     {/* About Section */}
