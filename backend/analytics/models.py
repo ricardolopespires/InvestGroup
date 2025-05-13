@@ -3,8 +3,7 @@ from django.db import models
 from accounts.models import User
 
 class Investidor(models.Model):
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="investidores")
-    nome = models.CharField(max_length=100)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="investidores")   
     renda_mensal = models.DecimalField(max_digits=10, decimal_places=2)
     despesas_mensais = models.DecimalField(max_digits=10, decimal_places=2)
     dividas = models.DecimalField(max_digits=10, decimal_places=2)

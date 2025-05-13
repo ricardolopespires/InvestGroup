@@ -2,6 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+
+from plataform.models import MT5API
+from history.services import MT5Connector
 from .models import Categoria, Transacao
 from .serializers import CategoriaSerializer, TransacaoSerializer
 from django.db.models import Q
@@ -155,15 +158,176 @@ class OperationDetailAPIView(APIView):
         operation.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-
-
 class CloseOperationAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
         ticket = request.data.get('ticket')
-        print(ticket)
+
+        # Validate ticket
         if not ticket:
-            return Response({"error": "É necessário ingresso do ticket da operação."}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"message": "Operação concluída com sucesso.","status":201}, status=status.HTTP_200_OK)
+            return Response(
+                {"error": "É necessário fornecer o ticket da operação."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         
+        try:
+            ticket = int(ticket)  # Ensure ticket is an integer
+        except ValueError:
+            return Response(
+                {"error": "O ticket deve ser um número inteiro válido."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Fetch the active MT5 API account for the user
+        api = MT5API.objects.filter(Q(user_id=pk), Q(is_active=True)).last()
+        
+        if not api:
+            return Response(
+                {"error": "Conta MT5 não encontrada ou inativa"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        mt5 = None
+        try:
+            # Initialize MT5Connector
+            mt5 = MT5Connector(
+                account=api.account,
+                password=api.password,
+                server=api.server,
+                interval="1d"  # Intervalo diário para dados consistentes
+            )
+            
+            # Initialize MT5 connection
+            if not mt5.initialize_mt5():
+                return Response(
+                    {"error": "Falha ao inicializar o MetaTrader 5"},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+            
+            # Login to MT5
+            if not mt5.login():
+                return Response(
+                    {"error": "Falha no login do MetaTrader 5"},
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
+            
+            # Attempt to close the position
+            result = mt5.close_position(ticket, comment="Close Position")
+            if not result:
+                return Response(
+                    {"error": "Falha ao fechar a posição"},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+
+            return Response(
+                {"message": "Operação concluída com sucesso."},
+                status=status.HTTP_200_OK
+            )
+        
+        except ConnectionError as e:
+            return Response(
+                {"error": f"Erro de conexão com MetaTrader 5: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        except Exception as e:
+            return Response(
+                {"error": f"Erro inesperado: {str(e)}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        finally:
+            # Ensure MT5 connection is closed
+            if mt5 and mt5.connected:
+                mt5.shutdown()
+
+
+
+
+
+
+    
+class ReverseOperationAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        ticket = request.data.get('ticket')
+
+        # Validate ticket
+        if not ticket:
+            return Response(
+                {"error": "É necessário fornecer o ticket da operação."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            ticket = int(ticket)  # Ensure ticket is an integer
+        except ValueError:
+            return Response(
+                {"error": "O ticket deve ser um número inteiro válido."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Fetch the active MT5 API account for the user
+        api = MT5API.objects.filter(Q(user_id=pk), Q(is_active=True)).last()
+        
+        if not api:
+            return Response(
+                {"error": "Conta MT5 não encontrada ou inativa"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        mt5 = None
+        try:
+            # Initialize MT5Connector
+            mt5 = MT5Connector(
+                account=api.account,
+                password=api.password,
+                server=api.server,
+                interval="1d"  # Intervalo diário para dados consistentes
+            )
+            
+            # Initialize MT5 connection
+            if not mt5.initialize_mt5():
+                return Response(
+                    {"error": "Falha ao inicializar o MetaTrader 5"},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+            
+            # Login to MT5
+            if not mt5.login():
+                return Response(
+                    {"error": "Falha no login do MetaTrader 5"},
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
+            
+            print("Ticket:", ticket)
+            
+            # Attempt to close the position
+            result = mt5.reverse_position(ticket, comment="Close Position")
+            print("Result:", result)
+            # Check if the result is valid
+            if not result:
+                return Response(
+                    {"error": "Falha ao fechar a posição"},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+
+            return Response(
+                {"message": "Operação concluída com sucesso."},
+                status=status.HTTP_200_OK
+            )
+        
+        except ConnectionError as e:
+            return Response(
+                {"error": f"Erro de conexão com MetaTrader 5: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        except Exception as e:
+            return Response(
+                {"error": f"Erro inesperado: {str(e)}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        finally:
+            # Ensure MT5 connection is closed
+            if mt5 and mt5.connected:
+                mt5.shutdown()

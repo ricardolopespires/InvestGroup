@@ -22,7 +22,7 @@ if not mt5.initialize(login=6062572, server="LiteFinance-MT5-Demo",password="Rbe
 
 
 
-
+'''
 for i in mt5.symbols_get():
     if "#" in i.name:
         ativo = i.name.replace("#","")
@@ -46,7 +46,7 @@ to_date=datetime.now()
 
 
 # get deals for symbols whose names contain neither "EUR" nor "GBP"
-deals = mt5.history_deals_get(from_date, to_date, group="*,!*EUR*,!*GBP*!*JPY*!*#AMZN*")
+deals = mt5.history_deals_get(from_date, to_date, group="*,!*EUR*,!*GBP*!*JPY*!*#AMZN*!*AUD*!*BNBUSD*!BTCUSD*!!*CAD*!ETHUSD*!*LINKUSD*!*NZD*!*MXN*!*SOLUD*!*XAGUSD*!XAUUSD")
 if deals == None:
     print("No deals, error code={}".format(mt5.last_error()))
 elif len(deals) > 0:
@@ -58,28 +58,30 @@ elif len(deals) > 0:
     df['time'] = pd.to_datetime(df['time'], unit='s')
     dataset = df.to_dict(orient="records")
     for x in dataset:
-                  
-        Operation.objects.get_or_create(
-            id = x['ticket'],
-            magic = x['magic'],
-            asset = x['symbol'],
-            user_id = 2,
-            date = x['time'],
-            type = x['type'],
-            volume = x['volume'],
-            price_entry = x['price'],
-            sl = 0,
-            tp = 0,
-            price_departure = 0,
-            profit = x['profit'],
-            stoploss = False,
-            takeprofit = False,
-            comment = x['comment']
-            
-            )
+        if Operation.objects.filter(id= x["ticket"]).exists():
+            print(f'Ticket {x["ticket"]} já foi cadastrado')
+        else:
+            Operation.objects.get_or_create(
+                id = x['ticket'],
+                magic = x['magic'],
+                asset = x['symbol'],
+                user_id = 2,
+                date = x['time'],
+                type = x['type'],
+                volume = x['volume'],
+                price_entry = x['price'],
+                sl = 0,
+                tp = 0,
+                price_departure = 0,
+                profit = x['profit'],
+                stoploss = False,
+                takeprofit = False,
+                comment = x['comment']                
+                )
+            print(f"Ticket {x['ticket']} cadastrado")
     
 print("")
 # shut down connection to the MetaTrader 5 terminal
 
-'''
+
 mt5.shutdown()

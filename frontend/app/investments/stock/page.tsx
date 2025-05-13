@@ -13,12 +13,13 @@ const ITEMS_PER_PAGE = 10; // Número de itens por página
 const Page = () => {
   const [stock, setStock] = useState([]);
   const [error, setError] = useState(false);
+  const user = JSON.parse(localStorage.getItem('user'))
   
 
   useEffect(() => {
     const fetchCryptos = async () => {
       try {
-        const res = await getAssetsStocks();
+        const res = await getAssetsStocks({UserId:user.email});
         console.log(res)
         setStock(res);
       } catch (err) {
@@ -28,7 +29,7 @@ const Page = () => {
     };
     
     fetchCryptos();
-  }, []);
+  }, [user]);
 
  
 

@@ -11,11 +11,11 @@ import { getUserInfo } from "./actions.user";
 
 
 
-export const getAssetsStocks = async()=>{
+export const getAssetsStocks = async({UserId})=>{
 
         try{
-    
-            const res = await AxiosInstance.get(`/api/v1/trading/stocks/`)
+            const user = await getUserInfo({userId:UserId});
+            const res = await AxiosInstance.get(`/api/v1/trading/stocks/${user[0].id}/list/`)
             console.log(res)
             if(res.status === 200){        
                 return res.data

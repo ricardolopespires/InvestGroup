@@ -7,6 +7,8 @@ import axios from "axios";
 
 
 export const getUserInfo = async ({ userId }: getUserInfoProps) => {
+
+
     try {
       // Faça a solicitação HTTP para a API
       const response = await AxiosInstance.get(`/api/v1/auth/list/${userId}/`);

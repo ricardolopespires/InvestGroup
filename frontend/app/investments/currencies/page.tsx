@@ -6,6 +6,7 @@ import IndexWidgets from "@/components/IndexWidgets";
 import AnalysisWidget from "@/components/AnalysisWidget";
 import { getAssetsCurrencies } from "@/lib/actions/actions.currency";
 import Currencies from "@/components/Currencies";
+import TableCurrencies from "@/components/TableCurrency";
 
 const ITEMS_PER_PAGE = 10; // Número de itens por página
 
@@ -16,11 +17,13 @@ const Page = () => {
   const [error, setError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const user = JSON.parse(localStorage.getItem('user'))
 
   useEffect(() => {
     const fetchCryptos = async () => {
       try {
-        const res = await getAssetsCurrencies();
+        const res = await getAssetsCurrencies({UserId: user.email });
+        // Filtra os dados para incluir apenas os ativos com preço maior que 0
         setAssest(res);
       } catch (err) {
         setError(true);
@@ -29,7 +32,7 @@ const Page = () => {
     };
     
     fetchCryptos();
-  }, []);
+  }, [user]);
 
   // Filtra e ordena os dados quando assest ou performance mudam
   useEffect(() => {
@@ -66,7 +69,7 @@ const Page = () => {
   return (
     <div className="max-w-screen-4xl mx-auto w-full pb-10 mt-24 text-white">
       {/* Cabeçalho com Botão */}
-      <div className="w-full flex items-center justify-between gap-4 mt-4">
+      <div className="w-full flex items-center justify-between gap-4 mt-4 mb-6">
         <div className="w-[75%]">
           <IndexWidgets asset={assest[0]?.symbol} />
         </div>
@@ -75,30 +78,9 @@ const Page = () => {
         </div>
       </div>
 
-      {/* Controles de filtro */}
-      <div className="w-full flex items-center justify-end gap-1 mt-4 text-black text-xs mb-6">
-        <button 
-          className={`py-2 px-4  shadow-md rounded-l-lg  ${performance === 1 ? "bg-green-500 text-white rounded-l-lg" : "rounded-l-lg "}`}
-          onClick={() => setPerformance(1)}
-        >
-          Maiores Altas
-        </button>
-        <button 
-          className={`py-2 px-4 shadow-md rounded-r-lg  ${performance === 0 ? "bg-red-500 text-white rounded-r-lg" : "rounded-r-lg "}`}
-          onClick={() => setPerformance(0)}
-        >
-          Maiores Baixas
-        </button>
-      </div>
 
       {/* Grid de Widgets */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {paginatedassest.map((item) => (
-          <div key={item.id} className="w-full h-full">
-            <Currencies asset={item.symbol} />
-          </div>
-        ))}
-      </div>
+      <TableCurrencies currencies={paginatedassest} />
 
       {/* Controles de Paginação */}
      <div className="flex items-center justify-end  mt-4 mb-9">

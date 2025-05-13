@@ -107,7 +107,7 @@ const consultantRoutes = [
     label: "Overview",
     href: "/consultants/overview",
     title: "Consultores Financeiro",
-    subtitle: "Escolha seu profissional que ajuda a gerir as finanças",
+    subtitle: "Consultores de investimentos especializados para ajudar em suas decisões financeiras",
   },
 ];
 
@@ -158,8 +158,8 @@ const investmentsRoutes = [
     icon: <LuChartPie />,
     label: "Advisor",
     href: "/investments/advisor",
-    title: "Robos de Investimentos",
-    subtitle: "Descubra onde investir o seu dinheiro, com boa rentabilidade e muita segurança.",
+    title: "Agentes de Investimento com IA",
+    subtitle: "Assistentes inteligentes que ajudam a gerenciar e investir o seu dinheiro, com boa rentabilidade e muita segurança.",
   },
 ];
 

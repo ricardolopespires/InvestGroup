@@ -1,82 +1,109 @@
-
-import { RiRobot2Line } from "react-icons/ri";
-
-
-
-
-
-
-
-
-
-
-
-
-
-import React, { useEffect, useState } from 'react'
-import { formatDayAndMonth } from "@/lib/utils";
-import { getLevelAdvisors } from "@/lib/actions/actions.advisors";
-
-const CardAdvisor = ({item}) => {
-
-    const[level, setLevel] =  useState({})
-
-        useEffect(() => {
-            const feachtData = async () => {
-                const res = await getLevelAdvisors({AdvisorId:item.id})
-                setLevel(res[0])  
-    
-    
-            }
-            feachtData()
-        }, [item])
-     
-    
-  return (
-    <a href={`/investments/advisor/${item.id}`}>
-        <div className="bg-white rounded-xl border p-4 mb-2 shadow-lg hover:shadow-xl transition-shadow duration-300">
-        <div className="flex justify-between items-center">
+import {
+    Plus,
+    Bot,
+    Zap,
+    LineChart,
+    AlertTriangle,
+    Shield,
+    Trash2,
+    TrendingUp,
+    TrendingDown,
+    DollarSign,
+    BarChart4,
+  } from "lucide-react";
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+  import { Badge } from "@/components/ui/badge";
+  import { Switch } from "@/components/ui/switch";
+  import React, { useEffect, useState } from 'react';
+  import { getLevelAdvisors } from "@/lib/actions/actions.advisors";
+  
+  const CardAdvisor = ({ agent }) => {
+    const [activeAgent, setActiveAgent] = useState(agent?.id || "agent_1");
+    const [level, setLevel] = useState({});
+    const [riskTolerance, setRiskTolerance] = useState(30);
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const res = await getLevelAdvisors({ AdvisorId: agent.id });
+          setLevel(res[0] || {});
+        } catch (error) {
+          console.error("Error fetching advisor level:", error);
+        }
+      };
+      if (agent?.id) {
+        fetchData();
+      }
+    }, [agent]);
+  
+    const handleAgentToggle = (id, active) => {
+      // In a real app, this would update the agent status
+    };
+  
+    const handleRiskToleranceChange = (value) => {
+      setRiskTolerance(value[0]);
+    };
+  
+    const saveAgentSettings = () => {
+      // In a real app, this would save the agent settings
+    };
+  
+    if (!agent) {
+      return null; // Or a fallback UI
+    }
+  
+    return (
+      <a href={`/investments/advisor/${agent.id}`}>
+        <Card
+          className={`cursor-pointer hover:border-blue-600 transition-colors h-[200px] `}
+          onClick={() => setActiveAgent(agent.id)}
+        >
+          <CardContent className="p-4">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                    <div className="w-12 h-12 bg-blue-950 rounded-2xl flex items-center justify-center text-2xl">
-                    <RiRobot2Line className="text-white"/>
-                    </div>
-                    <div className="c-details">
-                    <h6 className="text-base font-semibold mb-0">{item.name}</h6>
-                    <span className="text-xs font-light">{formatDayAndMonth(item.created_at)}</span>
-                    </div>
+                  <div className="bg-blue-950 p-2 rounded-sm">
+                    <Bot className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="font-medium">{agent.name}</h3>
                 </div>
-                <div className="badge">
-                    {item.asset == 1 ? <span className="bg-green-50 text-green-700 px-3 py-1 rounded-md text-sm">Ações</span>:""}
-                    {item.asset == 2 ? <span className="bg-amber-50 text-amber-700 px-3 py-1 rounded-md text-sm">Commodities</span>:""}
-                    {item.asset == 3 ? <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-md text-sm">Moedas</span>:""}
-                    {item.asset == 4 ? <span className="bg-gray-50 text-gray-700 px-3 py-1 rounded-md text-sm">Índices</span>:""}
-                    {item.asset == 5 ? <span className="bg-yellow-50 text-yellow-600 px-3 py-1 rounded-md text-sm">CriptoMeodas</span>:""}
+                <Switch
+                  checked={agent.active}
+                  onCheckedChange={(checked) => handleAgentToggle(agent.id, checked)}
+                />
+              </div>
+  
+              <p className="text-sm text-muted-foreground">{agent.description}</p>
+  
+              <div className="flex flex-wrap gap-2">
+                {agent.preferredAssets?.map((asset) => (
+                  <Badge key={asset} variant="outline">
+                    {asset.charAt(0).toUpperCase() + asset.slice(1)}
+                  </Badge>
+                ))}
+              </div>
+  
+              <div className="flex items-center justify-between text-sm">
+                <div>
+                  <span className="text-muted-foreground">Monthly: </span>
+                  <span className={agent.performance?.monthly >= 0 ? "text-green-500" : "text-red-500"}>
+                    {agent.performance?.monthly >= 0 ? "+" : ""}
+                    {agent.performance?.monthly ?? 0}%
+                  </span>
                 </div>
-        </div>
-        <div className="mt-6">
-            <h3 className="flex flex-col font-ligth leading-tight">
-                    <span className="text-gray-400">Investidor</span>
-                    <span className="text-xl ">
-                        {level.risk_level === 1 ? "Conservador":""}
-                        {level.risk_level === 2 ? "Moderado":""}
-                        {level.risk_level === 3 ? "Agressivo":""}
-                        {level.risk_level === 4 ? "Ulta - Agressivo":""}
-                    </span>
-            </h3>
-            <div className="mt-6">
-                    <div className="w-full bg-gray-200 rounded-full h-2.5">
-                    <div className="bg-red-500 h-2.5 rounded-full w-1/2"></div>
-                    </div>
-                    <div className="mt-3">
-                    <span className="text-sm font-semibold">
-                        32 Profit <span className="text-gray-500 font-normal">de 40 Operação</span>
-                    </span>
-                    </div>
+                <div>
+                  <span className="text-muted-foreground">All-time: </span>
+                  <span className={agent.performance?.allTime >= 0 ? "text-green-500" : "text-red-500"}>
+                    {agent.performance?.allTime >= 0 ? "+" : ""}
+                    {agent.performance?.allTime ?? 0}%
+                  </span>
+                </div>
+              </div>
             </div>
-        </div>
-        </div>
-    </a>
-  )
-}
-
-export default CardAdvisor
+          </CardContent>
+        </Card>
+      </a>
+    );
+  };
+  
+  export default CardAdvisor;

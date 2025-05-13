@@ -19,6 +19,9 @@ const ItemsOperations = ({symbol,Assest, UserId}) => {
       }
     fetchData()
   }, [symbol, Assest, UserId])
+
+  
+  
   
   return (
     <div className='w-full h-full flex flex-col items-center '>
@@ -54,8 +57,8 @@ const ItemsOperations = ({symbol,Assest, UserId}) => {
                     item.profit > 0 ? "text-green-500":"text-red-500"
                   )}>{item.profit}</div> {/* Substitua pelo valor correto */}
                    <div className='flex items-center justify-center gap-2'>
-                    <CloseOperation ticket={item.ticket}/>
-                    <InverterOperations operation = {item }/>
+                    <CloseOperation ticket={item.ticket} />
+                    <InverterOperations operation = {item}/>
                     </div> 
               </div>
               )

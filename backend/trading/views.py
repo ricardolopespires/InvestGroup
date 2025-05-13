@@ -3,7 +3,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Currency, Stock, Commoditie, Index
 from .serializers import CurrencySerializer, StockSerializer, CommoditieSerializer, IndexSerializer
+from django.db.models import Avg, Count, Min, Sum, Q
+from plataform.models import MT5API
 import yfinance as yf
+from history.services import MT5Connector
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 # Currency Views (already provided)
 class CurrencyList(APIView):
@@ -52,13 +59,42 @@ class CurrencyDetail(APIView):
 
 # Stock Views (already provided)
 class StockList(APIView):
-    def get(self, request):
+    def get(self, request, pk):
+        # Busca a conta MT5 ativa do usuário
+        api = MT5API.objects.filter(Q(user_id=pk), Q(is_active=True)).last()
         
+        if not api:
+            return Response(
+                {'error': 'Conta MT5 não encontrada ou inativa'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        # Inicializa o MT5Connector com as credenciais do usuário
+        mt5 = MT5Connector(
+            account=api.account,
+            password=api.password,
+            server=api.server,
+            interval="1d"  # Intervalo diário para dados consistentes
+        )
+        
+        # Inicializa e faz login no MT5
+        if not mt5.initialize_mt5():
+            return Response(
+                {'error': 'Falha ao inicializar o MetaTrader 5'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        
+        if not mt5.login():
+            return Response(
+                {'error': 'Falha no login do MetaTrader 5'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
         try:
             stocks = Stock.objects.all()
             if not stocks:
                 return Response(
-                    {"message": "Nenhuma commoditie encontrada"},
+                    {"message": "Nenhuma currency encontrada"},
                     status=status.HTTP_404_NOT_FOUND
                 )
 
@@ -66,17 +102,20 @@ class StockList(APIView):
             
             for stock in stocks:
                 try:
-                    ticker = yf.Ticker(stock.symbol)  # Use Ticker em vez de Tickers
-                    # Obtém dados históricos dos últimos 5 dias
-                    history = ticker.history(period="5d")
-                    
-                    # Verifica se há dados suficientes
-                    if len(history) < 2:
-                        continue  # Pula para o próximo se não houver dados suficientes
+                    # Define o símbolo no MT5Connector
+                    mt5.symbol = stock.symbol
+                    # Baixa os dados do MT5 (últimos 5 dias)
+                    data = mt5.download_data()
+                    if data is None or len(data) < 2:
+                        logger.warning(f"Dados insuficientes para {stock.symbol}")
+                        continue
+
+                    # Pré-processa os dados
+                    data = mt5.preprocess_data()
 
                     # Obtém os preços de fechamento mais recentes
-                    today_close = history['Close'].iloc[-1]
-                    yesterday_close = history['Close'].iloc[-2]
+                    today_close = data['close'].iloc[-1]
+                    yesterday_close = data['close'].iloc[-2]
 
                     # Calcula a variação percentual
                     percentage_change = ((today_close - yesterday_close) / yesterday_close) * 100
@@ -84,26 +123,28 @@ class StockList(APIView):
                     # Monta os dados do ticker
                     ticker_info = {
                         'id': stock.id,
-                        'name': stock.name,  # Certifique-se de ter este campo no modelo
-                        "image":"http://localhost:8000/media/" + str(stock.img),
+                        'name': stock.name,
+                        'image': f"http://localhost:8000/media/{stock.img}",
                         'symbol': stock.symbol,
-                        'yahoo': stock.symbol,                        
+                        'yahoo': stock.symbol,  # Mantido para compatibilidade
                         'current_price': round(today_close, 2),
                         'close_24h': round(yesterday_close, 2),
                         'price_change_percentage_24h': round(percentage_change, 2),
-                        'total_volume': int(history['Volume'].iloc[-1]),
-                        'last_update': history.index[-1].strftime('%Y-%m-%d %H:%M:%S'),
-                        'open_24h': round(history['Open'].iloc[-1], 2),
-                        'high_24h': round(history['High'].iloc[-1], 2),
-                        'low_24h': round(history['Low'].iloc[-1], 2),
+                        'total_volume': int(data['tick_volume'].iloc[-1]),  # Volume do MT5
+                        'last_update': data.index[-1].strftime('%Y-%m-%d %H:%M:%S'),
+                        'open_24h': round(data['open'].iloc[-1], 2),
+                        'high_24h': round(data['high'].iloc[-1], 2),
+                        'low_24h': round(data['low'].iloc[-1], 2),
                     }
                     
                     result_data.append(ticker_info)
                 
                 except Exception as e:
-                    # Log do erro para debug
-                    print(f"Erro ao processar {stock.symbol}: {str(e)}")
-                    continue  # Continua mesmo se uma commoditie falhar
+                    logger.error(f"Erro ao processar {stock.symbol}: {str(e)}")
+                    continue
+
+            # Desconecta do MT5 após processar todas as commodities
+            mt5.shutdown()
 
             if not result_data:
                 return Response(
@@ -114,13 +155,15 @@ class StockList(APIView):
             return Response(result_data, status=status.HTTP_200_OK)
 
         except Exception as e:
+            logger.error(f"Erro ao processar a requisição: {str(e)}")
+            mt5.shutdownv()  # Garante desconexão em caso de erro
             return Response(
                 {"error": f"Erro ao processar a requisição: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
     
     def post(self, request):
-        serializer = StockSerializer(data=request.data)
+        serializer = CommoditieSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -157,9 +200,42 @@ class StockDetail(APIView):
         stock.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-# Commoditie Views
+
+
+
+
 class CommoditieList(APIView):
-    def get(self, request):
+    def get(self, request, pk):
+        # Busca a conta MT5 ativa do usuário
+        api = MT5API.objects.filter(Q(user_id=pk), Q(is_active=True)).last()
+        
+        if not api:
+            return Response(
+                {'error': 'Conta MT5 não encontrada ou inativa'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        # Inicializa o MT5Connector com as credenciais do usuário
+        mt5 = MT5Connector(
+            account=api.account,
+            password=api.password,
+            server=api.server,
+            interval="1d"  # Intervalo diário para dados consistentes
+        )
+        
+        # Inicializa e faz login no MT5
+        if not mt5.initialize_mt5():
+            return Response(
+                {'error': 'Falha ao inicializar o MetaTrader 5'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        
+        if not mt5.login():
+            return Response(
+                {'error': 'Falha no login do MetaTrader 5'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
         try:
             commodities = Commoditie.objects.all()
             if not commodities:
@@ -172,17 +248,20 @@ class CommoditieList(APIView):
             
             for commodity in commodities:
                 try:
-                    ticker = yf.Ticker(commodity.yahoo)  # Use Ticker em vez de Tickers
-                    # Obtém dados históricos dos últimos 5 dias
-                    history = ticker.history(period="5d")
-                    
-                    # Verifica se há dados suficientes
-                    if len(history) < 2:
-                        continue  # Pula para o próximo se não houver dados suficientes
+                    # Define o símbolo no MT5Connector
+                    mt5.symbol = commodity.symbol
+                    # Baixa os dados do MT5 (últimos 5 dias)
+                    data = mt5.download_data()
+                    if data is None or len(data) < 2:
+                        logger.warning(f"Dados insuficientes para {commodity.symbol}")
+                        continue
+
+                    # Pré-processa os dados
+                    data = mt5.preprocess_data()
 
                     # Obtém os preços de fechamento mais recentes
-                    today_close = history['Close'].iloc[-1]
-                    yesterday_close = history['Close'].iloc[-2]
+                    today_close = data['close'].iloc[-1]
+                    yesterday_close = data['close'].iloc[-2]
 
                     # Calcula a variação percentual
                     percentage_change = ((today_close - yesterday_close) / yesterday_close) * 100
@@ -190,26 +269,28 @@ class CommoditieList(APIView):
                     # Monta os dados do ticker
                     ticker_info = {
                         'id': commodity.id,
-                        'name': commodity.name,  # Certifique-se de ter este campo no modelo
-                        "image":"http://localhost:8000/media/" + str(commodity.img),
+                        'name': commodity.name,
+                        'image': f"http://localhost:8000/media/{commodity.img}",
                         'symbol': commodity.symbol,
-                        'yahoo': commodity.yahoo,                        
+                        'yahoo': commodity.yahoo,  # Mantido para compatibilidade
                         'current_price': round(today_close, 2),
                         'close_24h': round(yesterday_close, 2),
                         'price_change_percentage_24h': round(percentage_change, 2),
-                        'total_volume': int(history['Volume'].iloc[-1]),
-                        'last_update': history.index[-1].strftime('%Y-%m-%d %H:%M:%S'),
-                        'open_24h': round(history['Open'].iloc[-1], 2),
-                        'high_24h': round(history['High'].iloc[-1], 2),
-                        'low_24h': round(history['Low'].iloc[-1], 2),
+                        'total_volume': int(data['tick_volume'].iloc[-1]),  # Volume do MT5
+                        'last_update': data.index[-1].strftime('%Y-%m-%d %H:%M:%S'),
+                        'open_24h': round(data['open'].iloc[-1], 2),
+                        'high_24h': round(data['high'].iloc[-1], 2),
+                        'low_24h': round(data['low'].iloc[-1], 2),
                     }
                     
                     result_data.append(ticker_info)
                 
                 except Exception as e:
-                    # Log do erro para debug
-                    print(f"Erro ao processar {commodity.yahoo}: {str(e)}")
-                    continue  # Continua mesmo se uma commoditie falhar
+                    logger.error(f"Erro ao processar {commodity.symbol}: {str(e)}")
+                    continue
+
+            # Desconecta do MT5 após processar todas as commodities
+            mt5.shutdown()
 
             if not result_data:
                 return Response(
@@ -220,6 +301,8 @@ class CommoditieList(APIView):
             return Response(result_data, status=status.HTTP_200_OK)
 
         except Exception as e:
+            logger.error(f"Erro ao processar a requisição: {str(e)}")
+            mt5.shutdown() # Garante desconexão em caso de erro
             return Response(
                 {"error": f"Erro ao processar a requisição: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -231,6 +314,7 @@ class CommoditieList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CommoditieDetail(APIView):
     def get_object(self, pk):
@@ -311,14 +395,6 @@ class IndexDetail(APIView):
 
 
 
-import yfinance as yf
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from .models import Commoditie  # Certifique-se que o modelo está correto
-from .serializers import CommoditieSerializer  # Certifique-se que o serializer está correto
-from datetime import datetime, timedelta
-
 class CommoditieDetailView(APIView):
     def get_object(self, pk):
         try:
@@ -398,6 +474,7 @@ class CommoditieListView(APIView):
             # Serializa os dados básicos
             serializer = CommoditieSerializer(commoditie)
             commoditie_data = serializer.data
+            print(commodities)
 
             # Adiciona os dados do mercado se houver ticker_symbol
             if hasattr(commoditie, 'ticker_symbol') and commoditie.ticker_symbol:
@@ -420,57 +497,92 @@ class CommoditieListView(APIView):
 
 # Commoditie Views
 class CurrencyList(APIView):
-    def get(self, request):
+    def get(self, request, pk):
+        # Busca a conta MT5 ativa do usuário
+        api = MT5API.objects.filter(Q(user_id=pk), Q(is_active=True)).last()
+        
+        if not api:
+            return Response(
+                {'error': 'Conta MT5 não encontrada ou inativa'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        # Inicializa o MT5Connector com as credenciais do usuário
+        mt5 = MT5Connector(
+            account=api.account,
+            password=api.password,
+            server=api.server,
+            interval="1d"  # Intervalo diário para dados consistentes
+        )
+        
+        # Inicializa e faz login no MT5
+        if not mt5.initialize_mt5():
+            return Response(
+                {'error': 'Falha ao inicializar o MetaTrader 5'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        
+        if not mt5.login():
+            return Response(
+                {'error': 'Falha no login do MetaTrader 5'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
         try:
-            commodities = Currency.objects.all()
-            if not commodities:
+            currencies = Currency.objects.all()
+            if not currencies:
                 return Response(
-                    {"message": "Nenhuma commoditie encontrada"},
+                    {"message": "Nenhuma currency encontrada"},
                     status=status.HTTP_404_NOT_FOUND
                 )
 
             result_data = []
             
-            for commodity in commodities:
+            for currency in currencies:
                 try:
-                    ticker = yf.Ticker(commodity.yahoo)  # Use Ticker em vez de Tickers
-                    # Obtém dados históricos dos últimos 5 dias
-                    history = ticker.history(period="5d")
-                    
-                    # Verifica se há dados suficientes
-                    if len(history) < 2:
-                        continue  # Pula para o próximo se não houver dados suficientes
+                    # Define o símbolo no MT5Connector
+                    mt5.symbol = currency.symbol
+                    # Baixa os dados do MT5 (últimos 5 dias)
+                    data = mt5.download_data()
+                    if data is None or len(data) < 2:
+                        logger.warning(f"Dados insuficientes para {currency.symbol}")
+                        continue
+
+                    # Pré-processa os dados
+                    data = mt5.preprocess_data()
 
                     # Obtém os preços de fechamento mais recentes
-                    today_close = history['Close'].iloc[-1]
-                    yesterday_close = history['Close'].iloc[-2]
+                    today_close = data['close'].iloc[-1]
+                    yesterday_close = data['close'].iloc[-2]
 
                     # Calcula a variação percentual
                     percentage_change = ((today_close - yesterday_close) / yesterday_close) * 100
 
                     # Monta os dados do ticker
                     ticker_info = {
-                        'id': commodity.id,
-                        'name': commodity.name,  # Certifique-se de ter este campo no modelo
-                        "image":"http://localhost:8000/media/" + str(commodity.img),
-                        'symbol': commodity.symbol,
-                        'yahoo': commodity.yahoo,                        
+                        'id': currency.id,
+                        'name': currency.name,
+                        'image': f"http://localhost:8000/media/{currency.img}",
+                        'symbol': currency.symbol,
+                        'yahoo': currency.yahoo,  # Mantido para compatibilidade
                         'current_price': round(today_close, 2),
                         'close_24h': round(yesterday_close, 2),
                         'price_change_percentage_24h': round(percentage_change, 2),
-                        'total_volume': int(history['Volume'].iloc[-1]),
-                        'last_update': history.index[-1].strftime('%Y-%m-%d %H:%M:%S'),
-                        'open_24h': round(history['Open'].iloc[-1], 2),
-                        'high_24h': round(history['High'].iloc[-1], 2),
-                        'low_24h': round(history['Low'].iloc[-1], 2),
+                        'total_volume': int(data['tick_volume'].iloc[-1]),  # Volume do MT5
+                        'last_update': data.index[-1].strftime('%Y-%m-%d %H:%M:%S'),
+                        'open_24h': round(data['open'].iloc[-1], 2),
+                        'high_24h': round(data['high'].iloc[-1], 2),
+                        'low_24h': round(data['low'].iloc[-1], 2),
                     }
                     
                     result_data.append(ticker_info)
                 
                 except Exception as e:
-                    # Log do erro para debug
-                    print(f"Erro ao processar {commodity.yahoo}: {str(e)}")
-                    continue  # Continua mesmo se uma commoditie falhar
+                    logger.error(f"Erro ao processar {currency.symbol}: {str(e)}")
+                    continue
+
+            # Desconecta do MT5 após processar todas as commodities
+            mt5.shutdown()
 
             if not result_data:
                 return Response(
@@ -481,7 +593,16 @@ class CurrencyList(APIView):
             return Response(result_data, status=status.HTTP_200_OK)
 
         except Exception as e:
+            logger.error(f"Erro ao processar a requisição: {str(e)}")
+            mt5.shutdownv()  # Garante desconexão em caso de erro
             return Response(
                 {"error": f"Erro ao processar a requisição: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+    
+    def post(self, request):
+        serializer = CommoditieSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

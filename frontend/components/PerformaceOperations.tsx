@@ -63,7 +63,7 @@ const PerformanceOperations: React.FC<PerformanceOperationsProps> = ({ userId, s
     if (end) setEndDate(end);
   };
 
-console.log( data);
+
   return (
     <div className="mt-4 flex flex-col h-full w-full">
       {/* Date Range Picker */}

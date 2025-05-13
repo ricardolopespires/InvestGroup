@@ -6,15 +6,19 @@
 
 
 import React from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
+import { Progress } from './ui/progress'
+import { Separator } from './ui/separator'
+import { BarChart4, DollarSign, LineChart, TrendingDown } from 'lucide-react'
 
 const PerformaceAdvisor = ({AdvisorId}) => {
   return (
     <section>
-        <h2 className="text-3xl font-semibold mb-4">Portifólio</h2>
+        <h2 className="text-3xl font-semibold mb-4">Performace Advisor</h2>
         <p className="text-gray-700 mb-8">
-            É fundamental que o Advisor possua habilidades técnicas que ajudem a oferecer uma orientação financeira mais eficiente para os seus clientes.
+            Essa seção fornece informações sobre o desempenho do agente, incluindo lucros, perdas e métricas de desempenho. Isso ajuda a entender como o agente está se saindo em suas operações e se ele está atingindo seus objetivos financeiros.
         </p>
-        <div className="mt-4 flex flex-col h-full w-full">
+        <div className="mt-4 flex flex-col h-full w-full gap-2">  
             {/* Header Summary */}
             <div className="w-full grid grid-cols-6 items-center justify-center h-9 text-xs bg-gray-100 px-4">
                 <div className="flex items-center gap-2">
@@ -42,7 +46,7 @@ const PerformaceAdvisor = ({AdvisorId}) => {
                 <span className="text-white">13</span>
                 </div>       
             </div>
-            <div className="flex items-center gap-6 w-full mt-6 text-xs">
+            <div className="flex items-center gap-6 w-full mt-6 text-xs mb-6">
                 <div className="w-[50%]">
                     <div className="grid grid-cols-2 gap-y-3">
                     <div className="text-gray-400">Saldo Líquido Total</div>
@@ -126,6 +130,85 @@ const PerformaceAdvisor = ({AdvisorId}) => {
                 </div>
                 
             </div>
+            <Card >
+                <CardHeader>
+                    <CardTitle>Métricas de Desempenho</CardTitle>
+                    <CardDescription>Análise detalhada do desempenho deste agente de IA</CardDescription>
+                </CardHeader>
+                <CardContent>
+                            <div className="h-[300px] w-full bg-muted/20 rounded-md flex items-center justify-center mb-6">
+                            <div className="text-center text-muted-foreground">
+                                <LineChart className="mx-auto h-8 w-8 mb-2" />
+                                <p>O gráfico de desempenho seria renderizado aqui</p>
+                            </div>
+                            </div>
+
+                            <div className="grid gap-4 md:grid-cols-3">
+                            <div className="space-y-2">
+                                <div className="flex items-center">
+                                <DollarSign className="mr-2 h-4 w-4 text-muted-foreground" />
+                                <h4 className="text-sm font-medium">Retorno Total</h4>
+                                </div>
+                                <div className="text-2xl font-bold text-green-500">
+                                +0%
+                                </div>
+                                <p className="text-xs text-muted-foreground">vs. S&P 500: +10.2%</p>
+                            </div>
+                            <div className="space-y-2">
+                                <div className="flex items-center">
+                                <TrendingDown className="mr-2 h-4 w-4 text-muted-foreground" />
+                                <h4 className="text-sm font-medium">Drawdown Máximo</h4>
+                                </div>
+                                <div className="text-2xl font-bold text-red-500">-8.4%</div>
+                                <p className="text-xs text-muted-foreground">vs. S&P 500: -12.5%</p>
+                            </div>
+                            <div className="space-y-2">
+                                <div className="flex items-center">
+                                <BarChart4 className="mr-2 h-4 w-4 text-muted-foreground" />
+                                <h4 className="text-sm font-medium">Máximo de average run-up</h4>
+                               </div>
+                                <div className="text-2xl font-bold">68%</div>
+                                <p className="text-xs text-muted-foreground">17 de 25 negociações lucrativas</p>
+                            </div>
+                            </div>
+
+                            <Separator className="my-6" />
+
+                            <div className="space-y-4">
+                            <h4 className="text-md font-medium">Desempenho da classe de ativos</h4>
+                            <div className="space-y-4 text-xs text-gray-400">
+                                <div className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                    <span>Stocks</span>
+                                    <span className="font-medium text-green-500">+14.2%</span>
+                                </div>
+                                <Progress value={14.2} max={20} className="h-2" />
+                                </div>
+                                <div className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                    <span>ETFs</span>
+                                    <span className="font-medium text-green-500">+9.8%</span>
+                                </div>
+                                <Progress value={9.8} max={20} className="h-2" />
+                                </div>
+                                <div className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                    <span>Bonds</span>
+                                    <span className="font-medium text-green-500">+4.5%</span>
+                                </div>
+                                <Progress value={4.5} max={20} className="h-2" />
+                                </div>
+                                <div className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                    <span>Crypto</span>
+                                    <span className="font-medium text-red-500">-2.3%</span>
+                                </div>
+                                <Progress value={0} max={20} className="h-2 bg-red-200" />
+                                </div>
+                            </div>
+                            </div>
+                </CardContent>
+            </Card>
         </div>
     </section>
   )

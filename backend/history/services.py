@@ -232,11 +232,9 @@ class MT5Connector:
         """Calcula indicadores técnicos como ATR e suavização de preços."""
         if self.dataset is None:
             raise ValueError("Os dados ainda não foram baixados.")
+    
         
-        import talib as ta
-        from scipy.signal import savgol_filter
-        
-        self.dataset["atr"] = ta.ATR(self.dataset.high, self.dataset.low, self.dataset.close, timeperiod=atr_period)
+        self.dataset["atr"] = ta.atr(self.dataset.high, self.dataset.low, self.dataset.close, timeperiod=atr_period)
         self.dataset["atr"] = self.dataset["atr"].rolling(window=atr_smoothing_window).mean()
         self.dataset["close_smooth"] = savgol_filter(self.dataset.close, smooth_window, smooth_polyorder)
         self.dataset['atr'] = self.dataset['atr'].fillna(0).astype(int)
@@ -317,7 +315,7 @@ class MT5Connector:
             "sl": sl if sl else 0.0,
             "tp": tp if tp else 0.0,
             "type_time": mt5.ORDER_TIME_GTC,
-            "type_filling": mt5.ORDER_FILLING_IOC,
+            "type_filling": mt5.ORDER_FILLING_FOK,
             "comment": comment
         }
         
@@ -353,7 +351,7 @@ class MT5Connector:
             "sl": sl if sl else 0.0,
             "tp": tp if tp else 0.0,
             "type_time": mt5.ORDER_TIME_GTC,
-            "type_filling": mt5.ORDER_FILLING_IOC,
+            "type_filling": mt5.ORDER_FILLING_FOK,
             "comment": comment
         }
         
@@ -391,7 +389,7 @@ class MT5Connector:
             "position": ticket,
             "price": price,
             "type_time": mt5.ORDER_TIME_GTC,
-            "type_filling": mt5.ORDER_FILLING_IOC,
+            "type_filling": mt5.ORDER_FILLING_FOK,
             "comment": comment
         }
         
@@ -402,35 +400,98 @@ class MT5Connector:
         
         logger.info(f"Posição #{ticket} fechada com sucesso.")
         return result
+    
 
-    def reverse_position(self, ticket, sl=None, tp=None, comment="Reverse Position"):
-        """Inverte uma posição existente, fechando-a e abrindo uma nova na direção oposta."""
+    def reverse_position(self, ticket, sl=None, tp=None, volume=None, comment="Reverse Position", max_retries=3, retry_delay=0.5):
+        """
+        Inverte uma posição existente, fechando-a e abrindo uma nova na direção oposta.
+        
+        Args:
+            ticket (int): Ticket da posição a ser invertida.
+            sl (float, optional): Stop Loss da nova posição. Usa o SL original se None.
+            tp (float, optional): Take Profit da nova posição. Usa o TP original se None.
+            volume (float, optional): Volume da nova posição. Usa o volume original se None.
+            comment (str): Comentário para a nova ordem.
+            max_retries (int): Número máximo de tentativas para confirmar fechamento.
+            retry_delay (float): Tempo de espera entre tentativas (em segundos).
+        
+        Returns:
+            dict: Resultado da nova ordem ou None em caso de falha.
+        """
+        import time
+        
         if not self.connected:
             raise ConnectionError("MT5 não inicializado.")
-        
+
+        # Obtém informações da posição
         position = mt5.positions_get(ticket=ticket)
+        print(position)
         if not position:
             logger.error(f"Posição com ticket #{ticket} não encontrada.")
             return None
         
         position = position[0]
+        if position.symbol != self.symbol:
+            logger.error(f"Símbolo da posição #{ticket} ({position.symbol}) não corresponde ao símbolo configurado ({self.symbol}).")
+            return None
+
+        # Coleta informações da posição
         symbol = position.symbol
-        volume = position.volume
+        position_volume = position.volume
         position_type = position.type
-        
+        position_sl = position.sl if sl is None else sl
+        position_tp = position.tp if tp is None else tp
+        new_volume = float(volume) if volume is not None else position_volume
+
+        # Valida informações do símbolo
+        symbol_info = mt5.symbol_info(symbol)
+        if symbol_info is None:
+            logger.error(f"Símbolo {symbol} não encontrado.")
+            return None
+        if not symbol_info.trade_mode == mt5.SYMBOL_TRADE_MODE_FULL:
+            logger.error(f"Mercado para {symbol} está fechado ou restrito.")
+            return None
+
+        # Fecha a posição existente
         close_result = self.close_position(ticket, comment="Close for Reverse")
         if not close_result:
             logger.error(f"Falha ao fechar posição #{ticket} para reversão.")
             return None
-        
+
+        # Aguarda confirmação de fechamento
+        for attempt in range(max_retries):
+            remaining_positions = mt5.positions_get(ticket=ticket)
+            if not remaining_positions:
+                break
+            logger.warning(f"Posição #{ticket} ainda aberta, tentativa {attempt + 1}/{max_retries}.")
+            time.sleep(retry_delay)
+        else:
+            logger.error(f"Posição # não foi fechada após {max_retries} tentativas.")
+            return None
+
+        # Determina o tipo da nova ordem
         new_order_type = "sell" if position_type == mt5.ORDER_TYPE_BUY else "buy"
-        new_order = self.sell_order(volume, sl, tp, comment) if new_order_type == "sell" else self.buy_order(volume, sl, tp, comment)
         
+        # Executa a nova ordem
+        try:
+            new_order = (
+                self.sell_order(new_volume, position_sl, position_tp, comment)
+                if new_order_type == "sell"
+                else self.buy_order(new_volume, position_sl, position_tp, comment)
+            )
+        except Exception as e:
+            logger.error(f"Erro ao abrir nova posição oposta para #{ticket}: {str(e)}")
+            return None
+
         if not new_order:
             logger.error(f"Falha ao abrir nova posição oposta para #{ticket}.")
             return None
-        
-        logger.info(f"Posição #{ticket} invertida com sucesso: nova ordem #{new_order.order}, tipo: {new_order_type}")
+
+        logger.info(
+            f"Posição #{ticket} invertida com sucesso: "
+            f"nova ordem #{new_order.order}, tipo: {new_order_type}, "
+            f"volume: {new_volume}, SL: {position_sl}, TP: {position_tp}"
+        )
         return new_order
 
     def get_last_signal_by_timeframes(self, symbol, timeframes=['1wk', '1d', '4h'], type=None):

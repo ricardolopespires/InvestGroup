@@ -1,6 +1,7 @@
 
 import AxiosInstance from "@/services/AxiosInstance";
 import { parseStringify } from "../utils";
+import { getUserInfo } from "./actions.user";
 
 
 export const postBuyOperations = async (params: OperationParams) => {
@@ -23,13 +24,13 @@ export const postBuyOperations = async (params: OperationParams) => {
     }
   };
   
-  export const postCloseOperations = async (params: { ticket: string }) => {
-    // params: { ticket: string }
+  export const postCloseOperations = async ({ticket, UserId}) => {
 
-    console.log("params", params)
-    try {
-    const { data } = await AxiosInstance.post(`/api/v1/transactions/operations/close/${params.ticket}/`, params);
-      return data;
+    const user = await getUserInfo({userId:UserId})    
+
+    try {   
+      const  res = await AxiosInstance.post(`/api/v1/transactions/operations/close/${user[0].id}/`, {"ticket":ticket});  
+      return res;
     } catch (error) {
       console.error('Erro ao fechar operação:', error);
       throw new Error('Falha ao fechar operação.');
@@ -64,48 +65,28 @@ export const postBuyOperations = async (params: OperationParams) => {
     }
   };
 
-export const postInversorOperations = async ({ticket, type}) => {
 
-    console.log("ticket", ticket)
-    console.log("type", type)
+
+  export const postInversorOperations = async ({ ticket, UserId }) => {
+    if (!ticket || !UserId) {
+      throw new Error('Ticket and UserId are required');
+    }
+  
     try {
-      // Buscar a operação pelo ID
-      const { data: currentOperation } = await AxiosInstance.get(`/operations/${id}`);
+      const user = await getUserInfo({ userId: UserId });
   
-      // Verificar se a operação existe e está aberta
-      if (!currentOperation) {
-        throw new Error('Operação não encontrada.');
-      }
-      if (currentOperation.status !== 'OPEN') {
-        throw new Error('A operação já está fechada ou inválida.');
+      if (!user || !user[0]?.id) {
+        throw new Error('User not found or invalid');
       }
   
-      // Determinar o tipo oposto
-      const oppositeType = currentOperation.type === 'buy' ? 'sell' : 'buy';
+      const { data: currentOperation } = await AxiosInstance.post(
+        `/api/v1/transactions/operations/reverse/${user[0].id}/`,
+        { ticket }
+      );
   
-      // Criar uma nova operação oposta
-      const newOperationParams: OperationParams = {
-        userId: currentOperation.userId,
-        asset: currentOperation.asset,
-        quantity: currentOperation.quantity,
-        price: currentOperation.price, // Ou obter preço atual do mercado, se necessário
-        type: oppositeType,
-      };
-  
-      const newOperation = await postCreatedOperations(newOperationParams);
-  
-      // Fechar a operação atual
-      const closeParams = { operationId: id };
-      await postCloseOperations(closeParams);
-  
-      return {
-        success: true,
-        newOperation: newOperation.operation,
-        closedOperation: currentOperation,
-        message: `Operação de ${currentOperation.type} fechada e nova operação de ${oppositeType} criada.`,
-      };
+      return currentOperation;
     } catch (error) {
-      console.error('Erro ao processar operação inversa:', error);
-      throw new Error('Falha ao processar operação inversa. Tente novamente.');
+      console.error('Error in postInversorOperations:', error);
+      throw new Error('Failed to process operation');
     }
   };

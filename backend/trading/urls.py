@@ -8,15 +8,15 @@ from .views import (
 
 urlpatterns = [
     # Currency endpoints
-    path('currencies/', CurrencyList.as_view(), name='currency-list'),
+    path('currencies/<int:pk>/list/', CurrencyList.as_view(), name='currency-list'),
     path('currencies/<int:pk>/', CurrencyDetail.as_view(), name='currency-detail'),
     
     # Stock endpoints
-    path('stocks/', StockList.as_view(), name='stock-list'),
+    path('stocks/<int:pk>/list/', StockList.as_view(), name='stock-list'),
     path('stocks/<int:pk>/', StockDetail.as_view(), name='stock-detail'),
     
     # Commoditie endpoints
-    path('commodities/', CommoditieList.as_view(), name='commoditie-list'),
+    path('commodities/<int:pk>/list/', CommoditieList.as_view(), name='commoditie-list'),
     path('commodities/<int:pk>/', CommoditieDetail.as_view(), name='commoditie-detail'),
     
     # Index endpoints

@@ -87,12 +87,16 @@ const fetchCryptos = async () => {
 
 
 export const getAssetCrypto = async (id: string): Promise<CryptoAsset | string> => {
+
+  
   try {
     const res: AxiosResponse<CryptoAsset> = await axios.get(
-      `https://api.coingecko.com/api/v3/coins/${id}`);
+      `https://api.coingecko.com/api/v3/coins/${id.id}`);
+
+      // Verifica se a resposta é bem-sucedida
 
       if(res.status === 200){
-        res.data
+       return res.data
       }else{
         return parseStringify({"status":400, "message": "Error "})
       }
@@ -101,3 +105,5 @@ export const getAssetCrypto = async (id: string): Promise<CryptoAsset | string> 
       return parseStringify({"status":400, "message": "Error "})
     } 
 };
+
+
