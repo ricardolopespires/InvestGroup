@@ -23,7 +23,6 @@ urlpatterns = [
     path('api/v1/auth/', include('accounts.urls')),
     path('admin/', admin.site.urls),
     path('api/v1/quiz/', include('quiz.urls')),
-    path('api/v1/analytics/', include('analytics.urls')),
     path('api/v1/quiz/', include('quiz.urls')),
     path('api/v1/history/', include('history.urls')),
     path('api/v1/trading/', include('trading.urls')),    
@@ -33,6 +32,7 @@ urlpatterns = [
     path('api/v1/advisor/', include('advisors.urls')),
     path('api/v1/notifications/', include('notifications.urls')),
     path('api/v1/agents/', include('agents.urls')),
+    path('api/v1/management/', include('management.urls')),
     
 ]
 

@@ -43,7 +43,6 @@ INSTALLED_APPS = [
 
     #---------------------------- Dashboard ---------------------------------------------------------------
     'quiz.apps.QuizConfig',
-    'analytics.apps.AnalyticsConfig',
     'history.apps.HistoryConfig',
     'trading.apps.TradingConfig',
     'finances.apps.FinancesConfig',
@@ -52,6 +51,8 @@ INSTALLED_APPS = [
     'advisors.apps.AdvisorsConfig',
     'notifications.apps.NotificationsConfig',
     'agents.apps.AgentsConfig',
+    'management.apps.ManagementConfig',
+ 
       
 
     #---------------------------- third party application --------------------------------------------------

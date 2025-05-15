@@ -20,7 +20,7 @@ import PortifolioInvest from './PortifolioInvest'
 
 const AboutAgents = ({description}) => {
   return (
-    <div className="flex-1 p-6">
+    <div className="flex-1 flex flex-col h-[790px] p-6">
     {/* About Section */}
     <section className="mb-10">
     <h1 className="text-3xl font-semibold mb-2">Sobre</h1>

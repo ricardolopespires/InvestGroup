@@ -1,12 +1,19 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+
+
+
 from .models import Currency, Stock, Commoditie, Index
-from .serializers import CurrencySerializer, StockSerializer, CommoditieSerializer, IndexSerializer
 from django.db.models import Avg, Count, Min, Sum, Q
-from plataform.models import MT5API
-import yfinance as yf
+from .recommender import SignalRecommendationSystem
+from .serializers import CommoditieSerializer 
+from rest_framework.response import Response
+from .serializers import CurrencySerializer
 from history.services import MT5Connector
+from rest_framework.views import APIView
+from .serializers import IndexSerializer
+from .serializers import StockSerializer
+from plataform.models import MT5API
+from rest_framework import status
+import yfinance as yf
 import logging
 
 
@@ -606,3 +613,53 @@ class CurrencyList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+class RecommendationAPIView(APIView):
+    def get(self, request, pk, asset):
+
+        # Busca a conta MT5 ativa do usuário
+        api = MT5API.objects.filter(Q(user_id=pk), Q(is_active=True)).last()
+        
+        if not api:
+            return Response(
+                {'error': 'Conta MT5 não encontrada ou inativa'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        """Fetch trading recommendations for all assets."""
+        try:
+            recommender = SignalRecommendationSystem(
+                
+                account=api.account,
+                password=api.password,
+                server=api.server,
+                
+            )            
+            recommendations_df = recommender.generate_recommendations(asset_type=asset)
+            recommender.shutdown()
+
+            if 'error' in recommendations_df.columns or 'message' in recommendations_df.columns:
+                return Response(
+                    {"message": recommendations_df.iloc[0].to_dict()},
+                    status=status.HTTP_200_OK
+                )
+
+            # Convert DataFrame to JSON-compatible format
+            recommendations_df['signal_time'] = recommendations_df['signal_time'].astype(str)
+            return Response(
+                recommendations_df.to_dict(orient='records'),
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            logger.error(f"Error generating recommendations for {self.asset_type}: {str(e)}")
+            return Response(
+                {"error": f"Failed to generate recommendations for {self.asset_type}: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

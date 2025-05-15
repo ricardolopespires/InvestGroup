@@ -111,3 +111,67 @@ export function paragraph(texto: string | undefined): string {
 
   return blocos.join('\n\n'); // Dupla quebra de linha = "espaço para baixo"
 }
+
+
+
+export function calculate24HourProgress(startDate: string): number {
+    // Converter a string da data para um objeto Date
+    const start = new Date(startDate);
+    const now = new Date();
+    
+    // Validar se a data é válida
+    if (isNaN(start.getTime())) {
+        throw new Error("Data de início inválida");
+    }
+    
+    // Calcular a diferença em milissegundos
+    const diffInMs = now.getTime() - start.getTime();
+    
+    // Converter 24 horas para milissegundos (24 * 60 * 60 * 1000 = 86,400,000)
+    const twentyFourHoursInMs = 24 * 60 * 60 * 1000;
+    
+    // Calcular a porcentagem
+    let percentage = (diffInMs / twentyFourHoursInMs) * 100;
+    
+    // Garantir que a porcentagem esteja entre 0 e 100
+    percentage = Math.max(0, Math.min(100, percentage));
+    
+    // Arredondar para 2 casas decimais
+    return Number(percentage.toFixed(2));
+}
+
+
+export function countdown24Hours(startDate: string): { hours: number; minutes: number; seconds: number; percentageRemaining: number } {
+    // Converter a string da data para um objeto Date
+    const start = new Date(startDate);
+    const now = new Date();
+    
+    // Validar se a data é válida
+    if (isNaN(start.getTime())) {
+        throw new Error("Data de início inválida");
+    }
+    
+    // Calcular o fim das 24 horas a partir da data inicial
+    const end = new Date(start.getTime() + 24 * 60 * 60 * 1000);
+    
+    // Calcular a diferença em milissegundos
+    let diffInMs = end.getTime() - now.getTime();
+    
+    // Se o tempo restante for negativo, retornar zeros
+    if (diffInMs <= 0) {
+        return { hours: 0, minutes: 0, seconds: 0, percentageRemaining: 0 };
+    }
+    
+    // Calcular horas, minutos e segundos restantes
+    const hours = Math.floor(diffInMs / (1000 * 60 * 60));
+    diffInMs %= 1000 * 60 * 60;
+    const minutes = Math.floor(diffInMs / (1000 * 60));
+    diffInMs %= 1000 * 60;
+    const seconds = Math.floor(diffInMs / 1000);
+    
+    // Calcular a porcentagem restante
+    const twentyFourHoursInMs = 24 * 60 * 60 * 1000;
+    const percentageRemaining = Number(((diffInMs / twentyFourHoursInMs) * 100).toFixed(2));
+    
+    return { hours, minutes, seconds, percentageRemaining };
+}

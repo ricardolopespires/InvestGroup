@@ -58,7 +58,7 @@ class RiskProfile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.risk_level}"
+        return f"{self.user} - {self.risk_level}"
 
 class Portfolio(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -70,7 +70,7 @@ class Portfolio(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.name}"
+        return f"{self.user} - {self.name}"
 
 class PortfolioAllocation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

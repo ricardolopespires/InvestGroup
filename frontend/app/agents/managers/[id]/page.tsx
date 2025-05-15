@@ -28,7 +28,7 @@ const page = () => {
 
   useEffect(() => {
     const fetchData = async () => {     
-        const response = await getManagerId(id);
+        const response = await getManagerId({agentId:id});
         setAgent(response);
       
     };

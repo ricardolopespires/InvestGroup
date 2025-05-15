@@ -13,12 +13,12 @@ class CommoditieAdmin(ImportExportModelAdmin):
 
 
 @admin.register(Currency)
-class CommoditieAdmin(ImportExportModelAdmin):
+class CurrencyAdmin(ImportExportModelAdmin):
     list_display = ['name', 'status']
 
 
 
 @admin.register(Stock)
-class CommoditieAdmin(ImportExportModelAdmin):
-    list_display = ['name', 'exchange', 'category', 'symbol']
+class StockAdmin(ImportExportModelAdmin):
+    list_display = ['name', "img",  'exchange', 'category', 'symbol']
     search_fields = ['name', 'symbol']

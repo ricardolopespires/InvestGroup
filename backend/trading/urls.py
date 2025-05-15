@@ -3,7 +3,8 @@ from .views import (
     CurrencyList, CurrencyDetail,
     StockList, StockDetail,
     CommoditieList, CommoditieDetail,
-    IndexList, IndexDetail
+    IndexList, IndexDetail,
+    RecommendationAPIView
 )
 
 urlpatterns = [
@@ -22,4 +23,7 @@ urlpatterns = [
     # Index endpoints
     path('indices/', IndexList.as_view(), name='index-list'),
     path('indices/<int:pk>/', IndexDetail.as_view(), name='index-detail'),
+
+    # Recommendation endpoint
+    path('recommendations/<int:pk>/<str:asset>/', RecommendationAPIView.as_view(), name='recommendations'),
 ]

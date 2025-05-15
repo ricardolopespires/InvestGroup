@@ -14,6 +14,9 @@ import { cn } from '@/lib/utils';
 import React, { use, useEffect } from 'react';
 import { getManagerId } from '@/lib/actions/actions.agents';
 import AboutAgents from '@/components/AboutAgents';
+import ChartsConsultants from '@/components/ChartsConsultants';
+import Recommendations from '@/components/Recommendations';
+import AgentReviews from '@/components/AgentReviews';
 
 const page = () => {
 
@@ -26,14 +29,15 @@ const page = () => {
   const [agent, setAgent] = React.useState([]);
 
 
+
   useEffect(() => {
     const fetchData = async () => {     
-        const response = await getManagerId(id);
-        setAgent(response);
-      
+        const response = await getManagerId({agentId:id});    
+        setAgent(response);     
     };
     fetchData();
   }, [id]);
+
 
 
   return (
@@ -111,8 +115,8 @@ const page = () => {
                 onClick={() => setTableData("chats")}>Chats
             </li>
             <li className={cn(
-                "pb-2", tableData=== "settings" ? "border-b-2 border-green-600 font-medium":"text-gray-600")}
-                onClick={() => setTableData("settings")}>Settings
+                "pb-2", tableData=== "recommendations" ? "border-b-2 border-green-600 font-medium":"text-gray-600")}
+                onClick={() => setTableData("recommendations")}>Recomendações
             </li>          
             <li className={cn(
                 "pb-2", tableData=== "notifications" ? "border-b-2 border-green-600 font-medium":"text-gray-600")}
@@ -129,6 +133,11 @@ const page = () => {
           </ul>
         </nav>
         {tableData === "about" ? <AboutAgents description={agent.description}/>:""}
+        {tableData === "chats" ? <ChartsConsultants agent={agent}/>:""}
+        {tableData === "recommendations" ? <Recommendations asset={agent.asset}/>:""}
+        {tableData === "notifications" ? <div className="flex-1 p-6">Notificações</div>:""}
+        {tableData === "Review" ? <AgentReviews Asset={agent.asset}/>:""}
+        {tableData === "Performace" ? <div className="flex-1 p-6">Performace</div>:""}
 
        
       </div>
