@@ -33,6 +33,7 @@ urlpatterns = [
     path('api/v1/notifications/', include('notifications.urls')),
     path('api/v1/agents/', include('agents.urls')),
     path('api/v1/management/', include('management.urls')),
+    path('api/v1/personal/', include('personal.urls')),
     
 ]
 

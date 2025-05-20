@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FaReplyAll } from 'react-icons/fa';
 import { cn } from '@/lib/utils'
 import CategoriesAssets from '@/components/CategoriesAssets'
@@ -22,6 +22,7 @@ import { RiRobot2Line } from 'react-icons/ri'
 import IsActiveRobo from '@/components/IsActiveRobo'
 import OperationsAdvisor from '@/components/OperationsAdvisor'
 import PerformaceAdvisor from '@/components/PerformaceAdvisor'
+import { getDetailAdvisors } from '@/lib/actions/actions.advisors'
 
 const page = () => {
 
@@ -29,10 +30,26 @@ const page = () => {
   const { id } = useParams();
 
   const [tableData, setTableData] = React.useState("about");
+  const [advisor, setAdvisor] = React.useState({})
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
-  
 
+  useEffect(() => {
+    setLoading(true);
+    const fetchAdvisor = async () => {
+      try {
+        const res = await getDetailAdvisors({AdvisorId:id});
+        setAdvisor(res);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAdvisor();
+    setLoading(false);
+  },[id]);
+  
  
   return (
     <main className="flex flex-col min-h-screen  ">      {/* Sidebar */}
@@ -96,8 +113,9 @@ const page = () => {
             <Heart size={16} />
             <span>Favoritos</span>
           </Button>
+           <CategoriesAssets items={advisor}/>
         </div>
-        <CategoriesAssets item={undefined}/>
+       
       </div>
 
       {/* Main Content */}
@@ -132,7 +150,7 @@ const page = () => {
           </ul>
         </nav>
 
-        { tableData === "about" ? <AboutInvest/>:""}
+        { tableData === "about" ? <AboutInvest description={advisor.description}/>:""}
         { tableData === "Operations" ? <OperationsAdvisor/>:""}
         { tableData === "settings" ? <SettingsInvest AdvisorId={id}/>:""}
         { tableData === "notifications" ? <NotificationsInvest/>:""}

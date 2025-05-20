@@ -205,7 +205,7 @@ const page = () => {
               
                 {/* AI Agents Overview */}
             <div className="grid gap-4 md:grid-cols-4">
-              {agents.map((agent) => (
+              {advisors.map((agent) => (
                 <CardAdvisor agent={agent} key={agent.id}/>
               ))}
             </div>

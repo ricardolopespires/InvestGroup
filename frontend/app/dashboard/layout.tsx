@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Menu from "@/components/dashboard/menu/menu";
 import { FaDoorOpen } from "react-icons/fa";
-
+import { AdvisorProvider } from '@/context/AdvisorContext'
 import React from 'react'
 
 const layout = ({children}) => {
@@ -16,6 +16,7 @@ const layout = ({children}) => {
   const perfil = JSON.parse(localStorage.getItem('perfil'))
   const situation = JSON.parse(localStorage.getItem('situation'))
   const router = useRouter();
+  
 
 
    useEffect(() => {
@@ -33,14 +34,15 @@ const layout = ({children}) => {
 
 
   return (
-    <main className="flex min-h-screen flex-col z-10 ">
-      <Navbar/>   
-      <section className='absolute inset-x-0 top-[50px] h-screen px-20'>
-      <Menu/>
-      {children} 
-      </section>
-    
-      </main>
+      <AdvisorProvider>
+        <main className="flex min-h-screen flex-col z-10 ">
+          <Navbar/>   
+          <section className='absolute inset-x-0 top-[50px] h-screen px-20'>
+          <Menu/>
+          {children} 
+          </section>    
+        </main>
+      </AdvisorProvider>
     )
 };
 

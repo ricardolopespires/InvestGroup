@@ -24,11 +24,6 @@ class Asset(models.Model):
         return self.name
         
 
-
-
-
-
-
 class Robo(models.Model):
     """
     Modelo que representa um robô de trading.
@@ -38,9 +33,8 @@ class Robo(models.Model):
         verbose_name=_("Nome"),
         help_text=_("O nome do robô de trading.")
     )
-    asset = models.ForeignKey(
+    asset = models.ManyToManyField(
         'advisors.Asset',
-        on_delete=models.CASCADE,
         related_name='robots',       
         help_text=_("O ativo financeiro associado a este robô.")
     )

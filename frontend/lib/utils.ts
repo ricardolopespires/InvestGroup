@@ -175,3 +175,13 @@ export function countdown24Hours(startDate: string): { hours: number; minutes: n
     
     return { hours, minutes, seconds, percentageRemaining };
 }
+
+
+
+export function descripton(texto: string, limite: number): string {
+  if (texto.length <= limite) {
+    return texto;  // Se o texto já for menor que o limite, retorna ele mesmo
+  }
+
+  return texto.slice(0, limite) + '...';  // Se o texto for maior que o limite, corta e adiciona "..."
+}

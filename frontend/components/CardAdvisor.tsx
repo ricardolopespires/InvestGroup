@@ -16,6 +16,7 @@ import {
   import { Switch } from "@/components/ui/switch";
   import React, { useEffect, useState } from 'react';
   import { getLevelAdvisors } from "@/lib/actions/actions.advisors";
+import { descripton } from "@/lib/utils";
   
   const CardAdvisor = ({ agent }) => {
     const [activeAgent, setActiveAgent] = useState(agent?.id || "agent_1");
@@ -73,11 +74,11 @@ import {
                 />
               </div>
   
-              <p className="text-sm text-muted-foreground">{agent.description}</p>
+              <p className="text-sm text-muted-foreground">{descripton(agent.description,60)}</p>
   
               <div className="flex flex-wrap gap-2">
-                {agent.preferredAssets?.map((asset) => (
-                  <Badge key={asset} variant="outline">
+                {agent.asset?.map((asset) => (
+                  <Badge key={asset} variant="outline" className="bg-green-500 text-white  text-xs">
                     {asset.charAt(0).toUpperCase() + asset.slice(1)}
                   </Badge>
                 ))}

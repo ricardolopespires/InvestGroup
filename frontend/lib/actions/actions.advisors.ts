@@ -33,7 +33,7 @@ export const patchIsActiveAdvisors =  async ({AdvisorId, data})=>{
 
 export const getListAdvisors = async()=>{
     try {
-        const res = await AxiosInstance.get(`/api/v1/advisor/robos/`);
+        const res = await AxiosInstance.get(`/api/v1/advisor/robos/list/`);
         const ad = await getLevelAdvisors({AdvisorId:res.data[0].id})
         return res.data 
 

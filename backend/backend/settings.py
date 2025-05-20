@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'notifications.apps.NotificationsConfig',
     'agents.apps.AgentsConfig',
     'management.apps.ManagementConfig',
+    'personal.apps.PersonalConfig',
  
       
 
