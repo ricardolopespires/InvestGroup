@@ -2,13 +2,8 @@
 
 
 import { useParams  } from 'next/navigation'
-import Image from 'next/image';
-import { CircularProgress } from '@/components/circular-progress';
-import { SkillBar } from '@/components/skill-bar';
-import { ChartPie, Percent, MapPin, Users, Table } from 'lucide-react';
-import { ServiceCard } from '@/components/service-card';
+import { ChartPie, Percent, Users, Table } from 'lucide-react';
 import { FaReplyAll } from "react-icons/fa";
-import { RiRobot2Line } from 'react-icons/ri';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import React, { use, useEffect } from 'react';
@@ -16,7 +11,8 @@ import { getManagerId } from '@/lib/actions/actions.agents';
 import AboutAgents from '@/components/AboutAgents';
 import ChartsConsultants from '@/components/ChartsConsultants';
 import Recommendations from '@/components/Recommendations';
-import AgentReviews from '@/components/AgentReviews';
+
+import Reviews from '@/components/Reviews';
 
 const page = () => {
 
@@ -136,7 +132,7 @@ const page = () => {
         {tableData === "chats" ? <ChartsConsultants agent={agent}/>:""}
         {tableData === "recommendations" ? <Recommendations asset={agent.asset}/>:""}
         {tableData === "notifications" ? <div className="flex-1 p-6">Notificações</div>:""}
-        {tableData === "Review" ? <AgentReviews Asset={agent.asset}/>:""}
+        {tableData === "Review" ? <Reviews Asset={agent.asset}/>:""}
         {tableData === "Performace" ? <div className="flex-1 p-6">Performace</div>:""}
 
        

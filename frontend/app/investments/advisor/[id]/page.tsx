@@ -23,6 +23,7 @@ import IsActiveRobo from '@/components/IsActiveRobo'
 import OperationsAdvisor from '@/components/OperationsAdvisor'
 import PerformaceAdvisor from '@/components/PerformaceAdvisor'
 import { getDetailAdvisors } from '@/lib/actions/actions.advisors'
+import Reviews from '@/components/Reviews'
 
 const page = () => {
 
@@ -154,7 +155,7 @@ const page = () => {
         { tableData === "Operations" ? <OperationsAdvisor/>:""}
         { tableData === "settings" ? <SettingsInvest AdvisorId={id}/>:""}
         { tableData === "notifications" ? <NotificationsInvest/>:""}
-        { tableData === "Review" ? <ReviewInvest/>:""}
+        { tableData === "Review" ? <Reviews Asset={''}/>:""}
         { tableData === "Performace" ? <PerformaceAdvisor AdvisorId={undefined}/>:""}
       </div>
     </div>

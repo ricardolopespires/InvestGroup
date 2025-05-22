@@ -59,7 +59,7 @@ const Page = () => {
     console.log(res);
     if (res.status === 200) {
       await UserGetStatus({userId:data.email})
-      await router.push('/dashboard/overview');
+      await router.push('/investments/overview');
       toast.success("Parabéns Login sucedido");
     } else if (res.status === 400) {
       toast.error(res.message);
